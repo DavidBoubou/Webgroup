@@ -1,0 +1,16 @@
+Longueur - hauteur
+Spacing- img: 1280 -420 
+
+" articles maximuns sur la ligne :
+article :400 - 418
+article - image :400 - 250
+article -text  (AVEC MARGE):
+
+couleurs :
+#DC5E44 -> orange
+#131313 -> noir
+#E4E6EC -> gris
+#FFFFFF -> blanc
+
+police:
+roboto Slab Extrabold - 4 instances
