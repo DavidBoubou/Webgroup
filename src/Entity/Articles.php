@@ -28,12 +28,12 @@ final class Articles
     #[ORM\Column(nullable: true)]
     private ?bool $publie = null;
 
-    #[ORM\OneToMany(mappedBy: 'articles', targetEntity: categories::class)]
+    #[ORM\OneToMany(mappedBy: 'articles', targetEntity: Categories::class)]
     private Collection $catégorie;
 
     #[ORM\OneToOne(inversedBy: 'articles', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $autheur = null;
+    private ?User $autheur = null;
 
     public function __construct()
     {
@@ -123,12 +123,12 @@ final class Articles
         return $this;
     }
 
-    public function getAutheur(): ?user
+    public function getAutheur(): ?User
     {
         return $this->autheur;
     }
 
-    public function setAutheur(user $autheur): self
+    public function setAutheur(User $autheur): self
     {
         $this->autheur = $autheur;
 

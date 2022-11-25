@@ -12,7 +12,7 @@ use Sonata\AdminBundle\Show\ShowMapper;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Sonata\Form\Type\DateTimePickerType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\ModelType;
+use Sonata\AdminBundle\Form\Type\ModelType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 
@@ -54,14 +54,11 @@ protected function configureFormFields(FormMapper $form):void
                 new Length(['min' => 3])
             ]])
 
-        ->add('catégorie',ModelType::class,[
-            'label'=>'Catégories'])
+        //configurer les modelType
+        ///->add('categorie',ModelType::class)
 
-        ->add('autheur',ModelType::class,[
-            'label'=>'Autheur', 
-            'constraints' => [
-                new NotBlank()
-            ]])
+        ->add('autheur',TextType::class)
+
         //->add('date', DatePickerType::class)
         ->add('publie',  CheckboxType::class, [
             'label'    => 'publié ',
@@ -75,8 +72,7 @@ protected function configureDatagridFilters(DatagridMapper $datagrid):void
     {
         // This method configures the filters, used to filter and sort the list of models;
         $datagrid->add('titre')        
-                ->add('titre')
-                ->add('catégorie')
+                ->add('categorie')
                 ->add('autheur')
                 //->add('date')
                 ->add('publie')
@@ -109,8 +105,7 @@ protected function configureShowFields(ShowMapper $show):void
         $show->add('titre')        
         ->add('baniere_url')
         ->add('content')
-        ->add('titre')
-        ->add('catégorie')
+        ->add('categorie')
         ->add('autheur')
         //->add('date')
         ->add('publie')

@@ -40,7 +40,6 @@ final class CategoriesAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('id')
             ->add('titre')
             ->add('couleur')
             ;
@@ -49,7 +48,6 @@ final class CategoriesAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('id')
             ->add('titre')
             ->add('couleur')
             ;
