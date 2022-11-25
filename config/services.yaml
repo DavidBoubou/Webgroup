@@ -22,3 +22,24 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+    
+    #Route d'administration gestion des articles
+    admin.articles:
+        class: App\Admin\Adminarticles
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Articles, manager_type: orm, label: Articles }
+
+    admin.categories:
+        class: App\Admin\CategoriesAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Categories, controller: ~, manager_type: orm, group: admin, label: Categories }
+
+    admin.baniere:
+        class: App\Admin\BaniereAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Baniere, controller: ~, manager_type: orm, group: admin, label: Baniere }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User }
