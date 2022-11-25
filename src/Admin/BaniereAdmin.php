@@ -40,7 +40,6 @@ final class BaniereAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('id')
             ->add('titre')
             ->add('image_url')
             ;
