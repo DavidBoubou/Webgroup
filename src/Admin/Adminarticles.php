@@ -41,6 +41,11 @@ final class Adminarticles extends AbstractAdmin
 
     }
 
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'articles';
+    }
+
 /*Utliser la métode dun  forbuilder pour les arguements.*/
 
 protected function configureFormFields(FormMapper $form):void 

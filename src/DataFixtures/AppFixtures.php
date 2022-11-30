@@ -13,21 +13,22 @@ class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        $User       = new User();
-        $User       ->setEmail('d@gmail.com')
-                    ->setRoles(['Role_admin'])
-                    ->setPassword('Motdepasse')
-                    ->setAdresse(['Adresse1' =>'Mon adresse']);
-        //setArticles()
 
-        $manager->persist($User);
-        $manager->flush();
-
-        for($i=0; $i<11; $i++)
-            {
+        //$i=1;
+        for($i=3; $i<15; ++$i)
+           {
                 $Categories = new Categories();
                 $Baniere    = new Baniere();
                 $Articles   = new Articles();
+                $User       = new User();
+                $User       ->setEmail('d'.$i.'@gmail.com')
+                            ->setRoles(['Role_admin'])
+                            ->setPassword('Motdepasse')
+                            ->setAdresse(['Adresse1' =>'Mon adresse']);
+                //setArticles()
+        
+                $manager->persist($User);
+                $manager->flush();
 
                 $Articles   ->setTitre('Titre'.$i)
                             ->setBaniereUrl('/assets/download.jpg')

@@ -10,8 +10,16 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
-final class CategoriesAdmin extends AbstractAdmin
+use Symfony\Component\Validator\Constraints\NotBlank;
+
+class CategoriesAdmin extends AbstractAdmin
 {
+
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'categories';
+    }
+
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
@@ -22,6 +30,7 @@ final class CategoriesAdmin extends AbstractAdmin
                 'constraints' => [
                     new NotBlank()]])
             ->add('couleur')
+            ->add('article')
             ;
     }
 
@@ -33,7 +42,8 @@ final class CategoriesAdmin extends AbstractAdmin
                 'label'=>'TCategorie', 
                 'constraints' => [
                     new NotBlank()]])
-            ->add('couleur');
+            ->add('couleur')
+            ->add('article');
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -44,6 +54,7 @@ final class CategoriesAdmin extends AbstractAdmin
                 'constraints' => [
                     new NotBlank()]])
             ->add('couleur')
+            ->add('article')
             ;
     }
 
@@ -55,6 +66,7 @@ final class CategoriesAdmin extends AbstractAdmin
                 'constraints' => [
                     new NotBlank()]])
             ->add('couleur')
+            ->add('article')
             ;
     }
 }

@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+use Symfony\Component\Validator\Constraints\NotBlank;
 //routes
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 
@@ -22,6 +23,12 @@ final class BaniereAdmin extends AbstractAdmin
         $collection->remove('delete');
 
     }
+
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'baniere';
+    }
+
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {

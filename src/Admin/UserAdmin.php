@@ -11,6 +11,7 @@ use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
+use Symfony\Component\Validator\Constraints\NotBlank;
 
 final class UserAdmin extends AbstractAdmin
 {
@@ -22,6 +23,11 @@ final class UserAdmin extends AbstractAdmin
         //Désactive la page list de l'entité
         $collection->remove('delete');
 
+    }
+
+    protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
+    {
+        return 'utilisateurs';
     }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
