@@ -20,6 +20,10 @@ use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\Length;
 
+//routes
+
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
+
 /*
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
@@ -27,6 +31,15 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 final class Adminarticles extends AbstractAdmin
 {
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+
+        // Removing the list route will disable listing entities.
+        //Désactive la page list de l'entité
+        $collection->remove('delete');
+
+    }
 
 /*Utliser la métode dun  forbuilder pour les arguements.*/
 
@@ -71,8 +84,13 @@ protected function configureFormFields(FormMapper $form):void
 protected function configureDatagridFilters(DatagridMapper $datagrid):void
     {
         // This method configures the filters, used to filter and sort the list of models;
-        $datagrid->add('titre')        
-                ->add('categorie')
+        $datagrid->add('titre',null,[
+            'label'=>'Titre de l\'article', 
+            'constraints' => [
+                new NotBlank(),
+                new Length(['min' => 3]),]])        
+
+                //->add('categorie')
                 ->add('autheur')
                 //->add('date')
                 ->add('publie')
@@ -85,30 +103,33 @@ protected function configureListFields(ListMapper $list):void
         //This method configures which fields are shown when all models are listed 
         //(the addIdentifier() method means that this field will link to the show/edit page of this particular
         // model);
-        /*
-        $list->addIdentifier('titre')        
+        
+        $list->addIdentifier('titre',null, [
+            'label'=>'Titre de l\'article', ]) 
+            //overider le template de la bannier       
             ->add('baniere_url')
             ->add('content')
-            ->add('titre')
-            ->add('catégorie')
+            //->add('catégorie')
             ->add('autheur')
             //->add('date')
             ->add('publie')
         ;
-        */
+        
 
     }
 
 protected function configureShowFields(ShowMapper $show):void 
     {
         //This method configures which fields are displayed on the show action.
-        $show->add('titre')        
-        ->add('baniere_url')
-        ->add('content')
-        ->add('categorie')
-        ->add('autheur')
+        $show->add('titre',null, ['label'=>false])   
+        //overider le template de la bannier      
+        ->add('baniere_url',null, ['label'=>false])
+        ->add('content',null, ['label'=>false])
+        //Faire le OneToMany 
+        //->add('categorie')
+        ->add('autheur',null, ['label'=>false])
         //->add('date')
-        ->add('publie')
+        ->add('publie',null, ['label'=>false])
         ;
 
         

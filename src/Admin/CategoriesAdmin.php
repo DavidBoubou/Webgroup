@@ -17,7 +17,10 @@ final class CategoriesAdmin extends AbstractAdmin
     {
         $filter
             ->add('id')
-            ->add('titre')
+            ->add('titre',null,[
+                'label'=>'Categorie', 
+                'constraints' => [
+                    new NotBlank()]])
             ->add('couleur')
             ;
     }
@@ -26,21 +29,20 @@ final class CategoriesAdmin extends AbstractAdmin
     {
         $list
             ->add('id')
-            ->add('titre')
-            ->add('couleur')
-            ->add(ListMapper::NAME_ACTIONS, null, [
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ]);
+            ->add('titre',null,[
+                'label'=>'TCategorie', 
+                'constraints' => [
+                    new NotBlank()]])
+            ->add('couleur');
     }
 
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('titre')
+            ->add('titre',null,[
+                'label'=>'Categorie', 
+                'constraints' => [
+                    new NotBlank()]])
             ->add('couleur')
             ;
     }
@@ -48,7 +50,10 @@ final class CategoriesAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('titre')
+            ->add('titre',null,[
+                'label'=>'Categorie', 
+                'constraints' => [
+                    new NotBlank()]])
             ->add('couleur')
             ;
     }

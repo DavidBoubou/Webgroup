@@ -10,13 +10,23 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
+
 final class UserAdmin extends AbstractAdmin
 {
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+
+        // Removing the list route will disable listing entities.
+        //Désactive la page list de l'entité
+        $collection->remove('delete');
+
+    }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
-            ->add('id')
             ->add('email')
             ->add('roles')
             ->add('password')
@@ -27,24 +37,15 @@ final class UserAdmin extends AbstractAdmin
     protected function configureListFields(ListMapper $list): void
     {
         $list
-            ->add('id')
             ->add('email')
             ->add('roles')
             ->add('password')
-            ->add('adresse')
-            ->add(ListMapper::NAME_ACTIONS, null, [
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ]);
+            ->add('adresse');
     }
 
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('id')
             ->add('email')
             ->add('roles')
             ->add('password')
@@ -55,7 +56,6 @@ final class UserAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('id')
             ->add('email')
             ->add('roles')
             ->add('password')

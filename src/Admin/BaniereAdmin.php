@@ -10,14 +10,27 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+//routes
+use Sonata\AdminBundle\Route\RouteCollectionInterface;
+
 final class BaniereAdmin extends AbstractAdmin
 {
+
+    protected function configureRoutes(RouteCollectionInterface $collection): void
+    {
+
+        $collection->remove('delete');
+
+    }
 
     protected function configureDatagridFilters(DatagridMapper $filter): void
     {
         $filter
             ->add('id')
-            ->add('titre')
+            ->add('titre',null,[
+                'label'=>'Baniere', 
+                'constraints' => [
+                    new NotBlank()]])
             ->add('image_url')
             ;
     }
@@ -26,21 +39,21 @@ final class BaniereAdmin extends AbstractAdmin
     {
         $list
             ->add('id')
-            ->add('titre')
-            ->add('image_url')
-            ->add(ListMapper::NAME_ACTIONS, null, [
-                'actions' => [
-                    'show' => [],
-                    'edit' => [],
-                    'delete' => [],
-                ],
-            ]);
+            ->add('titre',null,[
+                'label'=>'Baniere', 
+                'constraints' => [
+                    new NotBlank()]])
+
+            ->add('image_url');
     }
 
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('titre')
+            ->add('titre',null,[
+                'label'=>'Baniere', 
+                'constraints' => [
+                    new NotBlank()]])
             ->add('image_url')
             ;
     }
@@ -48,8 +61,10 @@ final class BaniereAdmin extends AbstractAdmin
     protected function configureShowFields(ShowMapper $show): void
     {
         $show
-            ->add('id')
-            ->add('titre')
+            ->add('titre',null,[
+                'label'=>'Baniere', 
+                'constraints' => [
+                    new NotBlank()]])
             ->add('image_url')
             ;
     }

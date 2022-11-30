@@ -4,14 +4,48 @@ namespace App\DataFixtures;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Articles;
+use App\Entity\User;
+use App\Entity\Baniere;
+use App\Entity\Categories;
 
 class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // $product = new Product();
-        // $manager->persist($product);
+        $User       = new User();
+        $User       ->setEmail('d@gmail.com')
+                    ->setRoles(['Role_admin'])
+                    ->setPassword('Motdepasse')
+                    ->setAdresse(['Adresse1' =>'Mon adresse']);
+        //setArticles()
 
+        $manager->persist($User);
         $manager->flush();
+
+        for($i=0; $i<11; $i++)
+            {
+                $Categories = new Categories();
+                $Baniere    = new Baniere();
+                $Articles   = new Articles();
+
+                $Articles   ->setTitre('Titre'.$i)
+                            ->setBaniereUrl('/assets/download.jpg')
+                            ->setContent('Content'.$i)
+                            ->setPublie(false)
+                            ->setAutheur($User);
+
+                $Baniere    ->setTitre('Titre'.$i)
+                            ->setImageUrl("/assets/download.jpg");
+
+                $Categories ->setTitre('Titre'.$i)
+                            ->setCouleur("#1".$i."3456")
+                            ->setArticles($Articles);
+
+                $manager->persist($Categories);
+                $manager->persist($Baniere);
+                $manager->persist($Articles);
+                $manager->flush();
+            }
     }
 }
