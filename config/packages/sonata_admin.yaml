@@ -2,8 +2,49 @@ sonata_admin:
     title: 'Sonata Admin'
     dashboard:
         blocks:
-            - { type: sonata.admin.block.admin_list, position: left }
+            -   # block 1
+                position: top #position
+                type: sonata.block.service.text #type de bloc (text HTML)
+                settings:   #configurationn du type de bloc (text HTML)
+                    content: >
+                        <h2>BIENVENUE</h2>
+            -   # block 2
+                position: bottom                           
+                class:    col-lg-12                         
+                type:     sonata.admin.block.admin_list     
+                settings:
+                    groups: [Nos articles]   
 
+            -   # block 3
+                position: bottom     
+                class:    hidden            
+                type:     sonata.admin.block.admin_list     
+                settings:
+                    groups: [Configurations]   
+            -   # block 4
+                position: bottom     
+                class:    hidden             
+                type:     sonata.admin.block.admin_list     
+                settings:
+                    groups: [Utilisateurs]   
+            -   # block 5
+                position: bottom     
+                class:    hidden             
+                type:     sonata.admin.block.admin_list   
+                # Ajouter un lien sans menu parrent
+
+        # Declaration of group of Model/items/services
+        groups:
+                    Nos articles:
+                        items:
+                            - admin.articles                    
+                    Configurations: 
+                        items:
+                            - admin.categories
+                            - admin.baniere
+                    Utilisateurs: 
+                        items:
+                            - admin.user
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:

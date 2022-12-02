@@ -15,6 +15,9 @@ use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Sonata\AdminBundle\Form\Type\ModelType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\UX\Dropzone\Form\DropzoneType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+
+use App\Entity\User;
 
 //contrainst
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -74,8 +77,12 @@ protected function configureFormFields(FormMapper $form):void
 
         //configurer les modelType
         ///->add('categorie',ModelType::class)
+        ->add('autheur',EntityType::class,[
+            'class' => User::class,
+            'choice_label' => 'email'])
+        
 
-        ->add('autheur',TextType::class)
+        //->add('autheur')
 
         //->add('date', DatePickerType::class)
         ->add('publie',  CheckboxType::class, [
@@ -96,7 +103,11 @@ protected function configureDatagridFilters(DatagridMapper $datagrid):void
                 new Length(['min' => 3]),]])        
 
                 //->add('categorie')
-                ->add('autheur')
+
+                ->add('autheur.email')
+                    
+                
+
                 //->add('date')
                 ->add('publie')
         ;
@@ -115,7 +126,11 @@ protected function configureListFields(ListMapper $list):void
             ->add('baniere_url')
             ->add('content')
             //->add('catégorie')
-            ->add('autheur')
+            
+            ->add('autheur',EntityType::class,[
+                'class' => User::class,
+                'associated_property' => 'email'])
+                
             //->add('date')
             ->add('publie')
         ;
@@ -132,7 +147,13 @@ protected function configureShowFields(ShowMapper $show):void
         ->add('content',null, ['label'=>false])
         //Faire le OneToMany 
         //->add('categorie')
-        ->add('autheur',null, ['label'=>false])
+        /*->add('autheur',EntityType::class,[
+            'label' => false,
+            'class' => User::class,
+            'associated_property' => 'email'])
+        */
+        //show my relation
+        ->add('autheur.email')
         //->add('date')
         ->add('publie',null, ['label'=>false])
         ;
