@@ -46,7 +46,7 @@ final class BaniereAdmin extends AbstractAdmin
     {
         $list
             ->add('id')
-            ->add('titre',null,[
+            ->addIdentifier('titre',null,[
                 'label'=>'Baniere', 
                 'constraints' => [
                     new NotBlank()]])

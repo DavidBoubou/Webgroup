@@ -12,6 +12,9 @@ use Sonata\AdminBundle\Show\ShowMapper;
 
 use Symfony\Component\Validator\Constraints\NotBlank;
 
+//entity
+use App\Entity\Articles;
+
 class CategoriesAdmin extends AbstractAdmin
 {
 
@@ -30,7 +33,6 @@ class CategoriesAdmin extends AbstractAdmin
                 'constraints' => [
                     new NotBlank()]])
             ->add('couleur')
-            ->add('article')
             ;
     }
 
@@ -38,12 +40,10 @@ class CategoriesAdmin extends AbstractAdmin
     {
         $list
             ->add('id')
-            ->add('titre',null,[
-                'label'=>'TCategorie', 
-                'constraints' => [
-                    new NotBlank()]])
+            ->addIdentifier('titre',null,[
+                'label'=>'Categorie'])
             ->add('couleur')
-            ->add('article');
+            ;
     }
 
     protected function configureFormFields(FormMapper $form): void
@@ -54,7 +54,6 @@ class CategoriesAdmin extends AbstractAdmin
                 'constraints' => [
                     new NotBlank()]])
             ->add('couleur')
-            ->add('article')
             ;
     }
 
@@ -62,11 +61,8 @@ class CategoriesAdmin extends AbstractAdmin
     {
         $show
             ->add('titre',null,[
-                'label'=>'Categorie', 
-                'constraints' => [
-                    new NotBlank()]])
+                'label'=>false])
             ->add('couleur')
-            ->add('article')
             ;
     }
 }

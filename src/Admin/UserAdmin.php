@@ -53,7 +53,7 @@ final class UserAdmin extends AbstractAdmin
     {
         $form
             ->add('email')
-            ->add('roles')
+           // ->add('roles')
             ->add('password')
             ->add('adresse')
             ;
@@ -63,7 +63,7 @@ final class UserAdmin extends AbstractAdmin
     {
         $show
             ->add('email')
-            ->add('roles')
+         //   ->add('roles')
             ->add('password')
             ->add('adresse')
             ;

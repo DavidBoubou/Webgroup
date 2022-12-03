@@ -19,7 +19,7 @@ class Categories
     #[ORM\Column(length: 10, nullable: true)]
     private ?string $couleur = null;
 
-    #[ORM\ManyToOne(inversedBy: 'catégorie')]
+    #[ORM\ManyToOne(inversedBy: 'categorie')]
     private ?Articles $articles = null;
 
     public function getId(): ?int
@@ -62,4 +62,5 @@ class Categories
 
         return $this;
     }
+    
 }

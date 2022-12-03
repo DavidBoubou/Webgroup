@@ -16,8 +16,11 @@ use Sonata\AdminBundle\Form\Type\ModelType;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Sonata\Form\Type\CollectionType;
 
+//entity
 use App\Entity\User;
+use App\Entity\Categories;
 
 //contrainst
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -77,6 +80,10 @@ protected function configureFormFields(FormMapper $form):void
 
         //configurer les modelType
         ///->add('categorie',ModelType::class)
+        ->add('categorie',EntityType::class,[
+            'class' => Categories::class,
+            'choice_label' => 'titre'])
+
         ->add('autheur',EntityType::class,[
             'class' => User::class,
             'choice_label' => 'email'])
@@ -102,12 +109,8 @@ protected function configureDatagridFilters(DatagridMapper $datagrid):void
                 new NotBlank(),
                 new Length(['min' => 3]),]])        
 
-                //->add('categorie')
-
-                ->add('autheur.email')
-                    
-                
-
+                ->add('categorie.titre')
+                ->add('autheur.email')                
                 //->add('date')
                 ->add('publie')
         ;
@@ -126,6 +129,9 @@ protected function configureListFields(ListMapper $list):void
             ->add('baniere_url')
             ->add('content')
             //->add('catégorie')
+            ->add('categorie',EntityType::class,[
+                'class' => Categories::class,
+                'associated_property' => 'titre'])
             
             ->add('autheur',EntityType::class,[
                 'class' => User::class,
@@ -146,12 +152,9 @@ protected function configureShowFields(ShowMapper $show):void
         ->add('baniere_url',null, ['label'=>false])
         ->add('content',null, ['label'=>false])
         //Faire le OneToMany 
-        //->add('categorie')
-        /*->add('autheur',EntityType::class,[
-            'label' => false,
-            'class' => User::class,
-            'associated_property' => 'email'])
-        */
+        //->add('categorie.titre')
+        ->add('categorie[titre]',TextType::class)
+        
         //show my relation
         ->add('autheur.email')
         //->add('date')

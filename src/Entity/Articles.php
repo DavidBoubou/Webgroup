@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
-final class Articles
+ class Articles
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,7 +29,7 @@ final class Articles
     private ?bool $publie = null;
 
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: Categories::class)]
-    private Collection $catégorie;
+    private Collection $categorie;
 
     #[ORM\OneToOne(inversedBy: 'articles', cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(nullable: false)]
@@ -37,7 +37,7 @@ final class Articles
 
     public function __construct()
     {
-        $this->catégorie = new ArrayCollection();
+        $this->categorie = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,15 +96,15 @@ final class Articles
     /**
      * @return Collection<int, categories>
      */
-    public function getCatégorie(): Collection
+    public function getCategorie(): Collection
     {
-        return $this->catégorie;
+        return $this->categorie;
     }
 
     public function addCatGorie(categories $catGorie): self
     {
-        if (!$this->catégorie->contains($catGorie)) {
-            $this->catégorie->add($catGorie);
+        if (!$this->categorie->contains($catGorie)) {
+            $this->categorie->add($catGorie);
             $catGorie->setArticles($this);
         }
 
@@ -113,7 +113,7 @@ final class Articles
 
     public function removeCatGorie(categories $catGorie): self
     {
-        if ($this->catégorie->removeElement($catGorie)) {
+        if ($this->categorie->removeElement($catGorie)) {
             // set the owning side to null (unless already changed)
             if ($catGorie->getArticles() === $this) {
                 $catGorie->setArticles(null);
