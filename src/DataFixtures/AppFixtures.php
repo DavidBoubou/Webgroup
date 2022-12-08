@@ -33,7 +33,7 @@ class AppFixtures extends Fixture
                             ->setBaniereUrl('/assets/download.jpg')
                             ->setContent('Content'.$i)
                             ->setPublie(false)
-                            ->addAutheur($User);
+                            ->setAutheur($User);
 
                 $Baniere    ->setTitre('Titre'.$i)
                             ->setImageUrl("/assets/download.jpg");
