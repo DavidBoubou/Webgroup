@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -33,11 +35,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     private array $adresse = [];
 
-    #[ORM\OneToOne(mappedBy: 'autheur', cascade: ['persist', 'remove'])]
-    private ?Articles $articles = null;
-
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
+
+    #[ORM\OneToMany(mappedBy: 'autheur', targetEntity: Articles::class)]
+    private Collection $articles;
+
+    public function __construct()
+    {
+        $this->articles = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -121,23 +128,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getArticles(): ?Articles
-    {
-        return $this->articles;
-    }
-
-    public function setArticles(Articles $articles): self
-    {
-        // set the owning side of the relation if necessary
-        if ($articles->getAutheur() !== $this) {
-            $articles->setAutheur($this);
-        }
-
-        $this->articles = $articles;
-
-        return $this;
-    }
-
     public function isVerified(): bool
     {
         return $this->isVerified;
@@ -146,6 +136,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Articles>
+     */
+    public function getArticles(): Collection
+    {
+        return $this->articles;
+    }
+
+    public function addArticle(Articles $article): self
+    {
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setAutheur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeArticle(Articles $article): self
+    {
+        if ($this->articles->removeElement($article)) {
+            // set the owning side to null (unless already changed)
+            if ($article->getAutheur() === $this) {
+                $article->setAutheur(null);
+            }
+        }
 
         return $this;
     }

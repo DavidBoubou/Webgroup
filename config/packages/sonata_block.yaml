@@ -1,2 +1,12 @@
 sonata_block:
     http_cache: false
+    profiler:
+        enabled:  '%kernel.debug%'
+        template: '@SonataBlock/Profiler/block.html.twig'
+
+    default_contexts: [sonata_page_bundle]
+    blocks:
+        # Some block with different templates
+        block.count.article:
+            templates:
+              - { name: 'Count Article', template: 'Block/count.html.twig' }

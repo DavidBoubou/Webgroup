@@ -26,4 +26,9 @@ return [
     FOS\CKEditorBundle\FOSCKEditorBundle::class => ['all' => true],
     Symfony\UX\Dropzone\DropzoneBundle::class => ['all' => true],
     Symfony\UX\Chartjs\ChartjsBundle::class => ['all' => true],
+    Sonata\UserBundle\SonataUserBundle::class => ['all' => true],
+    Sonata\FormatterBundle\SonataFormatterBundle::class => ['all' => true],
+    Sonata\IntlBundle\SonataIntlBundle::class => ['all' => true],
+    Sonata\MediaBundle\SonataMediaBundle::class => ['all' => true],
+    Sonata\SeoBundle\SonataSeoBundle::class => ['all' => true],
 ];

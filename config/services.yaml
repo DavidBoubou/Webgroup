@@ -27,7 +27,7 @@ services:
     admin.articles:
         class: App\Admin\Adminarticles
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Articles, manager_type: orm, label: Articles }
+            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Admin\Action\ArticleAdminController, manager_type: orm, label: Articles }
 
     admin.categories:
         class: App\Admin\CategoriesAdmin
@@ -43,3 +43,25 @@ services:
         class: App\Admin\UserAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User }
+
+    block.count.article:
+        class: Sonata\BlockBundle\Block\Service\CountBlock
+        arguments:
+            - '@twig'
+        tags:
+            - { name: sonata.block }
+
+    # extension       
+    app.articles.extension:
+        class: App\Admin\Extension\ArticlesAdminExtension
+        tags:
+            - { name: sonata.admin.extension,   
+                target: admin.articles 
+                 }
+
+    # Controlleur AbstractController
+    App\Admin\Controller\:
+        resource: '../src/Admin/Controller/'
+        tags: ['controller.service_arguments']
+
+    # CRUDControlleur CRUDCOntrolleur

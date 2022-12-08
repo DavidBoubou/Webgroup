@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
- class Articles
+final class Articles
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -29,15 +29,15 @@ use Doctrine\ORM\Mapping as ORM;
     private ?bool $publie = null;
 
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: Categories::class)]
-    private Collection $categorie;
+    private Collection $catégorie;
 
-    #[ORM\OneToOne(inversedBy: 'articles', cascade: ['persist', 'remove'])]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\ManyToOne(inversedBy: 'articles')]
     private ?User $autheur = null;
+
 
     public function __construct()
     {
-        $this->categorie = new ArrayCollection();
+        $this->catégorie = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -96,15 +96,15 @@ use Doctrine\ORM\Mapping as ORM;
     /**
      * @return Collection<int, categories>
      */
-    public function getCategorie(): Collection
+    public function getCatégorie(): Collection
     {
-        return $this->categorie;
+        return $this->catégorie;
     }
 
     public function addCatGorie(categories $catGorie): self
     {
-        if (!$this->categorie->contains($catGorie)) {
-            $this->categorie->add($catGorie);
+        if (!$this->catégorie->contains($catGorie)) {
+            $this->catégorie->add($catGorie);
             $catGorie->setArticles($this);
         }
 
@@ -113,7 +113,7 @@ use Doctrine\ORM\Mapping as ORM;
 
     public function removeCatGorie(categories $catGorie): self
     {
-        if ($this->categorie->removeElement($catGorie)) {
+        if ($this->catégorie->removeElement($catGorie)) {
             // set the owning side to null (unless already changed)
             if ($catGorie->getArticles() === $this) {
                 $catGorie->setArticles(null);
@@ -128,10 +128,11 @@ use Doctrine\ORM\Mapping as ORM;
         return $this->autheur;
     }
 
-    public function setAutheur(User $autheur): self
+    public function setAutheur(?User $autheur): self
     {
         $this->autheur = $autheur;
 
         return $this;
     }
+
 }

@@ -9,6 +9,10 @@ sonata_admin:
                     content: >
                         <h2>BIENVENUE</h2>
             -   # block 2
+                position: left                           
+                class:    col-lg-12                         
+                type:     block.count.article    
+            -   # block 2
                 position: bottom                           
                 class:    col-lg-12                         
                 type:     sonata.admin.block.admin_list     
@@ -45,7 +49,15 @@ sonata_admin:
                     Utilisateurs: 
                         items:
                             - admin.user
+
+    extensions:
+            app.articles.extension:
+                admins:     #specify one or more admin service ids to which the Extension should be added.
+                    - admin.articles
+                priority: 1	#Can be a positive or negative integer. The higher the priority, the earlier it was executed.
+
 sonata_block:
     blocks:
         sonata.admin.block.admin_list:
             contexts: [admin]
+    

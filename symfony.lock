@@ -62,6 +62,18 @@
     "knplabs/knp-menu-bundle": {
         "version": "v3.2.0"
     },
+    "nyholm/psr7": {
+        "version": "1.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "1.0",
+            "ref": "0cd4d2d0e7f646fda75f9944f747a56e6ed13d4c"
+        },
+        "files": [
+            "./config/packages/nyholm_psr7.yaml"
+        ]
+    },
     "phpunit/phpunit": {
         "version": "9.5",
         "recipe": {
@@ -147,6 +159,29 @@
             "./config/packages/sonata_form.yaml"
         ]
     },
+    "sonata-project/formatter-bundle": {
+        "version": "5.0.1"
+    },
+    "sonata-project/intl-bundle": {
+        "version": "3.0.2"
+    },
+    "sonata-project/media-bundle": {
+        "version": "4.5",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "8aa2decd8995752594ac6a304fb3ccafe1fa10cf"
+        },
+        "files": [
+            "./config/packages/sonata_media.yaml",
+            "./config/routes/sonata_media.yaml",
+            "./public/upload/media/.gitignore"
+        ]
+    },
+    "sonata-project/seo-bundle": {
+        "version": "3.5.0"
+    },
     "sonata-project/twig-extensions": {
         "version": "2.0",
         "recipe": {
@@ -155,6 +190,9 @@
             "version": "1.2",
             "ref": "30dba2f9b719f21b497a6302f41aac07f9079e13"
         }
+    },
+    "sonata-project/user-bundle": {
+        "version": "5.4.0"
     },
     "symfony/console": {
         "version": "6.1",

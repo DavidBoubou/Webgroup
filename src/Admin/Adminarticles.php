@@ -17,6 +17,11 @@ use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\UX\Dropzone\Form\DropzoneType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Sonata\Form\Type\CollectionType;
+//toOneRelation
+use Sonata\AdminBundle\Form\Type\ModelListType;
+//ToMany or ManyToMany
+use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
+
 
 //entity
 use App\Entity\User;
@@ -37,19 +42,44 @@ use Symfony\UX\Chartjs\Model\Chart;
 
 final class Adminarticles extends AbstractAdmin
 {
+    //Activation du preview
+    public $supportsPreviewMode = true;
+
+    protected function configureDashboardActions(array $actions): array
+    {
+       // $actions['export'] ;
+        return $actions;
+    }
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
 
+        $collection->add('export') //Le bouton d'exportation se trouve sur la page list.
+                    ->add('merge')
+                    ->add('clone', $this->getRouterIdParameter().'/clone');
         // Removing the list route will disable listing entities.
         //Désactive la page list de l'entité
-        $collection->remove('delete');
+        //$collection->remove('delete');
 
     }
 
+
+    
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string
     {
         return 'articles';
+    }
+    
+
+    protected function configureBatchActions(array $actions): array
+    {
+
+        $actions['merge'] = [
+                'ask_confirmation' => true,
+                'controller' =>  'App\Admin\Controller\MergeController::batchMergeAction' 
+            ];
+    
+        return $actions;
     }
 
 /*Utliser la métode dun  forbuilder pour les arguements.*/
@@ -79,15 +109,22 @@ protected function configureFormFields(FormMapper $form):void
             ]])
 
         //configurer les modelType
-        ///->add('categorie',ModelType::class)
-        ->add('categorie',EntityType::class,[
+        /*->add('categorie',ModelAutocompleteType::class, [
+            //Relation ManyToMany
+            'multiple' =>true,
+            'btn_add'=>true,
+            //propriété sur les recherche
+            'property' => ['titre'],
+            'required' => false])
+            */
+        /*->add('categorie',EntityType::class,[
             'class' => Categories::class,
             'choice_label' => 'titre'])
-
-        ->add('autheur',EntityType::class,[
+            */
+    /*    ->add('autheur',EntityType::class,[
             'class' => User::class,
             'choice_label' => 'email'])
-        
+    */    
 
         //->add('autheur')
 
@@ -110,7 +147,7 @@ protected function configureDatagridFilters(DatagridMapper $datagrid):void
                 new Length(['min' => 3]),]])        
 
                 ->add('categorie.titre')
-                ->add('autheur.email')                
+                //->add('autheurs')                
                 //->add('date')
                 ->add('publie')
         ;
@@ -124,30 +161,40 @@ protected function configureListFields(ListMapper $list):void
         // model);
         
         $list->addIdentifier('titre',null, [
-            'label'=>'Titre de l\'article', ]) 
+            'label'=>'Titre de l\'article', 'editable'=>true]) 
             //overider le template de la bannier       
-            ->add('baniere_url')
+            ->add('baniere_url',null,['editable'=>true])
             ->add('content')
             //->add('catégorie')
             ->add('categorie',EntityType::class,[
                 'class' => Categories::class,
                 'associated_property' => 'titre'])
             
-            ->add('autheur',EntityType::class,[
+           /* ->add('autheurs',EntityType::class,[
                 'class' => User::class,
                 'associated_property' => 'email'])
-                
+             */   
             //->add('date')
-            ->add('publie')
-        ;
-        
+            ->add('publie',null,['editable'=>true])
+
+            // actions sur les lignes
+            ->add(ListMapper::NAME_ACTIONS, null, [
+                'actions' => [
+                    'show' => [],
+                    'edit' => [],
+                    'delete' => [],
+                    'clone' => [
+                        'template' => 'CRUD/list__action_clone.html.twig',
+                    ],
+                ]
+            ]);
 
     }
 
 protected function configureShowFields(ShowMapper $show):void 
     {
         //This method configures which fields are displayed on the show action.
-        $show->add('titre',null, ['label'=>false])   
+        $show->add('titre',null, ['label'=>false,'editable'=>true])   
         //overider le template de la bannier      
         ->add('baniere_url',null, ['label'=>false])
         ->add('content',null, ['label'=>false])
@@ -156,11 +203,31 @@ protected function configureShowFields(ShowMapper $show):void
         ->add('categorie[titre]',TextType::class)
         
         //show my relation
-        ->add('autheur.email')
+        //->add('autheurs')
         //->add('date')
-        ->add('publie',null, ['label'=>false])
+        ->add('publie',null, ['label'=>false,'editable'=>true])
         ;
 
         
     }
+
+    //Exporter les champs et les associations.
+    protected function configureExportFields(): array
+        {
+          //  return ['titre', 'content', 'autheurs'];
+        }
+
+    //Format d'exportation
+    public function getExportFormats(): array
+        {
+            //return a format html and pdf
+            return ['csv'];
+        }
+
+        /*
+            public function  postPersist($object)
+            {
+
+            }
+      */
 }

@@ -6,7 +6,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-
 class ClientController extends AbstractController
 {
     #[Route('/', name: 'app_client_accueil')]
@@ -24,4 +23,12 @@ class ClientController extends AbstractController
             'controller_name' => 'ClientController',
         ]);
     }
+
+    #[Route('/block', name: 'block')]
+    public function block(): Response
+    {
+        return $this->render('Block/Example.html.twig');
+        
+    }
+
 }

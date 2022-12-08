@@ -27,14 +27,13 @@ class AppFixtures extends Fixture
                             ->setAdresse(['Adresse1' =>'Mon adresse']);
                 //setArticles()
         
-                $manager->persist($User);
-                $manager->flush();
+                
 
                 $Articles   ->setTitre('Titre'.$i)
                             ->setBaniereUrl('/assets/download.jpg')
                             ->setContent('Content'.$i)
                             ->setPublie(false)
-                            ->setAutheur($User);
+                            ->addAutheur($User);
 
                 $Baniere    ->setTitre('Titre'.$i)
                             ->setImageUrl("/assets/download.jpg");
@@ -43,6 +42,7 @@ class AppFixtures extends Fixture
                             ->setCouleur("#1".$i."3456")
                             ->setArticles($Articles);
 
+                $manager->persist($User);
                 $manager->persist($Categories);
                 $manager->persist($Baniere);
                 $manager->persist($Articles);

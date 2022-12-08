@@ -12,3 +12,4 @@ import 'bootstrap';
 
 // start the Stimulus application
 import './bootstrap';
+import './controllers/hello_controller.js';

@@ -36,6 +36,13 @@ final class Baniere
         return $this;
     }
 
+    public function __toString():string
+    {
+        $this->titre;
+
+        return $this;
+    }
+
     public function getImageUrl(): ?string
     {
         return $this->image_url;
