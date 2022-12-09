@@ -26,6 +26,8 @@ services:
     #Route d'administration gestion des articles
     admin.articles:
         class: App\Admin\Adminarticles
+        calls:
+            - [setTemplate, ['edit', 'CRUD/edit.html.twig']]
         tags:
             - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Admin\Action\ArticleAdminController, manager_type: orm, label: Articles }
 

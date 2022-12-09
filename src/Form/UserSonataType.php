@@ -12,6 +12,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\CallbackTransformer;
 
 class UserSonataType extends AbstractType
 {
@@ -21,12 +22,17 @@ class UserSonataType extends AbstractType
             ->add('email')
 
             //Ajouter une sécurité sur les liste de role sélectionner
-           /* ->add('roles', ChoiceType::class, [
+            ->add('roles', ChoiceType::class, [      
+                                    'required' => true,
+                                    //'mapped'=> true,
+                                    'multiple' => false,
+                                    'expanded' => false,     
                                     'choices'  => [
                                         'Admin' => 'ROLE_ADMIN',
                                         'Super Admin' => 'ROLE_SUPER_ADMIN',
-                                ]])
-            */
+                                        'user' => 'ROLE_USER',
+                                ]])                
+            
             ->add('password',PasswordType::class, [
                 // instead of being set onto the object directly,
                 // this is read and encoded in the controller
@@ -56,6 +62,18 @@ class UserSonataType extends AbstractType
             ])
             //Mettre a jour la date de création
         ;
+                        //roles field data transformer
+                      $builder  ->get('roles')
+                        ->addModelTransformer(new CallbackTransformer(
+                            function ($rolesArray) {
+                                // transform the array to a string
+                                return count($rolesArray)? $rolesArray[0]: null;
+                            },
+                            function ($rolesString) {
+                                // transform the string back to an array
+                                return [$rolesString];
+                            }
+                        ));
     }
 
     public function configureOptions(OptionsResolver $resolver): void

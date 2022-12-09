@@ -12,8 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Doctrine\ORM\EntityManagerInterface;
-
-
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class AdminController extends AbstractController
 {
@@ -48,6 +47,14 @@ class AdminController extends AbstractController
                     $form->get('password')->getData()
                 )
             );
+
+            $date =  new \DateTime('@'.strtotime('now')); # also tried using \DateTimeImmutable
+            $newDate = \DateTime::createFromFormat("l dS F Y", $date);
+            $newDate = $newDate->format('d/m/Y'); // for example
+            dd($newDate);
+            $user->setLastLogin($date);
+            $user->setUpdatedAt($date);
+            $user->setCreatedAt($date);
 
             $entityManager->persist($user);
             $entityManager->flush();

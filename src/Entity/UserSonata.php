@@ -186,5 +186,36 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         return $this;
     }
 
+    
+    public function getLastLogin(): ?\DateTimeInterface
+    {
+        return $this->lastLogin;
+    }
+
+    public function setLastLogin(?\DateTimeInterface $time = null): void
+    {
+        $this->lastLogin = $time;
+    }
+    
+    public function setCreatedAt(?\DateTimeInterface $createdAt = null): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    public function getCreatedAt(): ?\DateTimeInterface
+    {
+        return $this->createdAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeInterface $updatedAt = null): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeInterface
+    {
+        return $this->updatedAt;
+    }
+
 
 }

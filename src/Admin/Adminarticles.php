@@ -47,7 +47,16 @@ final class Adminarticles extends AbstractAdmin
 
     protected function configureDashboardActions(array $actions): array
     {
-       // $actions['export'] ;
+        /*
+                $actions['import'] = [
+                'label' => 'import_action',
+                'translation_domain' => 'SonataAdminBundle',
+                'url' => $this->generateUrl('import'),
+                'icon' => 'level-up-alt',
+            ];
+        */
+        // $actions['import'] = ['template' => 'import_dashboard_button.html.twig'];
+        $actions['export'] ;
         return $actions;
     }
 
