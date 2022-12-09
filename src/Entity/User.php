@@ -41,6 +41,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'autheur', targetEntity: Articles::class)]
     private Collection $articles;
 
+    private $plainPassword;
+    
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
     public function __construct()
     {
         $this->articles = new ArrayCollection();

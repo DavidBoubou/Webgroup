@@ -21,7 +21,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
     #[ORM\Column(type: Types::INTEGER)]
     //private ?int $id = null;
     protected  $id;
-/*
+
     #[ORM\Column(length: 180, unique: true)]
     protected ?string $email = null;
 
@@ -30,7 +30,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
 
     /**
      * @var string The hashed password
-     *//*
+     */
     #[ORM\Column]
     protected ?string $password = null;
 
@@ -43,6 +43,27 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
     #[ORM\Column(type: 'boolean')]
     protected $isVerified = false;
 
+    #[ORM\Column]
+    protected ?\DateTimeInterface $createdAt = null;
+
+    #[ORM\Column]
+    protected ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\Column]
+    protected ?\DateTimeInterface $lastLogin = null;
+
+    #[ORM\Column]
+    protected ?string $username = null;
+
+    #[ORM\Column(type: 'boolean')]
+    protected bool $enabled = false;
+
+
+    #[ORM\Column]
+    protected ?\DateTimeInterface $passwordRequestedAt = null;
+
+    //protected ?string $plainPassword = null;
+    
     public function getId(): ?int
     {
         return $this->id;
@@ -63,7 +84,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
      * A visual identifier that represents this user.
      *
      * @see UserInterface
-     *//*
+     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
@@ -71,7 +92,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
 
     /**
      * @see UserInterface
-     *//*
+     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -89,7 +110,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
 
     /**
      * @see PasswordAuthenticatedUserInterface
-     *//*
+     */
     public function getPassword(): string
     {
         return $this->password;
@@ -109,7 +130,21 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         // If you store any temporary, sensitive data on the user, clear it here
          $this->plainPassword = null;
     }
+    */
 
+    /**
+     * @return mixed
+     *//*
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    public function setPlainPassword(?string $password): void
+    {
+        $this->plainPassword = $password;
+    }
+    */
     public function getAdresse(): array
     {
         return $this->adresse;
@@ -149,7 +184,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         $this->isVerified = $isVerified;
 
         return $this;
-    }*/
+    }
 
 
 }
