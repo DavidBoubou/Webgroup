@@ -76,7 +76,7 @@ final class Adminarticles extends AbstractAdmin
 
         $actions['merge'] = [
                 'ask_confirmation' => true,
-                'controller' =>  'App\Admin\Controller\MergeController::batchMergeAction' 
+                'controller' =>  'App\Admin\Action\MergeController::batchMergeAction' 
             ];
     
         return $actions;
