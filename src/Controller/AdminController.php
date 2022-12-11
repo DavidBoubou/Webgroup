@@ -14,8 +14,21 @@ use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 
+use App\Security\EmailVerifier;
+use Symfony\Bridge\Twig\Mime\TemplatedEmail;
+use App\Form\RegistrationFormType;
+use Symfony\Component\Mime\Address;
+use Symfony\Contracts\Translation\TranslatorInterface;
+
 class AdminController extends AbstractController
 {
+    private EmailVerifier $emailVerifier;
+
+    public function __construct(EmailVerifier $emailVerifier)
+    {
+        $this->emailVerifier = $emailVerifier;
+    }
+
     #[Route(path: 'admin/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
@@ -48,13 +61,9 @@ class AdminController extends AbstractController
                 )
             );
 
-            $date =  new \DateTime('@'.strtotime('now')); # also tried using \DateTimeImmutable
-            $newDate = \DateTime::createFromFormat("l dS F Y", $date);
-            $newDate = $newDate->format('d/m/Y'); // for example
-            dd($newDate);
-            $user->setLastLogin($date);
-            $user->setUpdatedAt($date);
-            $user->setCreatedAt($date);
+            //$date =  new \DateTime('@'.strtotime('now'));
+            $user->prePersist();
+            $user->preUpdate();
 
             $entityManager->persist($user);
             $entityManager->flush();

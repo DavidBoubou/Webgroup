@@ -42,7 +42,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
 
     #[ORM\Column(type: 'boolean')]
     protected $isVerified = false;
-
+/*
     #[ORM\Column]
     protected ?\DateTimeInterface $createdAt = null;
 
@@ -53,14 +53,13 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
     protected ?\DateTimeInterface $lastLogin = null;
 
     #[ORM\Column]
+    protected ?\DateTimeInterface $passwordRequestedAt = null;
+*/
+    #[ORM\Column]
     protected ?string $username = null;
 
     #[ORM\Column(type: 'boolean')]
     protected bool $enabled = false;
-
-
-    #[ORM\Column]
-    protected ?\DateTimeInterface $passwordRequestedAt = null;
 
     //protected ?string $plainPassword = null;
     
@@ -186,7 +185,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         return $this;
     }
 
-    
+    /*
     public function getLastLogin(): ?\DateTimeInterface
     {
         return $this->lastLogin;
@@ -196,9 +195,10 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
     {
         $this->lastLogin = $time;
     }
-    
+    */
     public function setCreatedAt(?\DateTimeInterface $createdAt = null): void
     {
+        parent::
         $this->createdAt = $createdAt;
     }
 
@@ -228,5 +228,17 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
     {
         $this->username = $username;
     }
+/*
+    public function prePersist(): void
+    {
+        $this->createdAt = new \DateTime();
+        $this->updatedAt = new \DateTime();
+    }
+
+    public function preUpdate(): void
+    {
+        $this->updatedAt = new \DateTime();
+    }
+*/
 
 }
