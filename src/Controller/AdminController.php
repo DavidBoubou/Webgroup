@@ -32,9 +32,9 @@ class AdminController extends AbstractController
     #[Route(path: 'admin/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // if ($this->getUser()) {
-        //     return $this->redirectToRoute('target_path');
-        // }
+         if ($this->getUser()) {
+             return $this->redirectToRoute('sonata_admin_dashboard');
+         }
 
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
@@ -45,7 +45,7 @@ class AdminController extends AbstractController
     }
 
 
-    #[Route('/admin_register', name: 'app_admin_register')]
+    #[Route('/admin/register', name: 'app_admin_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new UserSonata();
@@ -87,7 +87,7 @@ class AdminController extends AbstractController
         
     }
 
-    #[Route(path: '/logout', name: 'app_logout')]
+    #[Route(path: 'admin/logout', name: 'sonata_user_admin_security_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

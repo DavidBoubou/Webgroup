@@ -53,6 +53,15 @@ services:
         tags:
             - { name: sonata.block }
 
+    # The name of My block
+    block.current.user:
+        class: Sonata\BlockBundle\Block\Service\UserBlock
+        arguments:
+            - '@twig'
+            - '@security.token_storage'
+        tags:
+            - { name: sonata.block }
+
     # extension       
     app.articles.extension:
         class: App\Admin\Extension\ArticlesAdminExtension

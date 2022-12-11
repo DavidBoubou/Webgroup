@@ -95,6 +95,10 @@ sonata_admin:
                 position: bottom     
                 class:    hidden             
                 type:     sonata.admin.block.admin_list   
+            -   # block 6
+                position: top     
+                class:    col-lg-4             
+                type:     block.current.user  
                 # Ajouter un lien sans menu parrent
 
         # Declaration of group of Model/items/services

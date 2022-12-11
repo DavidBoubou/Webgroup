@@ -10,3 +10,6 @@ sonata_block:
         block.count.article:
             templates:
               - { name: 'Count Article', template: 'Block/count.html.twig' }
+        block.current.user:
+            templates:
+              - { name: 'user', template: 'Block/user.html.twig' }
