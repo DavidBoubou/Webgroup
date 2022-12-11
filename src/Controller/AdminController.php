@@ -32,7 +32,7 @@ class AdminController extends AbstractController
     }
 
 
-    #[Route('/admin/register', name: 'app_admin_register')]
+    #[Route('/admin_register', name: 'app_admin_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = new UserSonata();

@@ -55,10 +55,10 @@ class RegistrationController extends AbstractController
             );
             // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('sonata_admin_dashboard');
+            return $this->redirectToRoute('app_client_accueil');
         }
 
-        return $this->render('registration/register.html.twig', [
+        return $this->render('registration/client-register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
     }
