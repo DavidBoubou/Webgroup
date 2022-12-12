@@ -15,7 +15,7 @@ use Symfony\Component\Security\Http\Authenticator\Passport\Credentials\PasswordC
 use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
 use Symfony\Component\Security\Http\Util\TargetPathTrait;
 
-class UserSonataAuthenticator extends AbstractLoginFormAuthenticator
+class AppClientAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
@@ -47,7 +47,7 @@ class UserSonataAuthenticator extends AbstractLoginFormAuthenticator
         }
 
         // For example:
-         return new RedirectResponse($this->urlGenerator->generate('sonata_admin_dashboard'));
+         return new RedirectResponse($this->urlGenerator->generate('app_client_accueil'));
         //throw new \Exception('TODO: provide a valid redirect inside '.__FILE__);
     }
 

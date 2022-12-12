@@ -41,7 +41,7 @@ class AdminController extends AbstractController
         // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
-        return $this->render('security/login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
+        return $this->render('security/client-login.html.twig', ['last_username' => $lastUsername, 'error' => $error]);
     }
 
 
@@ -81,7 +81,7 @@ class AdminController extends AbstractController
             return $this->redirectToRoute('sonata_admin_dashboard');
         }
         
-        return $this->render('registration/register.html.twig', [
+        return $this->render('registration/admin-register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
         
