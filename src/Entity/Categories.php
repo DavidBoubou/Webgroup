@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Repository\CategoriesRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Entity\Articles;
 
 #[ORM\Entity(repositoryClass: CategoriesRepository::class)]
 class Categories

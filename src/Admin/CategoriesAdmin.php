@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints\NotBlank;
 //entity
 use App\Entity\Articles;
 
-class CategoriesAdmin extends AbstractAdmin
+final class CategoriesAdmin extends AbstractAdmin
 {
 
     protected function generateBaseRoutePattern(bool $isChildAdmin = false): string

@@ -6,7 +6,7 @@ use App\Repository\BaniereRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BaniereRepository::class)]
-final class Baniere
+class Baniere
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
