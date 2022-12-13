@@ -21,7 +21,7 @@ final class UserAdmin extends AbstractAdmin
 
         // Removing the list route will disable listing entities.
         //Désactive la page list de l'entité
-        $collection->remove('delete');
+            $collection->remove('delete');
 
     }
 

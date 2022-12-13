@@ -10,10 +10,9 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Sonata\UserBundle\Document\BaseUser;
 
-//#[ORM\Entity(repositoryClass: UserSonataRepository::class)]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UserSonataRepository::class)]
 #[ORM\Table(name: 'sonata_user__user')]
-//#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
+#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]

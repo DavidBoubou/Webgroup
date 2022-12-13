@@ -1,0 +1,58 @@
+@import '~bootstrap';
+/*@import '~fontawesomes';*/
+
+body {
+    background-color: lightgray;
+}
+
+footer
+{
+    min-width: 100%;
+    min-height: 8vh;
+}
+
+footer, .bg-red
+{
+ 	background-color: red;
+}
+
+.text-red, .card-text
+{
+ color:red !important;
+ text-decoration:none;
+}
+
+.text-white
+{
+ color:white;
+}
+
+.bg-grey 
+{
+ background-color: grey;
+}
+
+.bg-white
+{
+ background-color:white;
+}
+
+.border-30
+{
+ border-radius: 30px;
+}
+
+body
+{
+ border: 1px solid grey;
+}
+
+nav
+{
+ padding:8px !important;
+}
+/*
+.sonata-preview-form-container .row {
+    display: none;
+}
+*/

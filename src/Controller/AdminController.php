@@ -2,7 +2,8 @@
 
 namespace App\Controller;
 
-use App\Entity\UserSonata;
+//use App\Entity\UserSonata;
+use App\Entity\User;
 use App\Form\UserSonataType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,7 +30,7 @@ class AdminController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    #[Route(path: 'admin/login', name: 'app_login')]
+    #[Route(path: '/admin/login', name: 'app_admin_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
@@ -48,7 +49,8 @@ class AdminController extends AbstractController
     #[Route('/admin/register', name: 'app_admin_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        $user = new UserSonata();
+        //$user = new UserSonata();
+        $user = new User();
         $form = $this->createForm(UserSonataType::class, $user);
         $form->handleRequest($request);
         
@@ -62,21 +64,21 @@ class AdminController extends AbstractController
             );
 
             //$date =  new \DateTime('@'.strtotime('now'));
-            $user->prePersist();
-            $user->preUpdate();
+            //$user->prePersist();
+            //$user->preUpdate();
 
             $entityManager->persist($user);
             $entityManager->flush();
 
             // generate a signed url and email it to the user
-            $this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
+            /*$this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,
                 (new TemplatedEmail())
                     ->from(new Address('no-reply@gmail.com', 'no-reply-bethannie'))
                     ->to($user->getEmail())
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
+            */
 
             return $this->redirectToRoute('sonata_admin_dashboard');
         }
@@ -87,7 +89,8 @@ class AdminController extends AbstractController
         
     }
 
-    #[Route(path: 'admin/logout', name: 'sonata_user_admin_security_logout')]
+
+    #[Route(path: '/admin/logout', name: 'app_admin_logout')]
     public function logout(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');

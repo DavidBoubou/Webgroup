@@ -2,6 +2,7 @@
 {% extends sonata_block.templates.block_base %}
 {% block block %}
     <div class="sonata-feeds-container">
-       {# {{settings.user}} #}
+        {{settings.user.email}} 
+        {#{settings.user.roles}#} 
     </div>
 {% endblock %}

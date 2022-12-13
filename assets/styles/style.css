@@ -1,0 +1,113 @@
+header
+{
+    top:0;
+}
+
+body
+{
+    background-color:#d8e2ef ! important;
+}
+
+.logo
+{
+    width: 40px;
+    height:40px;
+}
+
+.bg-cover
+{
+    background-image: url('./corner-1.png');
+     background-color: black;
+    background-repeat: no-repeat;
+    background-position: right;
+    min-width: 30rem;
+    min-height: 8rem;
+
+}
+
+.bar-lateral 
+{
+    padding-top:1rem;
+    padding-bottom:1rem;
+    position: sticky;
+    top:0;
+    background-color: #d8e2effa;
+    margin-left:8%;
+    margin-right:8%;
+    box-shadow: 0 .125rem .0 rgba(0,0,0,.075)!important;
+    
+}
+
+.form-search
+{
+    border: none;
+    color:#344050;
+    background-color:#fff;
+    font-size: 1rem;
+    font-weight: 400;
+    width:100%;
+    border-radius: 3rem;
+
+}
+.form-icon
+{
+    margin:auto;
+}
+
+form{
+    border:1px solid #d8e2ef;
+    background-color: white;
+    border-radius: 3rem;
+}
+
+.nav-aside
+{
+    height:70%;
+    min-height:100%;
+    min-width:fit-content;
+    background-color: #d8e2ef;
+    color:grey;
+    overflow-y: hidden;
+    position: sticky;
+    padding-top: 2rem;
+    z-index:-1;
+    left:0px;
+    top:5rem;
+    margin-right: 5rem;
+}
+
+.nav-aside:hover
+{
+    overflow-y: scroll;
+}
+
+
+.aside-link
+{
+    color:grey;
+    text-decoration: none;
+}
+
+.aside-link:hover
+{
+    color:black;
+}
+
+.pl-8
+{
+    padding-left: 8rem;
+}
+
+.pr-8
+{
+    padding-right: 8rem;
+}
+
+li
+{
+    list-style: none;
+}
+.content
+{
+    padding-top:1rem;
+}

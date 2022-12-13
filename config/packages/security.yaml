@@ -15,6 +15,7 @@ security:
     providers:
         sonata_user_bundle:
             id: sonata.user.security.user_provider
+
         app_user_provider:
             entity:
                 # the class of the entity that represents users
@@ -30,37 +31,43 @@ security:
     #    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
     # Listes des firewalls (parfeu)
     firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
+        #dev:
+        #    pattern: ^/(_(profiler|wdt)|css|images|js)/
+        #    security: false
 
         # Firewall for my client
         main:
             lazy: true
+            #pattern: /
             provider: app_user_provider
+            entry_point: App\Security\AppClientAuthenticator
             custom_authenticator: App\Security\AppClientAuthenticator
-            logout:
-                path: app_logout
-                # where to redirect after logout
-                # target: app_any_route
-
-        # firewal for my admin
-        admin:
-            lazy: true
-            pattern: /admin(.*)
-            provider: sonata_user_bundle
-            context: user
+            #anonymous: true
             form_login:
-                login_path: app_register
-                check_path: sonata_user_admin_security_check
+                login_path: app_login_client
+            logout:
+                path: app_logout_client
+                # where to redirect after logout
+                target: app_client_accueil
+
+
+
+        # firewal for my admin with Sonata
+        admin:
+            pattern: /admin(.*)
+            context: user
+            provider: app_user_provider
+            form_login:
+                login_path: app_admin_login
+                check_path: app_admin_login
                 default_target_path: sonata_admin_dashboard
             logout:
-                path: sonata_user_admin_security_logout
-                target: sonata_user_admin_security_login
+                path: app_admin_logout
+                target: app_admin_login
             remember_me:
                 secret: '%env(APP_SECRET)%'
                 lifetime: 2629746
-                path: /admin
+                path: /admin/dashboard
             entry_point: App\Security\UserSonataAuthenticator
             custom_authenticator: App\Security\UserSonataAuthenticator
 
@@ -74,22 +81,26 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
     
-        - { path: ^/admin, roles: ROLE_ADMIN }
-        #- { path: ^/admin/login, role: PUBLIC_ACCESS }
-        #- { path: ^/admin/logout, role: PUBLIC_ACCESS }
-        #- { path: ^/admin/resgister, role: PUBLIC_ACCESS }
-        # - { path: ^/profile, roles: ROLE_USER }
-         # Admin login page needs to be accessed without credential
-        #- { path: ^/admin/register, role: PUBLIC_ACCESS }
-        #- { path: ^/admin/login_check$, role: PUBLIC_ACCESS }
-        #- { path: ^/admin/request$, role: PUBLIC_ACCESS }
-        #- { path: ^/admin/check-email$, role: PUBLIC_ACCESS }
+        #- { path: ^/admin, roles: ROLE_ADMIN }
+        - { path: ^/admin/login, role: PUBLIC_ACCESS }
+        - { path: ^/admin/logout, role: PUBLIC_ACCESS }
+        - { path: ^/admin/register, role: PUBLIC_ACCESS }
+        - { path: ^/admin/login_check, role: PUBLIC_ACCESS }
+        #- { path: ^/login_check$, role: PUBLIC_ACCESS }
+        #- { path: ^/admin/request, role: PUBLIC_ACCESS }
+        #- { path: ^/admin/check-email, role: PUBLIC_ACCESS }
+        #- { path: ^/profile, roles: ROLE_USER }
         #- { path: ^/admin/reset/.*$, role: PUBLIC_ACCESS }
-        #- { path: ^/admin/dashboard$, role: ROLE_SPECIAL_USER }
+        #- { path: ^/admin/dashboard, role: ROLE_SPECIAL_USER }
         # Secured part of the site
         # This config requires being logged for the whole site and having the admin role for the admin part.
-        # Change these rules to adapt them to your needs
-        #- { path: ^/admin/, role: ROLE_ADMIN }
+        # Change these rules to adapt them to you needs
+        
+        - { path: ^/admin/utilisateurs/list, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/utilisateurs/create, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/utilisateurs/delete, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/utilisateurs/show, role: ROLE_SUPER_ADMIN }
+        - { path: ^/admin/, role: ROLE_ADMIN }
         - { path: ^/.*, role: PUBLIC_ACCESS }
 
 when@test:

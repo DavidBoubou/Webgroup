@@ -10,7 +10,7 @@ sonata_user:
         parameters: { path: / }
 
     class:
-        user: Sonata\UserBundle\Entity\BaseUser #UserSonata or the extends BaseUser
+        user:  Sonata\UserBundle\Entity\BaseUser  #App\Entity\UserSonata or the extends Sonata\UserBundle\Entity\BaseUser
 
     admin: # Admin Classes
         user:

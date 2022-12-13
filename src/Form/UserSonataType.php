@@ -1,8 +1,8 @@
 <?php
 
 namespace App\Form;
-
-use App\Entity\UserSonata;
+use App\Entity\User;
+//use App\Entity\UserSonata;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -51,7 +51,7 @@ class UserSonataType extends AbstractType
                     
                     ]])
             ->add('adresse')
-            ->add('username')
+            //->add('username')
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
@@ -79,7 +79,8 @@ class UserSonataType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => UserSonata::class,
+           // 'data_class' => UserSonata::class,
+            'data_class' => User::class,
         ]);
     }
 }

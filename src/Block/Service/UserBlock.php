@@ -15,7 +15,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Security\Http\Attribute\CurrentUser;
 use Symfony\Bundle\SecurityBundle\Security;
 use Twig\Environment;
-use App\Entity\UserSonata;
+//use App\Entity\UserSonata;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
@@ -35,11 +35,11 @@ public function configureSettings(OptionsResolver $resolver):void
    // $this->denyAccessUnlessGranted('ROLE_ADMIN', null, 'User tried to access a page without having ROLE_ADMIN');
     //$this->denyAccessUnlessGranted('IS_AUTHENTICATED');
    // dd($this->token_storage);
-    //$user = $this->token_storage->getToken()->getUser();;
+    $user = $this->token_storage->getToken()->getUser();;
     //$user = $this->security->getUser();
 
     $resolver->setDefaults([
-        //'user' =>$user,
+        'user' =>$user,
         //the block title
         'title' => 'Utilisateur connecté',
         //The template to render the block
