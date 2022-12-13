@@ -1,12 +1,4 @@
-header
-{
-    top:0;
-}
-
-body
-{
-    background-color:#d8e2ef ! important;
-}
+/* Mes classes*/
 
 .logo
 {
@@ -49,6 +41,17 @@ body
     border-radius: 3rem;
 
 }
+
+.bg-white
+{
+    background-color: white;
+}
+
+.bg-cyan
+{
+    background-color: #d8e2ef;
+}
+
 .form-icon
 {
     margin:auto;
@@ -65,26 +68,25 @@ form{
     height:70%;
     min-height:100%;
     min-width:fit-content;
-    background-color: #d8e2ef;
-    color:grey;
-    overflow-y: hidden;
+    background-color: #d8e2ef!important;
+    color:rgb(0, 0, 0);
     position: sticky;
     padding-top: 2rem;
     z-index:-1;
     left:0px;
     top:5rem;
-    margin-right: 5rem;
+    /*margin-right: 5rem;*/
+    margin-top:5rem;
 }
 
 .nav-aside:hover
 {
-    overflow-y: scroll;
+    /*overflow-y: scroll;*/
 }
-
 
 .aside-link
 {
-    color:grey;
+    color:rgb(0, 0, 0);
     text-decoration: none;
 }
 
@@ -107,7 +109,38 @@ li
 {
     list-style: none;
 }
+
+
+/* class css Sonata*/
+
+.slimScrollDiv
+{
+    width:100%!important;
+    overflow: hidden!important;
+}
+
+.wrapper,body,header
+{
+    background-color:#d8e2ef!important;
+}
+
+.content-wrapper
+{
+    background-color:#d8e2ef!important;
+    padding-top:0px!important;
+}
+
 .content
 {
     padding-top:1rem;
+}
+
+header
+{
+    top:0;
+}
+
+body
+{
+    background-color:#d8e2ef ! important;
 }
