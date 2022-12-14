@@ -67,6 +67,11 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         return $this->id;
     }
 
+    public function __toString():string
+    {
+        return $this->username;
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;

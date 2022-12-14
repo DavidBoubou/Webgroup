@@ -1,17 +1,60 @@
+/*
+@import '~bootstrap';
+@import '~font-awesome';
+@import '~@fortawesome/fontawesome-free/css/all.css';
+*/
+
 header
 {
     top:0;
+    min-height: 20%;
 }
 
 body
 {
     background-color:#d8e2ef ! important;
+    min-height: 90vh;
+    border:none;
+
 }
+
+.container
+{
+    margin:0px;
+    min-width:100%;
+    padding: 4rem;
+    min-height: 80vh;
+    border:1px solid #E4E6EC ;
+}
+
+footer
+{
+    min-height: 10vh;
+    background-color: #DC5E44;
+}
+
 
 .logo
 {
     width: 40px;
     height:40px;
+}
+
+.nav-item
+{
+    padding:1rem;
+}
+
+
+.nav-item>a
+{
+    text-decoration: none;
+    color:#c2c3c9;
+}
+
+.nav-item>a:hover
+{
+    color:#DC5E44;
 }
 
 .bg-cover
@@ -57,7 +100,7 @@ body
 form{
     border:1px solid #d8e2ef;
     background-color: white;
-    border-radius: 3rem;
+    
 }
 
 .nav-aside
@@ -110,4 +153,31 @@ li
 .content
 {
     padding-top:1rem;
+}
+
+.form-login
+{
+    width: 100%;
+    min-width:100%;
+    
+}
+
+
+.spacing-img
+{
+    max-width: 1280 px;
+    max-height: 420px;
+}
+
+
+.article-image
+{
+    max-width: 400px;
+    max-height: 250;
+}
+
+.article
+{
+    max-width: 400px;
+    max-height: 418px;
 }

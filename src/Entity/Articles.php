@@ -9,7 +9,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
-final class Articles
+class Articles
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -40,6 +40,11 @@ final class Articles
         $this->categorie = new ArrayCollection();
     }
 
+    public function __toString():string
+    {
+        return $this->titre;;
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -63,6 +68,18 @@ final class Articles
     }
 
     public function setBaniereUrl(?string $baniere_url): self
+    {
+        $this->baniere_url = $baniere_url;
+
+        return $this;
+    }
+
+    public function getbaniere_url(): ?string
+    {
+        return $this->baniere_url;
+    }
+
+    public function setbaniere_url(?string $baniere_url): self
     {
         $this->baniere_url = $baniere_url;
 

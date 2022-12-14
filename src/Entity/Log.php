@@ -16,6 +16,11 @@ class Log
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
+    public function __toString():string
+    {
+        return $this->titre;;
+    }
+    
     public function getId(): ?int
     {
         return $this->id;

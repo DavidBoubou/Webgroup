@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-//use App\Entity\UserSonata;
-use App\Entity\User;
+use App\Entity\UserSonata;
 use App\Form\UserSonataType;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -49,8 +48,7 @@ class AdminController extends AbstractController
     #[Route('/admin/register', name: 'app_admin_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
-        //$user = new UserSonata();
-        $user = new User();
+        $user = new UserSonata();
         $form = $this->createForm(UserSonataType::class, $user);
         $form->handleRequest($request);
         

@@ -111,3 +111,8 @@ li
 {
     padding-top:1rem;
 }
+
+.text-align-center, h1.text-align-center
+{
+    text-align: center;
+}

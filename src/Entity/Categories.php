@@ -34,9 +34,7 @@ class Categories
 
     public function __toString():string
     {
-        $this->titre;
-
-        return $this;
+        return $this->titre;;
     }
 
     public function setTitre(string $titre): self

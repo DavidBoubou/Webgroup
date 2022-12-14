@@ -118,14 +118,14 @@ protected function configureFormFields(FormMapper $form):void
             ]])
 
         //configurer les modelType
-        /*->add('categorie',ModelAutocompleteType::class, [
+        ->add('categorie',ModelAutocompleteType::class, [
             //Relation ManyToMany
             'multiple' =>true,
             'btn_add'=>true,
             //propriété sur les recherche
             'property' => ['titre'],
             'required' => false])
-            */
+            
         /*->add('categorie',EntityType::class,[
             'class' => Categories::class,
             'choice_label' => 'titre'])
