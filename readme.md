@@ -58,6 +58,9 @@ $ symfony serve
 
 ## 7 - Routes:
 S'authentifié après s'être enregistrer.
+
     localhost/Admin/register : gestion des contenus sur l'interface administrateur avec le role ROLE_ADMIN.
+
     localhost/registrer: laisser un commentaire avec un role ROLE_USER
+    
     localhost/login: Authentification
