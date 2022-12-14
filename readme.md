@@ -9,22 +9,35 @@ composer
 nodejs
 
 ## Configuration de php, Mysql, git
+**Lancer php8**
 >>>Php/php.ini
+
 memory_limit = 500M
 
 extension=curl
+
 extension=mysqli
+
 extension=openssl
+
 extension=gd
+
 extension=pdo_mysql
 
-Lancer wampserver
+
+**Lancer wampserver**
+
 >>> Mysql/my.ini
 innodb-default-row-format=dynamic
 
+**Lancer git**
+
 >>>webgroup/.env
+
 Cloner l'application
+
 git clone https://github.com/DavidBoubou/Sonata.git
+
 Configurer la variable d'environnement de votre base de données Mysql.
 
 # Lance le Projet webgroup
