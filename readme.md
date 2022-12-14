@@ -8,8 +8,8 @@ Symfony CLI 5.4.19
 composer
 nodejs
 
-## Configuration de php
---- Php/php.ini
+## Configuration de php, Mysql, git
+>>>Php/php.ini
 memory_limit = 500M
 
 extension=curl
@@ -19,14 +19,13 @@ extension=gd
 extension=pdo_mysql
 
 Lancer wampserver
----- Mysql/my.ini
+>>> Mysql/my.ini
 innodb-default-row-format=dynamic
 
-----webgroup/.env
-1- Cloner l'application
+>>>webgroup/.env
+Cloner l'application
 git clone https://github.com/DavidBoubou/Sonata.git
-
-Configurer vla variable d'environnement de votre base de données Mysql.
+Configurer la variable d'environnement de votre base de données Mysql.
 
 # Lance le Projet webgroup
 ## 1- Démarer wampserver
