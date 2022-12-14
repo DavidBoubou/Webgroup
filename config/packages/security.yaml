@@ -38,7 +38,7 @@ security:
         # Firewall for my client
         main:
             lazy: true
-            #pattern: /
+            pattern: /
             provider: app_user_provider
             entry_point: App\Security\AppClientAuthenticator
             custom_authenticator: App\Security\AppClientAuthenticator
@@ -56,7 +56,7 @@ security:
         admin:
             pattern: /admin(.*)
             context: user
-            provider: app_user_provider
+            provider: sonata_user_bundle
             form_login:
                 login_path: app_admin_login
                 check_path: app_admin_login

@@ -6,7 +6,11 @@ use App\Repository\BaniereRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BaniereRepository::class)]
+<<<<<<< HEAD
 class Baniere
+=======
+ class Baniere
+>>>>>>> Userbundle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -39,9 +43,7 @@ class Baniere
 
     public function __toString():string
     {
-        $this->titre;
-
-        return $this;
+        return $this->titre;;
     }
 
     public function getImageUrl(): ?string

@@ -3,34 +3,24 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-{#
     <!-- Bannière sur 3 colonne-->
     <section class="m-auto">
         <div class="d-flex">
             <i class="bi bi-airplane-engines-fill"></i>
             <h1 class="text-red h6" >spacelog </h1>
         </div>
-        <img class="border-30" src="./banniere.png" alt="" srcset="">
+        <img class="border-30 spacing-img" src="/banniere.png" alt="" srcset="">
     </section>
     <!-- 3 colonnes -->
-    <div class="row justify-content-center  pt-5">
+    <div class="row justify-content-between  pt-5">
+
         <h2 class=" text-red h6 ">Nos articles </h2>
-
-        <div class="cart col-4 pb-3 rounded"> 
-            <img class="card-img-top " src="./card.jpg" alt="" srcset=""/>
-            <div class="card-body bg-white"><a class="card-text" href="http://"> Some quick example text to build on the card title and make up the bulk of the card's content.</a></div>
+        {% for article in articles %}
+        <div class="cart col-4 pb-3 rounded article"> 
+            {#{{article.baniere_url}}#}
+            <img class="card-img-top article-image " src="{{article.baniere_url}}" alt="{{article.titre}}" />
+            <div class="card-body bg-white"><a class="card-text" href="{{ path('app_client_articles', {slug: article.id}) }}"> {{article.titre}}</a></div>
         </div>
-
-        <div class="cart col-4  pb-3 rounded "> 
-            <img class="card-img-top " src="./card.jpg" alt="" srcset=""/>
-            <div class="card-body bg-white"><a class="card-text" href="http://"> Some quick example text to build on the card title and make up the bulk of the card's content.</a></div>
-        </div>
-
-        <div class="cart col-4 pb-3 rounded"> 
-            <img class="card-img-top " src="./card.jpg" alt="" srcset=""/>
-            <div class="card-body bg-white"><a class="card-text" href="http://"> Some quick example text to build on the card title and make up the bulk of the card's content.</a></div>
-        </div>
-
+        {% endfor %}
     </div>
-    #}
     {% endblock %}

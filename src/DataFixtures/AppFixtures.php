@@ -30,7 +30,7 @@ class AppFixtures extends Fixture
                 
 
                 $Articles   ->setTitre('Titre'.$i)
-                            ->setBaniereUrl('/assets/download.jpg')
+                            ->setBaniereUrl('/assets/falcon.png')
                             ->setContent('Content'.$i)
                             ->setPublie(false)
                             ->setAutheur($User);

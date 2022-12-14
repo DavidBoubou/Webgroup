@@ -63,6 +63,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->id;
     }
 
+    public function __toString():string
+    {
+        return $this->email.'le nom n a pas encore été définie dans l orm';
+    }
+
     public function getEmail(): ?string
     {
         return $this->email;

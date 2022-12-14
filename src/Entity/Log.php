@@ -17,9 +17,17 @@ class Log
     #[ORM\Column(length: 255)]
     private ?string $titre = null;
 
+<<<<<<< HEAD
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
 
+=======
+    public function __toString():string
+    {
+        return $this->titre;;
+    }
+    
+>>>>>>> Userbundle
     public function getId(): ?int
     {
         return $this->id;

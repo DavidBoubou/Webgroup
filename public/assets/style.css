@@ -135,6 +135,7 @@ li
     padding-top:1rem;
 }
 
+<<<<<<< HEAD
 header
 {
     top:0;
@@ -143,4 +144,9 @@ header
 body
 {
     background-color:#d8e2ef ! important;
+=======
+.text-align-center, h1.text-align-center
+{
+    text-align: center;
+>>>>>>> Userbundle
 }
