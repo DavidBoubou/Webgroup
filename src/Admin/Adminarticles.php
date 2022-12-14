@@ -62,8 +62,8 @@ final class Adminarticles extends AbstractAdmin
 
     protected function configureRoutes(RouteCollectionInterface $collection): void
     {
-
-        $collection->add('export') //Le bouton d'exportation se trouve sur la page list.
+        //Le bouton d'exportation se trouve sur la page list.
+        $collection->add('export') 
                     ->add('merge')
                     ->add('clone', $this->getRouterIdParameter().'/clone');
         // Removing the list route will disable listing entities.
@@ -118,22 +118,22 @@ protected function configureFormFields(FormMapper $form):void
             ]])
 
         //configurer les modelType
-        /*->add('categorie',ModelAutocompleteType::class, [
+        ->add('categorie',ModelAutocompleteType::class, [
             //Relation ManyToMany
             'multiple' =>true,
             'btn_add'=>true,
             //propriété sur les recherche
             'property' => ['titre'],
             'required' => false])
-            */
+            
         /*->add('categorie',EntityType::class,[
             'class' => Categories::class,
             'choice_label' => 'titre'])
             */
-    /*    ->add('autheur',EntityType::class,[
+       /*->add('autheur',EntityType::class,[
             'class' => User::class,
             'choice_label' => 'email'])
-    */    
+        */
 
         //->add('autheur')
 
@@ -179,10 +179,10 @@ protected function configureListFields(ListMapper $list):void
                 'class' => Categories::class,
                 'associated_property' => 'titre'])
             
-           /* ->add('autheurs',EntityType::class,[
+            /*->add('autheurs',EntityType::class,[
                 'class' => User::class,
                 'associated_property' => 'email'])
-             */   
+            */   
             //->add('date')
             ->add('publie',null,['editable'=>true])
 
@@ -233,10 +233,14 @@ protected function configureShowFields(ShowMapper $show):void
             return ['csv'];
         }
 
-        /*
-            public function  postPersist($object)
+      /*    
+    public function  postPersist(object $user): void
+        {
+          if($user instanceof User)
             {
 
             }
-      */
+           
+        } */
+    
 }

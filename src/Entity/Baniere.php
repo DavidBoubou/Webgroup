@@ -24,6 +24,7 @@ class Baniere
         return $this->id;
     }
 
+
     public function getTitre(): ?string
     {
         return $this->titre;
