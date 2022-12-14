@@ -29,23 +29,23 @@ git clone https://github.com/DavidBoubou/Sonata.git
 Configurer vla variable d'environnement de votre base de données Mysql.
 
 # Lance le Projet webgroup
-1- Démarer wampserver
+## 1- Démarer wampserver
 
-2- Mettre ajour l'application et ses dépendence.
+## 2- Mettre ajour l'application et ses dépendence.
 $ cd webgroup
 $ composer update
 
-3- Créer la base de données de l'application
+## 3- Créer la base de données de l'application
 $php bin/console doctrine:database:create
 
-*4- Génerer des fixures*
+## 4- Génerer des fixures
 $php bin/console doctrine:fixtures:load
 
-6- lancer le serveur local symfony
+## 6- lancer le serveur local symfony
 $ symfony serve
 
-7 - Routes:
-*S'authentifié après s'être enregistrer.*
+## 7 - Routes:
+S'authentifié après s'être enregistrer.
     localhost/Admin/register : gestion des contenus sur l'interface administrateur avec le role ROLE_ADMIN.
     localhost/registrer: laisser un commentaire avec un role ROLE_USER
     localhost/login: Authentification
