@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Accueil-webgroup{% endblock %}
 
 {% block body %}
     <!-- Bannière sur 3 colonne-->
@@ -16,11 +16,13 @@
 
         <h2 class=" text-red h6 ">Nos articles </h2>
         {% for article in articles %}
+        {% if article.publie %}
         <div class="cart col-4 pb-3 rounded article"> 
             {#{{article.baniere_url}}#}
             <img class="card-img-top article-image " src="{{article.baniere_url}}" alt="{{article.titre}}" />
-            <div class="card-body bg-white"><a class="card-text" href="{{ path('app_client_articles', {slug: article.id}) }}"> {{article.titre}}</a></div>
+            <div class="card-body bg-white"><a class="card-text" href="{{ path('app_client_articles', {titre: article.titre}) }}"> {{article.titre}}</a></div>
         </div>
+        {% endif %}
         {% endfor %}
     </div>
     {% endblock %}

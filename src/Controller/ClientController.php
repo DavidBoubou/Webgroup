@@ -27,20 +27,15 @@ class ClientController extends AbstractController
         ]);
     }
 
-    #[Route('/articles/{slug}', name: 'app_client_articles')]
-    public function archive(): Response
+    #[Route('/articles/{titre}', name: 'app_client_articles')]
+    public function archive(Articles $article): Response
     {
         return $this->render('client/page-full.html.twig', [
             'controller_name' => 'ClientController',
+            'article'=>$article,
         ]);
     }
 
-    //Test des block
-    #[Route('/block', name: 'block')]
-    public function block(): Response
-    {
-        return $this->render('Block/Example.html.twig');
-        
-    }
+
 
 }

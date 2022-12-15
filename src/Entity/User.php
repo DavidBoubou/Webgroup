@@ -43,10 +43,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     private $plainPassword;
     
-    public function __toString():string
-    {
-        return $this->email;
-    }
 
     public function getPlainPassword()
     {

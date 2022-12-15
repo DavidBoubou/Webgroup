@@ -38,9 +38,9 @@ Cloner l'application
 
 git clone https://github.com/DavidBoubou/Sonata.git
 
-Configurer la variable d'environnement de votre base de données Mysql.
+Configurer la variable d'environnement DATABASE_URL pour votre base de données Mysql.
 
-# Lance le Projet webgroup
+# Demarer le Projet webgroup
 ## 1- Démarer wampserver
 
 ## 2- Mettre ajour l'application et ses dépendence.
@@ -62,5 +62,5 @@ S'authentifié après s'être enregistrer.
     localhost/Admin/register : gestion des contenus sur l'interface administrateur avec le role ROLE_ADMIN.
 
     localhost/registrer: laisser un commentaire avec un role ROLE_USER
-    
+
     localhost/login: Authentification

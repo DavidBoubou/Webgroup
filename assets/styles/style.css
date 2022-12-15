@@ -173,11 +173,33 @@ li
 .article-image
 {
     max-width: 400px;
-    max-height: 250;
+    max-height: 250px;
 }
 
 .article
 {
     max-width: 400px;
     max-height: 418px;
+}
+
+.full-articles
+{
+    margin:auto;
+}
+
+h1.card-title
+{
+    color:#DC5E44 !important;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.card-groug
+{
+
+}
+
+.card-text
+{
+    color:black;
 }

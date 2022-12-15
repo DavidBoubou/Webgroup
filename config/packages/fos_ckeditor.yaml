@@ -1,5 +1,13 @@
 # Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
-
+#fos_ck_editor:
+#    configs:
+#        default:
+#            filebrowserImageUploadRoute: admin_sonata_media_media_upload
+#            filebrowserImageUploadRouteParameters:
+#                provider: sonata.media.provider.image
+#                context: default
+#                format: big
+#
 twig:
     form_themes:
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'

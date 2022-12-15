@@ -76,3 +76,11 @@ services:
         tags: ['controller.service_arguments']
 
     # CRUDControlleur CRUDCOntrolleur
+
+    #menu 
+    app.menu_builder:
+        class: App\Menu\MenuBuilder
+        # private argts of my class with will be instanciate
+        arguments: ["@knp_menu.factory"]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } # The alias is what is used to retrieve the menu

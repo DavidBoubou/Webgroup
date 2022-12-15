@@ -31,6 +31,7 @@
     <body class="m-4 bg-light d-flex flex-column ">
 
         <header>
+            {#
            <nav class="navbar navbar-light bg-light  navbar-expand-lg ">
                 <ul class="navbar-nav mr-auto">
                 <li class="nav-item"><a href={{path('app_client_accueil')}}> HOME</a></li>
@@ -40,6 +41,8 @@
                 <li class="nav-item"><a href={{path('app_admin_register')}}>Administration</a></li>
                 </ul>
             </nav>
+            #}
+    {{ knp_menu_render('main' , {'template':'Menu/menu.html.twig'}) }}  
         </header>
 
         <div class="container shadow-sm">

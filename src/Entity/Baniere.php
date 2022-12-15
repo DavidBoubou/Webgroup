@@ -6,11 +6,8 @@ use App\Repository\BaniereRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: BaniereRepository::class)]
-<<<<<<< HEAD
-class Baniere
-=======
+
  class Baniere
->>>>>>> Userbundle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]

@@ -16,7 +16,7 @@ footer, .bg-red
  	background-color: red;
 }
 
-.text-red, .card-text
+.text-red 
 {
  color:red !important;
  text-decoration:none;

@@ -7,13 +7,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+//Created_at 
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
-<<<<<<< HEAD
- class Articles
-=======
 class Articles
->>>>>>> Userbundle
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -46,11 +43,7 @@ class Articles
 
     public function __toString():string
     {
-<<<<<<< HEAD
-        return $this->titre;
-=======
         return $this->titre;;
->>>>>>> Userbundle
     }
 
     public function getId(): ?int
