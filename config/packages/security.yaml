@@ -58,8 +58,8 @@ security:
             context: user
             provider: sonata_user_bundle
             form_login:
-                login_path: app_admin_login
-                check_path: app_admin_login
+                login_path: app_admin_login #app_admin_login
+                check_path: app_login_client #app_admin_login
                 default_target_path: sonata_admin_dashboard
             logout:
                 path: app_admin_logout

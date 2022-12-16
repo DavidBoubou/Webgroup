@@ -21,7 +21,7 @@ use Sonata\Form\Type\CollectionType;
 use Sonata\AdminBundle\Form\Type\ModelListType;
 //ToMany or ManyToMany
 use Sonata\AdminBundle\Form\Type\ModelAutocompleteType;
-
+use Sonata\AdminBundle\Form\Type\TemplateType;
 
 //entity
 use App\Entity\User;
@@ -44,6 +44,14 @@ final class Adminarticles extends AbstractAdmin
 {
     //Activation du preview
     public $supportsPreviewMode = true;
+
+    public function toString(object $object): string
+        {
+            return $object instanceof MyEntity
+                ? $object->getTitre()
+                : 'Articles'; // shown in the breadcrumb on the create view
+        }
+
 
     protected function configureDashboardActions(array $actions): array
     {
@@ -97,7 +105,8 @@ protected function configureFormFields(FormMapper $form):void
     {
         // This method configures which fields are displayed on the edit and create actions. 
         //The FormMapper behaves similar to the FormBuilder of the Symfony Form component;
-        $form->add('titre',TextType::class,[
+        $form ->with('Détails de l\'articles', array('class' => 'col-md-12'))
+        ->add('titre',TextType::class,[
             'label'=>'Titre de l\'article', 
             'constraints' => [
                 new NotBlank(),
@@ -116,7 +125,8 @@ protected function configureFormFields(FormMapper $form):void
             'constraints' => [
                 new Length(['min' => 3])
             ]])
-
+            ->end()
+        ->with('configuration avancée', array('class' => 'col-md-12'))
         //configurer les modelType
         ->add('categorie',ModelAutocompleteType::class, [
             //Relation ManyToMany
@@ -142,6 +152,7 @@ protected function configureFormFields(FormMapper $form):void
             'label'    => 'publié ',
             'required' => false,
         ])
+        ->end()
         ;
 
     }
@@ -171,10 +182,15 @@ protected function configureListFields(ListMapper $list):void
         
         $list->addIdentifier('titre',null, [
             'label'=>'Titre de l\'article', 'editable'=>true]) 
-            //overider le template de la bannier       
-            ->add('baniere_url',null,['editable'=>true])
+
+            //overider le template de la bannier  
+            ->add('baniere_url', TemplateType::class, [
+                'label' => 'Banière',
+                'template'   => 'Admin/field/image_field.html.twig',
+            ])  
+
             ->add('content')
-            //->add('catégorie')
+            
             ->add('categorie',EntityType::class,[
                 'class' => Categories::class,
                 'associated_property' => 'titre'])
@@ -183,6 +199,7 @@ protected function configureListFields(ListMapper $list):void
                 'class' => User::class,
                 'associated_property' => 'email'])
             */   
+            
             //->add('date')
             ->add('publie',null,['editable'=>true])
 
@@ -202,28 +219,35 @@ protected function configureListFields(ListMapper $list):void
 
 protected function configureShowFields(ShowMapper $show):void 
     {
+        
         //This method configures which fields are displayed on the show action.
-        $show->add('titre',null, ['label'=>false,'editable'=>true])   
+        $show->add('titre')   
+
         //overider le template de la bannier      
-        ->add('baniere_url',null, ['label'=>false])
-        ->add('content',null, ['label'=>false])
+        //->add('baniere_url')
+        ->add('baniere_url', TemplateType::class, [
+            'label' => 'Banière',
+            'template'   => 'Admin/field/image_field.html.twig',
+        ])  
+
+        ->add('content')
+
         //Faire le OneToMany 
-        //->add('categorie.titre')
-        ->add('categorie[titre]',TextType::class)
+        ->add('categorie')
         
         //show my relation
-        //->add('autheurs')
-        //->add('date')
-        ->add('publie',null, ['label'=>false,'editable'=>true])
-        ;
+        ->add('autheur')
 
+        //->add('date')
+        ->add('publie')
+        ;
         
     }
 
     //Exporter les champs et les associations.
     protected function configureExportFields(): array
         {
-          //  return ['titre', 'content', 'autheurs'];
+           return ['titre', 'content', 'autheur'];
         }
 
     //Format d'exportation

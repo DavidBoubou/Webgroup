@@ -64,3 +64,35 @@ S'authentifié après s'être enregistrer.
     localhost/registrer: laisser un commentaire avec un role ROLE_USER
 
     localhost/login: Authentification
+
+**Attention**
+
+** some issues **
+Connection a l'administrateur
+CRUD on Articles
+
+**Bundles witch can be use in the next version.**
+    Les bundles non pris en charges:
+    
+    SonataMediaBundle: a media manager bundle
+    SonataClassificationBundle: a category manager bundle
+    SonataPageBundle: a page (CMS like) bundle
+    CMFRoutingBundle
+    EasyAdminBundle
+    LexikJWTAuthenticationBundle
+    LiipImagineBundle
+    NelmioApiDocBundle
+    SchebTwoFactorBundle
+    StofDoctrineExtensionsBundle
+    Symfony UX Autocomplete
+    Symfony UX Cropper.js
+    Symfony UX LazyImage
+    Symfony UX Live Components
+    Symfony UX Notify
+    Symfony UX React
+    Symfony UX Swup
+    Symfony UX Turbo
+    Symfony UX Typed
+    Symfony UX Vue.js
+    SymfonyMakerBundle
+

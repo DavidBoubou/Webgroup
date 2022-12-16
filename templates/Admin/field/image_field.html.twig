@@ -1,0 +1,16 @@
+   {#
+ 
+<img class=" " src="{{ object.baniere_url }}" alt="{{ object.titre }}" />
+#}
+<td class="sonata-ba-list-field sonata-ba-list-field-textarea" objectid="62" style='max-width:10px;    max-width: 36px;
+width: 60px;
+height: auto;
+max-height: 15px;'>                  
+                      
+   {% if object.baniere_url is defined %}                                   
+      <img class=" " src="{{ object.baniere_url }}" alt="{{ object.titre }}" />
+   {% elseif object.image_url is defined  %}
+      <img class=" " src="{{ object.image_url }}" alt="{{ object.image_url }}" />
+   {% endif %}
+
+</td>

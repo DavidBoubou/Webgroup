@@ -35,7 +35,7 @@ class AdminController extends AbstractController
          if ($this->getUser()) {
              return $this->redirectToRoute('sonata_admin_dashboard');
          }
-
+        // dd( $authenticationUtils);
         // get the login error if there is one
         $error = $authenticationUtils->getLastAuthenticationError();
         // last username entered by the user
@@ -48,6 +48,10 @@ class AdminController extends AbstractController
     #[Route('/admin/register', name: 'app_admin_register')]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
     {
+        if ($this->getUser()) {
+            return $this->redirectToRoute('sonata_admin_dashboard');
+        }
+        
         $user = new UserSonata();
         $form = $this->createForm(UserSonataType::class, $user);
         $form->handleRequest($request);

@@ -19,7 +19,8 @@ class UserSonataAuthenticator extends AbstractLoginFormAuthenticator
 {
     use TargetPathTrait;
 
-    public const LOGIN_ROUTE = 'sonata_user_admin_security_login';
+    public const LOGIN_ROUTE = 'app_admin_login';
+    //public const LOGIN_ROUTE = 'sonata_user_admin_security_login';
 
     public function __construct(private UrlGeneratorInterface $urlGenerator)
     {
@@ -27,6 +28,7 @@ class UserSonataAuthenticator extends AbstractLoginFormAuthenticator
 
     public function authenticate(Request $request): Passport
     {
+        dd('authenticate');
         $email = $request->request->get('email', '');
 
         $request->getSession()->set(Security::LAST_USERNAME, $email);

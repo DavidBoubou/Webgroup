@@ -84,3 +84,8 @@ services:
         arguments: ["@knp_menu.factory"]
         tags:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } # The alias is what is used to retrieve the menu
+
+    admin.articles_custom:
+        class: App\Admin\ArticlesCustomAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Controller\ArticlesCustomAdminController, manager_type: orm, group: admin, label: Articles }

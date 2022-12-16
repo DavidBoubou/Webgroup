@@ -51,6 +51,11 @@ class Articles
         return $this->id;
     }
 
+    public function setIdOnNull():self
+    {
+        $this->id = null;
+        return $this;
+    }
     public function getTitre(): ?string
     {
         return $this->titre;
