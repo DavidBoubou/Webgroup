@@ -59,8 +59,33 @@
             "./config/packages/fos_ckeditor.yaml"
         ]
     },
+    "friendsofsymfony/rest-bundle": {
+        "version": "3.4",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "2.2",
+            "ref": "fa845143b7e0a4c70aedd1a88c549e6d977e9ae5"
+        },
+        "files": [
+            "./config/packages/fos_rest.yaml"
+        ]
+    },
     "knplabs/knp-menu-bundle": {
         "version": "v3.2.0"
+    },
+    "nelmio/api-doc-bundle": {
+        "version": "4.10",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "3.0",
+            "ref": "c8e0c38e1a280ab9e37587a8fa32b251d5bc1c94"
+        },
+        "files": [
+            "./config/packages/nelmio_api_doc.yaml",
+            "./config/routes/nelmio_api_doc.yaml"
+        ]
     },
     "nyholm/psr7": {
         "version": "1.5",
@@ -179,6 +204,23 @@
             "./public/upload/media/.gitignore"
         ]
     },
+    "sonata-project/page-bundle": {
+        "version": "4.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes-contrib",
+            "branch": "main",
+            "version": "4.0",
+            "ref": "9cce775649671f1bef3f8eb8e587f7216e7aa273"
+        },
+        "files": [
+            "./config/packages/sonata_page.yaml",
+            "./config/routes/sonata_page.yaml",
+            "./src/Entity/SonataPageBlock.php",
+            "./src/Entity/SonataPagePage.php",
+            "./src/Entity/SonataPageSite.php",
+            "./src/Entity/SonataPageSnapshot.php"
+        ]
+    },
     "sonata-project/seo-bundle": {
         "version": "3.5.0"
     },
@@ -193,6 +235,9 @@
     },
     "sonata-project/user-bundle": {
         "version": "5.4.0"
+    },
+    "symfony-cmf/routing-bundle": {
+        "version": "3.0.1"
     },
     "symfony/console": {
         "version": "6.1",
