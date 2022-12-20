@@ -20,6 +20,9 @@ use App\Form\RegistrationFormType;
 use Symfony\Component\Mime\Address;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
+
+use Doctrine\Persistence\ManagerRegistry;
+
 class AdminController extends AbstractController
 {
     private EmailVerifier $emailVerifier;
@@ -46,8 +49,11 @@ class AdminController extends AbstractController
 
 
     #[Route('/admin/register', name: 'app_admin_register')]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
     {
+        // This method returns instead the "customer" entity manager
+        $customerEntityManager = $doctrine->getManager('custom');
+
         if ($this->getUser()) {
             return $this->redirectToRoute('sonata_admin_dashboard');
         }
@@ -69,8 +75,12 @@ class AdminController extends AbstractController
             //$user->prePersist();
             //$user->preUpdate();
 
-            $entityManager->persist($user);
-            $entityManager->flush();
+            //$entityManager->persist($user);
+            //$entityManager->flush();
+
+            $customerEntityManager->persist($user);
+            $customerEntityManager->flush();
+
 
             // generate a signed url and email it to the user
             /*$this->emailVerifier->sendEmailConfirmation('app_verify_email', $user,

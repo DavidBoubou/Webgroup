@@ -87,6 +87,7 @@ sonata_admin:
                     Utilisateurs: 
                         items:
                             - admin.user
+                        roles: ['ROLE_SUPER_ADMIN']
 
     extensions:
             app.articles.extension:
