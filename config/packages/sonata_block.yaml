@@ -1,9 +1,11 @@
 sonata_block:
+    #
     http_cache: false
     profiler:
         enabled:  '%kernel.debug%'
         template: '@SonataBlock/Profiler/block.html.twig'
 
+    #page bundle configuration
     default_contexts: [sonata_page_bundle]
     blocks:
         # Some block with different templates

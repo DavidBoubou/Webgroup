@@ -29,22 +29,22 @@ services:
         calls:
             - [setTemplate, ['edit', 'CRUD/edit.html.twig']]
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Admin\Action\ArticleAdminController, manager_type: orm, label: Articles }
+            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Admin\Action\ArticleAdminController, manager_type: orm, label: Articles, show_in_roles_matrix: true }
 
     admin.categories:
         class: App\Admin\CategoriesAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Categories, controller: ~, manager_type: orm, group: admin, label: Categories }
+            - { name: sonata.admin, model_class: App\Entity\Categories, controller: ~, manager_type: orm, group: admin, label: Categories, show_in_roles_matrix: true }
 
     admin.baniere:
         class: App\Admin\BaniereAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Baniere, controller: ~, manager_type: orm, group: admin, label: Baniere }
+            - { name: sonata.admin, model_class: App\Entity\Baniere, controller: ~, manager_type: orm, group: admin, label: Baniere, show_in_roles_matrix: true }
 
     admin.user:
         class: App\Admin\UserAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User }
+            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User, show_in_roles_matrix: true }
 
     block.count.article:
         class: Sonata\BlockBundle\Block\Service\CountBlock
@@ -88,4 +88,4 @@ services:
     admin.articles_custom:
         class: App\Admin\ArticlesCustomAdmin
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Controller\ArticlesCustomAdminController, manager_type: orm, group: admin, label: Articles }
+            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Controller\ArticlesCustomAdminController, manager_type: orm, group: admin, label: Articles, show_in_roles_matrix: true}

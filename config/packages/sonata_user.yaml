@@ -3,10 +3,14 @@
 sonata_user:
     #switch authentification (if true see security.yaml)
     security_acl: false
+    acl:
+        connection: default
     manager_type: orm # can be orm or mongodb
+    mailer: custom.mailer.service.id
 
     impersonating:
-        route: page_slug
+        route: sonata_admin_dashboard
+        switch_user: true
         parameters: { path: / }
 
     class:

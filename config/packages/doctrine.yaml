@@ -7,31 +7,41 @@ doctrine:
         #server_version: '13'
     orm:
         auto_generate_proxy_classes: true
-        #naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        #auto_mapping: true
-        #mappings:
-        #    App:
-        #        is_bundle: false
-        #        dir: '%kernel.project_dir%/src/Entity'
-        #        prefix: 'App\Entity'
-        #        alias: App
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                dir: '%kernel.project_dir%/src/Entity'
+                prefix: 'App\Entity'
+                alias: App
 
-        # Configuration de multiple entity_Managers
-        entity_managers:
-            default:
-                connection: default
-                naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-                auto_mapping: true
-                mappings:
-                    App:
-                        is_bundle: false
-                        dir: '%kernel.project_dir%/src/Entity'
-                        prefix: 'App\Entity'
-                        alias: App
-            custom:
-                connection: default
-                mappings:
-                   SonataUserBundle: ~
+            SonataPageBundle: ~
+            SonataUserBundle: ~      
+
+            #SonataUserBundle:
+            #    connection: default
+            #    mappings:
+            #        SonataUserBundle:
+            #            is_bundle: true
+            #            dir: '\Entity'
+            #            prefix: 'App\Entity\UserBundle'
+            #            alias: UserBundle
+
+            #SonataPageBundle:
+            #    connection: default
+            #    auto_mapping: false
+            #    mappings:
+            #        SonataPageBundle:
+            #            is_bundle: true                        
+            #            type: xml
+            #            dir: 'Resources\config\doctrine'
+                        #dir: '\Entity'
+            #            prefix: 'App\Entity'
+            #            alias: Pagebundle
+
+
+
 when@test:
     doctrine:
         dbal:

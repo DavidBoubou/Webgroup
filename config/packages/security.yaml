@@ -5,7 +5,11 @@ security:
     # hiérarchie des roeles
     role_hierarchy:
         ROLE_ADMIN: [ROLE_USER, ROLE_SONATA_ADMIN]
-        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_SUPER_ADMIN: [ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH,ROLE_USER, ROLE_SONATA_ADMIN, SONATA]
+
+        SONATA:
+            - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT # if you are not using acl then this line must be uncommented
+            - ROLE_SONATA_PAGE_ADMIN_BLOCK_EDIT
     #Liste des hasher de mot de passe Sonata et Security
     password_hashers:
         Sonata\UserBundle\Model\UserInterface: auto
@@ -46,6 +50,7 @@ security:
             form_login:
                 login_path: app_login_client
             logout:
+                #handlers: ['sonata.page.cms_manager_selector']
                 path: app_logout_client
                 # where to redirect after logout
                 target: app_client_accueil
@@ -54,20 +59,21 @@ security:
 
         # firewal for my admin with Sonata
         admin:
+            lazy: true
             pattern: /admin(.*)
             context: user
             provider: sonata_user_bundle
             form_login:
-                login_path: app_admin_login #app_admin_login
-                check_path: app_login_client #app_admin_login
+                login_path: sonata_user_admin_security_login #app_admin_login
+                check_path: sonata_user_admin_security_check #app_login_client
                 default_target_path: sonata_admin_dashboard
             logout:
-                path: app_admin_logout
-                target: app_admin_login
+                path: sonata_user_admin_security_logout #app_admin_logout
+                target: sonata_user_admin_security_login #app_admin_login
             remember_me:
                 secret: '%env(APP_SECRET)%'
                 lifetime: 2629746
-                path: /admin/dashboard
+                path: /admin
             entry_point: App\Security\UserSonataAuthenticator
             custom_authenticator: App\Security\UserSonataAuthenticator
 
@@ -86,6 +92,12 @@ security:
         - { path: ^/admin/logout, role: PUBLIC_ACCESS }
         - { path: ^/admin/register, role: PUBLIC_ACCESS }
         - { path: ^/admin/login_check, role: PUBLIC_ACCESS }
+        - { path: ^/admin/login$, role: PUBLIC_ACCESS }
+        - { path: ^/admin/logout$, role: PUBLIC_ACCESS }
+        - { path: ^/admin/login_check$, role: PUBLIC_ACCESS }
+        - { path: ^/admin/request$, role: PUBLIC_ACCESS }
+        - { path: ^/admin/check-email$, role: PUBLIC_ACCESS }
+        - { path: ^/admin/reset/.*$, role: PUBLIC_ACCESS }
         #- { path: ^/login_check$, role: PUBLIC_ACCESS }
         #- { path: ^/admin/request, role: PUBLIC_ACCESS }
         #- { path: ^/admin/check-email, role: PUBLIC_ACCESS }

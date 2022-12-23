@@ -235,6 +235,9 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
 /*
     public function prePersist(): void
     {
+        //$date = new \DateTime();
+        //convert date time to string
+        //die($date->format('d/m/Y'));
         $this->createdAt = new \DateTime();
         $this->updatedAt = new \DateTime();
     }

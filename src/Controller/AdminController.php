@@ -52,7 +52,7 @@ class AdminController extends AbstractController
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, ManagerRegistry $doctrine): Response
     {
         // This method returns instead the "customer" entity manager
-        $customerEntityManager = $doctrine->getManager('custom');
+        $customerEntityManager = $doctrine;//->getManager('custom');
 
         if ($this->getUser()) {
             return $this->redirectToRoute('sonata_admin_dashboard');
