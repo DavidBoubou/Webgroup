@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Sonata\BlockBundle\Block\Service;
+namespace App\Block\Service;
 
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;

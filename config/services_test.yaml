@@ -1,0 +1,91 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    # makes classes in src/ available to be used as services
+    # this creates a service per class whose id is the fully-qualified class name
+    App\:
+        resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
+
+    # add more service definitions when explicit configuration is needed
+    # please note that last definitions always *replace* previous ones
+    
+    #Route d'administration gestion des articles
+    admin.articles:
+        class: App\Admin\Adminarticles
+        calls:
+            - [setTemplate, ['edit', 'CRUD/edit.html.twig']]
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Admin\Action\ArticleAdminController, manager_type: orm, label: Articles, show_in_roles_matrix: true }
+
+    admin.categories:
+        class: App\Admin\CategoriesAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Categories, controller: ~, manager_type: orm, group: admin, label: Categories, show_in_roles_matrix: true }
+
+    admin.baniere:
+        class: App\Admin\BaniereAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Baniere, controller: ~, manager_type: orm, group: admin, label: Baniere, show_in_roles_matrix: true }
+
+    admin.user:
+        class: App\Admin\UserAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User, show_in_roles_matrix: true }
+
+    block.count.article:
+        class: Sonata\BlockBundle\Block\Service\CountBlock
+        arguments:
+            - '@twig'
+        tags:
+            - { name: sonata.block }
+
+    # The name of My block
+    block.current.user:
+        class: Sonata\BlockBundle\Block\Service\UserBlock
+        arguments:
+            - '@twig'
+            - '@security.token_storage'
+        tags:
+            - { name: sonata.block }
+
+    # extension       
+    app.articles.extension:
+        class: App\Admin\Extension\ArticlesAdminExtension
+        tags:
+            - { name: sonata.admin.extension,   
+                target: admin.articles 
+                 }
+
+    # Controlleur AbstractController
+    App\Admin\Controller\:
+        resource: '../src/Admin/Controller/'
+        tags: ['controller.service_arguments']
+
+    # CRUDControlleur CRUDCOntrolleur
+
+    #menu 
+    app.menu_builder:
+        class: App\Menu\MenuBuilder
+        # private argts of my class with will be instanciate
+        arguments: ["@knp_menu.factory"]
+        tags:
+            - { name: knp_menu.menu_builder, method: createMainMenu, alias: main } # The alias is what is used to retrieve the menu
+
+    admin.articles_custom:
+        class: App\Admin\ArticlesCustomAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Controller\ArticlesCustomAdminController, manager_type: orm, group: admin, label: Articles, show_in_roles_matrix: true}

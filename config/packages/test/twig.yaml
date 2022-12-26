@@ -1,0 +1,3 @@
+twig:
+    # Attrapper les erreurs avant de mettre le code en production.
+    strict_variables: true

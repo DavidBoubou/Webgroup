@@ -17,7 +17,7 @@ class ClientController extends AbstractController
 
         if (!$articles) {
             throw $this->createNotFoundException(
-                'No product found for id '.$id
+                'No product found'
             );
         }
 
