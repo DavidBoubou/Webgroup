@@ -80,7 +80,8 @@ sonata_admin:
                     Nos articles:
                         items:
                             #- admin.articles 
-                            - admin.articles_custom                   
+                            - admin.articles_custom   
+                            - admin.page                
                     Configurations: 
                         items:
                             - admin.categories

@@ -45,6 +45,11 @@ services:
         class: App\Admin\UserAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User, show_in_roles_matrix: true }
+    
+    admin.page:
+        class: Sonata\PageBundle\Admin\PageAdmin
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\SonataPagePage, controller: ~, manager_type: orm, label: Page, show_in_roles_matrix: true }
 
     block.count.article:
         class: Sonata\BlockBundle\Block\Service\CountBlock
