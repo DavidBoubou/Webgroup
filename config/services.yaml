@@ -51,16 +51,16 @@ services:
         tags:
             - { name: sonata.admin, model_class: App\Entity\SonataPagePage, controller: ~, manager_type: orm, label: Page, show_in_roles_matrix: true }
 
+    # Les blocks
     block.count.article:
-        class: Sonata\BlockBundle\Block\Service\CountBlock
+        class: App\Block\Service\CountBlock
         arguments:
             - '@twig'
         tags:
             - { name: sonata.block }
 
-    # The name of My block
     block.current.user:
-        class: Sonata\BlockBundle\Block\Service\UserBlock
+        class: App\Block\Service\UserBlock
         arguments:
             - '@twig'
             - '@security.token_storage'
