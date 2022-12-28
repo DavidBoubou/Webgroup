@@ -1,0 +1,38 @@
+<!-- page basique-->
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width">
+
+        <title> {% block title %}Welcome!{% endblock %}</title>
+        <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
+
+
+    </head>
+    <body class="m-4 bg-light d-flex flex-column ">
+
+        <header>
+            {#
+           <nav class="navbar navbar-light bg-light  navbar-expand-lg ">
+                <ul class="navbar-nav mr-auto">
+                <li class="nav-item"><a href={{path('app_client_accueil')}}> HOME</a></li>
+                <!-- gérer la connection get->user() en connection ou deconnection-->
+                <li class="nav-item"><a href={{path('app_login_client')}}>Se Conecter</a></li>
+                <li class="nav-item"><a href={{path('app_register_client')}}>S'inscrire</a></li>
+                <li class="nav-item"><a href={{path('app_admin_register')}}>Administration</a></li>
+                </ul>
+            </nav>
+            #}
+        {{ knp_menu_render('main' , {'template':'Menu/menu.html.twig'}) }}  
+        </header>
+
+        <div class="container shadow-sm">
+        {% block body %}
+            
+        {% endblock %}
+        </div>
+
+
+    </body>
+</html>

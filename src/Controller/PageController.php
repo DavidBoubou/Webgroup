@@ -15,9 +15,10 @@ final class PageController extends AbstractController
             'controller_name' => 'PageController',
         ]);
     }
-
+/*
     public function __invoke(int $id): Response
     {
         return $this->render('page/index.html.twig', ['id' => $id]);
     }
+    */
 }

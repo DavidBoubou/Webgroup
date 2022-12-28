@@ -48,5 +48,12 @@ class AppFixtures extends Fixture
                 $manager->persist($Articles);
                 $manager->flush();
             }
+
+        //créer un site fixture
+
+        //créer la SEO
+
+        //créer une collection de media
+
     }
 }

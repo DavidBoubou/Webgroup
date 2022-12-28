@@ -3,6 +3,7 @@ twig:
     form_themes:
         - '@SonataForm/Form/datepicker.html.twig'
         #- '@SonataForm/Form/color.html.twig'
+    cache: false
 
 when@test:
     twig:
