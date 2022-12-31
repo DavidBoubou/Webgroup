@@ -58,7 +58,7 @@ sonata_admin:
                 class:    hidden            
                 type:     sonata.admin.block.admin_list     
                 settings:
-                    groups: [Configurations]   
+                    groups: [Les plus]   
             -   # block 4
                 position: bottom     
                 class:    hidden             
@@ -74,6 +74,18 @@ sonata_admin:
                 class:    col-lg-4             
                 type:     block.current.user  
                 # Ajouter un lien sans menu parrent
+            -   # block 8
+                position: bottom     
+                class:    hidden             
+                type:     sonata.admin.block.admin_list     
+                settings:
+                    groups: [Gestion des blocks]   
+            -   # block 9
+                position: bottom     
+                class:    hidden             
+                type:     sonata.admin.block.admin_list     
+                settings:
+                    groups: [Configuration du site]   
 
         # Declaration of group of Model/items/services
         groups:
@@ -82,13 +94,28 @@ sonata_admin:
                             #- admin.articles 
                             - admin.articles_custom   
                             - admin.page                
-                    Configurations: 
+
+                    Les plus: 
                         items:
                             - admin.categories
                             - admin.baniere
+
                     Utilisateurs: 
                         items:
                             - admin.user
+                        roles: ['ROLE_SUPER_ADMIN']
+
+                    Gestion des blocks: 
+                        items:
+                            - sonata.page.admin.shared_block
+                            #- sonata.page.admin.base.block
+                            #- sonata.page.admin.block
+                        roles: ['ROLE_SUPER_ADMIN']
+
+                    Configuration du site: 
+                        items:
+                            - sonata.page.admin.site
+                            - sonata.page.admin.snapshot
                         roles: ['ROLE_SUPER_ADMIN']
 
     extensions:

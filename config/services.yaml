@@ -46,10 +46,42 @@ services:
         tags:
             - { name: sonata.admin, model_class: App\Entity\User, controller: ~, manager_type: orm, group: admin, label: User, show_in_roles_matrix: true }
     
+    # Service PageBundle
     admin.page:
         class: Sonata\PageBundle\Admin\PageAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\SonataPagePage, controller: ~, manager_type: orm, label: Page, show_in_roles_matrix: true }
+
+    admin.site:
+        class: Sonata\PageBundle\Admin\SiteAdmin
+        arguments:
+            - '@sonata.page.route.page.generator'
+        tags:
+            - { name: sonata.admin, model_class: App\Entity\SonataPageSite, controller: ~, manager_type: orm, label: Configuration du Site , show_in_roles_matrix: true }
+
+       
+#    admin.shared.block:
+#        class: Sonata\PageBundle\Admin\SharedBlockAdmin
+#        tags:
+#            - { name: sonata.admin, model_class: App\Entity\SonataPageBlock, controller: ~, manager_type: orm, label: Liste des blocks partagés, show_in_roles_matrix: true }
+
+        
+ #   admin.snapshot:
+ #       class: Sonata\PageBundle\Admin\SnapshotAdmin
+ #       tags:
+ #           - { name: sonata.admin, model_class: App\Entity\SonataPageSnapshot, controller: ~, manager_type: orm, label: liste des routes Snapshot, show_in_roles_matrix: true }
+
+
+#    admin.base.block:
+#        class: Sonata\PageBundle\Admin\BaseBlockAdmin
+#        tags:
+#            - { name: sonata.admin, model_class: App\Entity\SonataPageBlock, controller: ~, manager_type: orm, label: Page, show_in_roles_matrix: true }
+
+#    admin.block:
+#        class: Sonata\PageBundle\Admin\BlockAdmin
+#        tags:
+#            - { name: sonata.admin, model_class: App\Entity\SonataPageBlock, controller: ~, manager_type: orm, label: Liste des blocks , show_in_roles_matrix: true }
+
 
     # Les blocks
     block.count.article:
