@@ -1,5 +1,55 @@
+# Methode
+## Projets
+Voulez vous faire une application Symfony ou un CMS SYmfony?
+- CMS Symfony (Système de gestion de contenu) basé sur le Sonatapagebundle avec une gestion de templates format grid aera personnalisé et du SEO.
+- Application symfony utilisant les bundles externes sans pagebundle pour un maximun d'efficacité (voir les bundles ci-dessous) avec  CMFRoutingBundle pour la gestion des routes.
 
-# Verifier si la documentationn correspond a Symfony 6
+## Astuce
+lancer chaque bundle symfony par un test php pour tester le fonctionnement de l'application.
+
+## Définir une Enité
+| nom | type | contrainte | ux
+-------------------------------
+## Question
+    - il y a t'il des champs reelationnel
+    - il y a t'il des champs date
+    - il y a t'il de media (MediaBundle)
+    - il y a t il un administration (Sonata/EasyAdmin)
+    - il y a t'il des animation, libraries de design a désactivé.
+
+## Administration
+Page:
+    preview
+    edit
+    exportation
+    Action sur entité
+    element enfant
+    page de recherche
+    type de champs
+    Renommer, désactivé et gérer les routes.
+    Question?
+    il y a t'il des actions de filtrage sur entité pour page list
+    il y a til un menu workflow
+    Doit on sauvegarder les filtres utilisateurs
+    il y a til des performance dans l'application
+    Doit on utilisé ckeditor Formatter (bundle sonataFormatter) ou ckeditor simple.
+
+## Aide et service
+https://aws.amazon.com/fr/
+https://app.slack.com/client/T39U3FUKV/C3GC7MKM5
+https://app.slack.com/client/T39U3FUKV/C3EQ7S3MJ/thread/C3EQ7S3MJ-1671782813.278209
+https://github.com/symfony/demo/tree/pr/1284
+
+## Définir les roles
+    - page visible
+    - action permis
+    - Matrix de roles
+
+## Définr les pages
+    - bundle page/ SonataPageBundle
+    -   seo
+
+# Verifier si la documentation correspond a Symfony 6
 ### Base
 Installer la bonne version php.
 symfony new my_project_directory --version="6.2.*@dev" --webapp
@@ -294,6 +344,9 @@ https://symfony.com/bundles/SchebTwoFactorBundle/current/providers/google.html
 
 
 ### Email et notifications
+# -------- Application Symfony --------#
+- Front -office (webpack)
+- Back-office (Sonata ou EasyAdmin ou Session)
 
 # Front office
 
@@ -600,16 +653,18 @@ parameters:
 
 #### Formulaire basique ( sans AbstractType )
 >>> AbstractController
+use Symfony\Component\HttpFoundation\Request;
 
    public function contact(Request $request){
 
         $defaultData = ['message' => 'Type your message here'];
+        //Don't forget that $form =  $formbuilder->add(field)->getForm();
         $form = $this->createFormBuilder($defaultData,[
-    'validation_groups' => ['send'],])
-            ->add('name', TextType::class, [
-                'help' => 'Add your name',
-                'label' => 'name',
-            ])
+                'validation_groups' => ['send'],])
+                        ->add('name', TextType::class, [
+                            'help' => 'Add your name',
+                            'label' => 'name',
+                        ])
             ->add('email', EmailType::class)
             ->add('message', TextareaType::class)
             ->add('send', SubmitType::class)
@@ -620,6 +675,9 @@ parameters:
                     'form' => $form,
                 ]);
             }
+>>>twig
+
+{{ form(form) }}
 
 #### ** Soumettre un formualire a distance (AJAX)**
 - Danger
@@ -822,7 +880,6 @@ jQuery(document).ready(function () {
 
 {% endfor %}
 {{ form_start(form) }}
-    {# ... #}
 
     {# store the prototype on the data-prototype attribute #}
     <ul id="email-fields-list"
@@ -1394,15 +1451,26 @@ class ValidationGroupResolver
 https://docs.sonata-project.org/projects/SonataMediaBundle/en/5.x/reference/installation/
 https://docs.sonata-project.org/projects/SonataFormatterBundle/en/5.x/reference/ckeditor_medias/
 
-#### CKeditor
+#### **CKeditor**
+##### Context
+CKEditor pour symfony ou webpack
+- CKEditor Sonata, easyAdmin, front-office
+avec un chargement en javascript ou sans,
+configuration de la barre de navigation.
 
-##### Configurer le champs de formulaire CKEDITOR
+##### Configurer CKEDITOR
 - Ivory ckeditorbundle was abondonned
 
+###### 1-Installation de ckeditor symfony
 composer require friendsofsymfony/ckeditor-bundle
 php bin/console ckeditor:install
 php bin/console assets:install public
 
+---instalation de ckeditor avec release -> full, standar, custom et basic
+php bin/console ckeditor:install --release=basic
+
+--- ne pas afficher la barre de progression 
+php bin/console ckeditor:install --no-progress-bar
 >>>> composer.json
 
         "auto-scripts": {
@@ -1410,28 +1478,9 @@ php bin/console assets:install public
             "ckeditor:install --clear=drop": "symfony-cmd",
             "assets:install --symlink --relative %PUBLIC_DIR%": "symfony-cmd"
             }
->> console 
-instalation de ckeditor avec release -> full, standar, custom et basic
-php bin/console ckeditor:install --release=basic
 
-##### ne pas afficher la barre de progression 
-php bin/console ckeditor:install --no-progress-bar
-
-
-#####  utiliser ckeditor dans un formulaire avec un champs textaera
-use FOS\CKEditorBundle\Form\Type\CKEditorType;
-
-$builder->add('field', CKEditorType::class, array(
-    'config' => array(
-        'uiColor' => '#ffffff',
-        //...
-    ),
-));
-
-##### Installation de ckeditor sur Webpack
-
-    npm install --save ckeditor4@^4.13.0
-
+###### 2-Installation de ckeditor sur Webpack
+npm install --save ckeditor4@^4.13.0
 >>> webpack.config.js
     var Encore = require('@symfony/webpack-encore');
 
@@ -1454,6 +1503,25 @@ fos_ck_editor:
     # ...
     base_path: "build/ckeditor"
     js_path:   "build/ckeditor/ckeditor.js"
+
+#####  utiliser ckeditor dans un formulaire avec un champs textaera
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+
+$builder->add('field', CKEditorType::class, array(
+    'config' => array(
+        'uiColor' => '#ffffff',
+        //...
+    ),
+));
+
+##### Afficher le formulaire dynamique ckeditor
+>>> config/ckeditor.yaml
+    autoload: false
+    async: true
+
+>>> twig
+{{ form_javascript(form) }}
+
 
 ##### Faire une configuration ckeditor
 >>> app/config/config.yml
@@ -1500,21 +1568,14 @@ fos_ck_editor:
             my_toolbar_2: [ [ "Source" ], "/", [ "Anchor" ], "/", [ "Maximize" ] ]
 
 ##### Faire une configuration spécifique.
-    use FOS\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
+$builder->add('field', CKEditorType::class, array(
+    'config' => array(
+        //some config
+    ),
+));
 
-    $builder->add('field', CKEditorType::class, array(
-        'config' => array(
-            //some config
-        ),
-    ));
 
-##### Afficher le formulaire dynamique ckeditor
->>> config/ckeditor.yaml
-
-    autoload: false
-    async: true
->>> twig
-{{ form_javascript(form) }}
 
 
 ##### possibilité d 'utiliser un template personnalisé.
@@ -1554,7 +1615,7 @@ echo $builder
     ->setValue('[baz]', 'bat', false)
     ->build();
 
-#### SonataFormatterBundle
+#### **SonataFormatterBundle**
 php bin/console ckeditor:install
 php bin/console assets:install
 //Installation de Formatter bundle
@@ -1749,7 +1810,7 @@ $form
         'ckeditor_image_format' => 'big',
     ]);
 
-### image
+### image avec EasyAdmin
 >>>twig
 <!-- when loading the page this is transformed into a dynamic widget via JavaScript -->
 <input type="file">
@@ -1837,7 +1898,7 @@ class HomeController extends AbstractController
 
 
 
-### fixures
+### fixtures
 https://symfony.com/bundles/DoctrineFixturesBundle/current/index.html#writing-fixtures
 
 composer require --dev orm-fixtures
@@ -2785,53 +2846,693 @@ class EasyAdminSubscriber implements EventSubscriberInterface
 
 # All bundle
 
-CMFRoutingBundle
+## MakerBundle
+https://github.com/symfony/maker-bundle/tree/main/src/Maker
+- Faire sa propre ligne de commande php bin/console maker:Mymakerbun
+- Faire un namespace personnalisé
+
+composer require --dev symfony/maker-bundle
+### Créer un name space personallisé remplacant App\
+>>> config/packages/dev/maker.yaml
+    # create this file if you need to configure anything
+maker:
+    # tell MakerBundle that all of your classes live in an
+    # Acme namespace, instead of the default App
+    # (e.g. Acme\Entity\Article, Acme\Command\MyCommand, etc)
+    root_namespace: 'Acme'
+
+### Créer son bundle (ligne de commande)******
+// (voir)https://github.com/symfony/maker-bundle/tree/main/src/Maker
+>>>src/Maker/ extends AbstractMaker.
+final class MakeUser extends AbstractMaker
+{
+    // Ajouter les hooks
+ }   
+
+>>>config/services.yml
+services:
+    app.menu_builder:
+        class: App\Maker\MyMaker
+        tags:
+            - { name: maker.command} 
+ 
+
+
+## CMFRoutingBundle (Dangereux et abondonné) ****************
 Symfony bundle to provide the CMF chain router to handle multiple routers, and the dynamic router to load routes from a database or other sources
 
-DoctrineBundle
-Symfony Bundle for Doctrine ORM and DBAL
+## Context
+Fournit deux routes pour symfony: les routes dynamique stocké dans les base de données et les routes compilé par Symfony
 
-DoctrineFixturesBundle
-Symfony integration for the doctrine/data-fixtures library
+## Tour rapide
 
-DoctrineMigrationsBundle
+
+## DoctrineBundle******
+
+### context:
+- gestion de la connection de multiple base de données (dbal).
+- gestion des entity orm managers
+- gestion de oracle
+- Definition d'un ID d'entité personnalisé ou existant
+
+### Configuration du serveur et de la connection
+https://symfony.com/bundles/DoctrineBundle/current/configuration.html
+
+#### full configuration
+doctrine:
+    dbal:
+        default_connection:           default
+
+        # A collection of custom types
+        types:
+            # example
+            some_custom_type:
+                class:                Acme\HelloBundle\MyCustomType
+
+        connections:
+            # A collection of different named connections (e.g. default, conn2, etc)
+            default:
+                dbname:               ~
+                host:                 localhost
+                port:                 ~
+                user:                 root
+                password:             ~
+
+                # RDBMS specific; Refer to the manual of your RDBMS for more information
+                charset:              ~
+
+                dbname_suffix:        ~
+
+                # SQLite specific
+                path:                 ~
+
+                # SQLite specific
+                memory:               ~
+
+                # MySQL specific. The unix socket to use for MySQL
+                unix_socket:          ~
+
+                # IBM DB2 specific. True to use as persistent connection for the ibm_db2 driver
+                persistent:           ~
+
+                # IBM DB2 specific. The protocol to use for the ibm_db2 driver (default to TCPIP if omitted)
+                protocol:             ~
+
+                # Oracle specific. True to use SERVICE_NAME as connection parameter instead of SID for Oracle
+                service:              ~
+
+                # Oracle specific. Overrules dbname parameter if given and used as SERVICE_NAME or SID connection
+                # parameter for Oracle depending on the service parameter.
+                servicename:          ~
+
+                # oci8 driver specific. The session mode to use for the oci8 driver.
+                sessionMode:          ~
+
+                # SQL Anywhere specific (ServerName). The name of a running database server to connect to for SQL Anywhere.
+                server:               ~
+
+                # PostgreSQL specific (default_dbname).
+                # Override the default database (postgres) to connect to.
+                default_dbname:       ~
+
+                # PostgreSQL specific (LIBPQ-CONNECT-SSLMODE).
+                # Determines whether or with what priority a SSL TCP/IP connection will be negotiated with the server for PostgreSQL.
+                sslmode:              ~
+
+                # PostgreSQL specific (LIBPQ-CONNECT-SSLROOTCERT).
+                # The name of a file containing SSL certificate authority (CA) certificate(s).
+                # If the file exists, the server's certificate will be verified to be signed by one of these authorities.
+                sslrootcert:          ~
+
+                # PostgreSQL specific (LIBPQ-CONNECT-SSLCERT).
+                # The name of a file containing the client SSL certificate.
+                sslcert:              ~
+
+                # PostgreSQL specific (LIBPQ-CONNECT-SSLKEY).
+                # The name of a file containing the private key for the client SSL certificate.
+                sslkey:               ~
+
+                # PostgreSQL specific (LIBPQ-CONNECT-SSLCRL).
+                # The name of a file containing the SSL certificate revocation list (CRL).
+                sslcrl:               ~
+
+                # Oracle specific (SERVER=POOLED). True to use a pooled server with the oci8/pdo_oracle driver
+                pooled:               ~
+
+                # pdo_sqlsrv driver specific. Configuring MultipleActiveResultSets for the pdo_sqlsrv driver
+                MultipleActiveResultSets:  ~
+
+                # Enable savepoints for nested transactions
+                use_savepoints: true
+
+                driver:               pdo_mysql
+                platform_service:     ~
+                auto_commit:          ~
+
+                # If set to "/^sf2_/" all tables, and any named objects such as sequences
+                # not prefixed with "sf2_" will be ignored by the schema tool.
+                # This is for custom tables which should not be altered automatically.
+                schema_filter:        ~
+
+                # When true, queries are logged to a "doctrine" monolog channel
+                logging:              "%kernel.debug%"
+
+                profiling:            "%kernel.debug%"
+                # When true, profiling also collects a backtrace for each query
+                profiling_collect_backtrace: false
+                # When true, profiling also collects schema errors for each query
+                profiling_collect_schema_errors: true
+
+                server_version:       ~
+                driver_class:         ~
+                # Allows to specify a custom wrapper implementation to use.
+                # Must be a subclass of Doctrine\DBAL\Connection
+                wrapper_class:        ~
+                shard_choser:         ~
+                shard_choser_service: ~
+                keep_replica:           ~
+
+                # An array of options
+                options:
+                    # example
+                    # key:                  value
+
+                # An array of mapping types
+                mapping_types:
+                    # example
+                    # enum:                 string
+
+                default_table_options:
+                    # Affects schema-tool. If absent, DBAL chooses defaults
+                    # based on the platform. Examples here are for MySQL.
+                    # charset:      utf8mb4
+                    # collate:      utf8mb4_unicode_ci # When using doctrine/dbal 2.x
+                    # collation:    utf8mb4_unicode_ci # When using doctrine/dbal 3.x
+                    # engine:       InnoDB
+
+                replicas:
+                    # A collection of named replica connections (e.g. replica1, replica2)
+                    replica1:
+                        dbname:               ~
+                        host:                 localhost
+                        port:                 ~
+                        user:                 root
+                        password:             ~
+                        charset:              ~
+                        dbname_suffix:        ~
+                        path:                 ~
+                        memory:               ~
+
+                        # MySQL specific. The unix socket to use for MySQL
+                        unix_socket:          ~
+
+                        # IBM DB2 specific. True to use as persistent connection for the ibm_db2 driver
+                        persistent:           ~
+
+                        # IBM DB2 specific. The protocol to use for the ibm_db2 driver (default to TCPIP if omitted)
+                        protocol:             ~
+
+                        # Oracle specific. True to use SERVICE_NAME as connection parameter instead of SID for Oracle
+                        service:              ~
+
+                        # Oracle specific. Overrules dbname parameter if given and used as SERVICE_NAME or SID connection
+                        # parameter for Oracle depending on the service parameter.
+                        servicename:          ~
+
+                        # oci8 driver specific. The session mode to use for the oci8 driver.
+                        sessionMode:          ~
+
+                        # SQL Anywhere specific (ServerName). The name of a running database server to connect to for SQL Anywhere.
+                        server:               ~
+
+                        # PostgreSQL specific (default_dbname).
+                        # Override the default database (postgres) to connect to.
+                        default_dbname:       ~
+
+                        # PostgreSQL specific (LIBPQ-CONNECT-SSLMODE).
+                        # Determines whether or with what priority a SSL TCP/IP connection will be negotiated with the server for PostgreSQL.
+                        sslmode:              ~
+
+                        # PostgreSQL specific (LIBPQ-CONNECT-SSLROOTCERT).
+                        # The name of a file containing SSL certificate authority (CA) certificate(s).
+                        # If the file exists, the server's certificate will be verified to be signed by one of these authorities.
+                        sslrootcert:          ~
+
+                        # PostgreSQL specific (LIBPQ-CONNECT-SSLCERT).
+                        # The name of a file containing the client SSL certificate.
+                        sslcert:              ~
+
+                        # PostgreSQL specific (LIBPQ-CONNECT-SSLKEY).
+                        # The name of a file containing the private key for the client SSL certificate.
+                        sslkey:               ~
+
+                        # PostgreSQL specific (LIBPQ-CONNECT-SSLCRL).
+                        # The name of a file containing the SSL certificate revocation list (CRL).
+                        sslcrl:               ~
+
+                        # Oracle specific (SERVER=POOLED). True to use a pooled server with the oci8/pdo_oracle driver
+                        pooled:               ~
+
+                        # pdo_sqlsrv driver specific. Configuring MultipleActiveResultSets for the pdo_sqlsrv driver
+                        MultipleActiveResultSets:  ~
+
+                shards:
+                    id:                   ~ # Required
+                    dbname:               ~
+                    host:                 localhost
+                    port:                 ~
+                    user:                 root
+                    password:             ~
+                    charset:              ~
+                    path:                 ~
+                    memory:               ~
+
+                    # MySQL specific. The unix socket to use for MySQL
+                    unix_socket:          ~
+
+                    # IBM DB2 specific. True to use as persistent connection for the ibm_db2 driver
+                    persistent:           ~
+
+                    # IBM DB2 specific. The protocol to use for the ibm_db2 driver (default to TCPIP if omitted)
+                    protocol:             ~
+
+                    # Oracle specific. True to use SERVICE_NAME as connection parameter instead of SID for Oracle
+                    service:              ~
+
+                    # Oracle specific. Overrules dbname parameter if given and used as SERVICE_NAME or SID connection
+                    # parameter for Oracle depending on the service parameter.
+                    servicename:          ~
+
+                    # oci8 driver specific. The session mode to use for the oci8 driver.
+                    sessionMode:          ~
+
+                    # SQL Anywhere specific (ServerName). The name of a running database server to connect to for SQL Anywhere.
+                    server:               ~
+
+                    # PostgreSQL specific (default_dbname).
+                    # Override the default database (postgres) to connect to.
+                    default_dbname:       ~
+
+                    # PostgreSQL specific (LIBPQ-CONNECT-SSLMODE).
+                    # Determines whether or with what priority a SSL TCP/IP connection will be negotiated with the server for PostgreSQL.
+                    sslmode:              ~
+
+                    # PostgreSQL specific (LIBPQ-CONNECT-SSLROOTCERT).
+                    # The name of a file containing SSL certificate authority (CA) certificate(s).
+                    # If the file exists, the server's certificate will be verified to be signed by one of these authorities.
+                    sslrootcert:          ~
+
+                    # PostgreSQL specific (LIBPQ-CONNECT-SSLCERT).
+                    # The name of a file containing the client SSL certificate.
+                    sslcert:              ~
+
+                    # PostgreSQL specific (LIBPQ-CONNECT-SSLKEY).
+                    # The name of a file containing the private key for the client SSL certificate.
+                    sslkey:               ~
+
+                    # PostgreSQL specific (LIBPQ-CONNECT-SSLCRL).
+                    # The name of a file containing the SSL certificate revocation list (CRL).
+                    sslcrl:               ~
+
+                    # Oracle specific (SERVER=POOLED). True to use a pooled server with the oci8/pdo_oracle driver
+                    pooled:               ~
+
+                    # pdo_sqlsrv driver specific. Configuring MultipleActiveResultSets for the pdo_sqlsrv driver
+                    MultipleActiveResultSets:  ~
+
+    orm:
+        default_entity_manager: ~ # The first defined is used if not set
+
+        # Auto generate mode possible values are: "NEVER", "ALWAYS", "FILE_NOT_EXISTS", "EVAL", "FILE_NOT_EXISTS_OR_CHANGED"
+        auto_generate_proxy_classes:  false
+        proxy_dir:                    "%kernel.cache_dir%/doctrine/orm/Proxies"
+        proxy_namespace:              Proxies
+
+        entity_managers:
+
+            # A collection of different named entity managers (e.g. some_em, another_em)
+            default:
+                connection: default
+                naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+                auto_mapping: true
+                mappings:
+                    App:
+                        is_bundle: false
+                        dir: '%kernel.project_dir%/src/Entity'
+                        prefix: 'App\Entity'
+                        alias: App
+            some_em:
+                query_cache_driver:
+                    type: ~
+                    id:   ~
+                    pool: ~
+                metadata_cache_driver:
+                    type: ~
+                    id:   ~
+                    pool: ~
+                result_cache_driver:
+                    type: ~
+                    id:   ~
+                    pool: ~
+                entity_listeners:
+                    entities:
+
+                        # example
+                        Acme\HelloBundle\Entity\Author:
+                            listeners:
+
+                                # example
+                                Acme\HelloBundle\EventListener\ExampleListener:
+                                    events:
+                                        type:                 preUpdate
+                                        method:               preUpdate
+
+                # The name of a DBAL connection (the one marked as default is used if not set)
+                connection:           ~
+                class_metadata_factory_name:  Doctrine\ORM\Mapping\ClassMetadataFactory
+                default_repository_class:     Doctrine\ORM\EntityRepository
+                auto_mapping:                 false
+                naming_strategy:              doctrine.orm.naming_strategy.default
+                quote_strategy:               doctrine.orm.quote_strategy.default
+                entity_listener_resolver:     ~
+                repository_factory:           ~
+                second_level_cache:
+                    region_cache_driver:
+                        type: ~
+                        id:   ~
+                        pool: ~
+                    region_lock_lifetime: 60
+                    log_enabled:          true
+                    region_lifetime:      0
+                    enabled:              true
+                    factory:              ~
+                    regions:
+
+                        # Prototype
+                        name:
+                            cache_driver:
+                                type: ~
+                                id:   ~
+                                pool: ~
+                            lock_path:            '%kernel.cache_dir%/doctrine/orm/slc/filelock'
+                            lock_lifetime:        60
+                            type:                 default
+                            lifetime:             0
+                            service:              ~
+                            name:                 ~
+                    loggers:
+
+                        # Prototype
+                        name:
+                            name:                 ~
+                            service:              ~
+
+                # An array of hydrator names
+                hydrators:
+
+                    # example
+                    ListHydrator: Acme\HelloBundle\Hydrators\ListHydrator
+
+                mappings:
+                    # An array of mappings, which may be a bundle name or something else
+                    mapping_name:
+                        mapping:              true
+                        type:                 ~
+                        dir:                  ~
+                        alias:                ~
+                        prefix:               ~
+                        is_bundle:            ~
+
+                dql:
+                    # A collection of string functions
+                    string_functions:
+
+                        # example
+                        # test_string: Acme\HelloBundle\DQL\StringFunction
+
+                    # A collection of numeric functions
+                    numeric_functions:
+
+                        # example
+                        # test_numeric: Acme\HelloBundle\DQL\NumericFunction
+
+                    # A collection of datetime functions
+                    datetime_functions:
+
+                        # example
+                        # test_datetime: Acme\HelloBundle\DQL\DatetimeFunction
+
+                # Register SQL Filters in the entity manager
+                filters:
+
+                    # An array of filters
+                    some_filter:
+                        class:                Acme\HelloBundle\Filter\SomeFilter # Required
+                        enabled:              false
+
+                        # An array of parameters
+                        parameters:
+
+                            # example
+                            foo_param:              bar_value
+
+                schema_ignore_classes:
+                    - Acme\AppBundle\Entity\Order
+                    - Acme\AppBundle\Entity\PhoneNumber
+
+        # Search for the "ResolveTargetEntityListener" class for a cookbook about this
+        resolve_target_entities:
+
+            # Prototype
+            Acme\InvoiceBundle\Model\InvoiceSubjectInterface: Acme\AppBundle\Entity\Customer
+
+#### orm
+
+##### Example of doctrine orm
+doctrine:
+    orm:
+        auto_mapping: true
+        # the standard distribution overrides this to be true in debug, false otherwise
+        auto_generate_proxy_classes: false
+        proxy_namespace: Proxies
+        proxy_dir: "%kernel.cache_dir%/doctrine/orm/Proxies"
+        default_entity_manager: default
+        metadata_cache_driver: ~
+        query_cache_driver: ~
+        result_cache_driver: ~
+
+##### use multiple EntityManager
+use Doctrine\ORM\EntityManagerInterface;
+    //use a entity MAnager call purchase_logs 
+     public function __construct(EntityManagerInterface $purchaseLogsEntityManager)
+    {
+        $this->entityManager = $purchaseLogsEntityManager;
+    }
+
+##### Use cache pool with doctrine *******
+doctrine:
+    orm:
+        auto_mapping: true
+        # With no cache set, this defaults to a sane 'pool' configuration
+        metadata_cache_driver: ~
+        # the 'pool' type requires to define the 'pool' option and configure a cache pool using the FrameworkBundle
+        result_cache_driver:
+            type: pool
+            pool: doctrine.result_cache_pool
+        # the 'service' type requires to define the 'id' option too
+        query_cache_driver:
+            type: service
+            id: App\ORM\MyCacheService
+
+framework:
+    cache:
+        pools:
+            doctrine.result_cache_pool:
+                adapter: cache.app
+
+##### filter*******
+https://www.doctrine-project.org/projects/doctrine-orm/en/latest/reference/filters.html
+doctrine:
+    orm:
+        filters:
+            myFilter:
+                class: MyVendor\MyBundle\Filters\MyFilter
+                enabled: true
+                parameters:
+                    myParameter: myValue
+                    mySecondParameter: mySecondValue
+
+#### dbal
+https://www.doctrine-project.org/projects/doctrine-dbal/en/2.10/index.html
+##### global
+doctrine:
+    dbal:
+        url:                      mysql://user:secret@localhost:1234/otherdatabase # this would override the values below
+        dbname:                   database
+        host:                     localhost
+        port:                     1234
+        user:                     user
+        password:                 secret
+        dbname_suffix:            _test
+        driver:                   pdo_mysql
+        driver_class:             MyNamespace\MyDriverImpl
+        options:
+            foo: bar
+        path:                     "%kernel.project_dir%/var/data.db" # SQLite specific
+        memory:                   true                               # SQLite specific
+        unix_socket:              /tmp/mysql.sock
+        persistent:               true
+        MultipleActiveResultSets: true                # pdo_sqlsrv driver specific
+        pooled:                   true                # Oracle specific (SERVER=POOLED)
+        protocol:                 TCPIP               # IBM DB2 specific (PROTOCOL)
+        server:                   my_database_server  # SQL Anywhere specific (ServerName)
+        service:                  true                # Oracle specific (SERVICE_NAME instead of SID)
+        servicename:              MyOracleServiceName # Oracle specific (SERVICE_NAME)
+        sessionMode:              2                   # oci8 driver specific (session_mode)
+        default_dbname:           database            # PostgreSQL specific (default_dbname)
+        sslmode:                  require             # PostgreSQL specific (LIBPQ-CONNECT-SSLMODE)
+        sslrootcert:              postgresql-ca.pem   # PostgreSQL specific (LIBPQ-CONNECT-SSLROOTCERT)
+        sslcert:                  postgresql-cert.pem # PostgreSQL specific (LIBPQ-CONNECT-SSLCERT)
+        sslkey:                   postgresql-key.pem  # PostgreSQL specific (LIBPQ-CONNECT-SSLKEY)
+        sslcrl:                   postgresql.crl      # PostgreSQL specific (LIBPQ-CONNECT-SSLCRL)
+        wrapper_class:            MyDoctrineDbalConnectionWrapper
+        charset:                  UTF8
+        logging:                  "%kernel.debug%"
+        platform_service:         MyOwnDatabasePlatformService
+        auto_commit:              false
+        schema_filter:            ^sf2_
+        mapping_types:
+            enum: string
+        types:
+            custom: Acme\HelloBundle\MyCustomType
+        default_table_options:
+            # Affects schema-tool. If absent, DBAL chooses defaults
+            # based on the platform.
+            charset:              utf8
+            collate:              utf8_unicode_ci
+            engine:               InnoDB
+
+##### connection mutiple
+doctrine:
+    dbal:
+        default_connection:       default #Toujours vraie par défault
+        connections:
+            default:                        # doctrine.dbal.default_connection this is the tag you create
+                dbname:           Symfony2
+                user:             root
+                password:         null
+                host:             localhost
+            customer:                        # doctrine.dbal.customer_connection this is the tag you create
+                dbname:           customer
+                user:             root
+                password:         null
+                host:             localhost
+
+###### Utiliser une connection php
+use Doctrine\DBAL\Connection;
+//this args represent the Connection  withname purchase_logs
+// '_' est remplacer par une Majuscule, et le nom est concaténé a Connection. 
+public function __construct(Connection $purchaseLogsConnection)
+    {
+        $this->connection = $purchaseLogsConnection;
+    }
+
+//Avec ma connection 'customer'.
+public function __construct(Connection $CustomerConnection)
+    {
+        $this->connection = $CustomerConnection;
+    }
+
+### type d' Identifiant unique
+#### doctrine.uuid_generator 
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * @ORM\Entity
+ */
+class User
+{
+    /**
+     * @Id
+     * @Column(type="uuid")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator("doctrine.uuid_generator")
+     */
+    private $id;
+
+}
+#### doctrine.ulid_generator  
+/**
+ * @ORM\Entity
+ */
+class User
+{
+    /**
+     * @Id
+     * @Column(type="ulid")
+     * @ORM\GeneratedValue(strategy="CUSTOM")
+     * @ORM\CustomIdGenerator("doctrine.ulid_generator  ")
+     */
+    private $id;
+
+}
+
+### Identifiant personalisé
+>>>Doctrine\ORM\Id\AbstractIdGenerator
+class Myidentifier extends AbstractIdGenerator
+{
+    public function generate(EntityManager $em, $entity) 
+                {
+
+                }
+}
+
+### Configuration de Oracle DB
+/**
+If the environment format configured in oracle does not meet doctrine requirements, you need to use the OracleSessionInit listener so that doctrine is aware of the format used by Oracle DB.
+
+ */
+services:
+    oracle.listener:
+        class: Doctrine\DBAL\Event\Listeners\OracleSessionInit
+        tags:
+            - { name: doctrine.event_listener, event: postConnect }
+
+/**
+    NLS_TIME_FORMAT="HH24:MI:SS"
+    NLS_DATE_FORMAT="YYYY-MM-DD HH24:MI:SS"
+    NLS_TIMESTAMP_FORMAT="YYYY-MM-DD HH24:MI:SS"
+    NLS_TIMESTAMP_TZ_FORMAT="YYYY-MM-DD HH24:MI:SS TZH:TZM"
+
+ */
+
+## DoctrineMigrationsBundle
 Symfony integration for the doctrine/migrations library
 
-EasyAdminBundle
-EasyAdmin is a fast, beautiful and modern admin generator for Symfony applications
 
-FOSCKEditorBundle
-Provides a CKEditor integration for your Symfony project
 
-KnpMenuBundle
-Object Oriented menus for your Symfony project
-
-LexikJWTAuthenticationBundle
+##  LexikJWTAuthenticationBundle
 JWT authentication for your Symfony API
 
-LiipImagineBundle
+##  LiipImagineBundle
 Symfony Bundle to assist in imagine manipulation using the imagine library
 
-NelmioApiDocBundle
+## NelmioApiDocBundle
 Generates documentation for your REST API from annotations
 
-SchebTwoFactorBundle
-Two-factor authentication for Symfony applications 🔐
+##  SchebTwoFactorBundle
+Two-factor authentication for Symfony applications 
 
-SensioFrameworkExtraBundle
-An extension to Symfony FrameworkBundle that adds annotation configuration for Controller classes
 
-SonataAdminBundle
-The missing Symfony Admin Generator
-
-StofDoctrineExtensionsBundle
+## StofDoctrineExtensionsBundle
 Integration bundle for DoctrineExtensions by l3pp4rd in Symfony
+
+## Doctrine MongoDB
 
 Symfony UX Autocomplete
 Javascript-powered auto-completion functionality for your Symfony forms!
 
-Symfony UX Chart.js
-Chart.js integration for Symfony
 
 Symfony UX Cropper.js
 Cropper.js integration for Symfony
@@ -2866,10 +3567,7 @@ Symfony bundle integrating Typed
 Symfony UX Vue.js
 Vue integration with Symfony UX
 
-SymfonyMakerBundle
-Symfony Maker Bundle
-
-ZenstruckFoundryBundle
+## ZenstruckFoundryBundle
 A model factory library for creating expressive, auto-completable, on-demand dev/test
 
 # Alternative
@@ -2903,6 +3601,17 @@ un menu créé avec un knp menu provider(menu complex intégrant une logique bas
 - on peut configurer un menu dans le twig a partir d un menu existant et y appliqué une logique avec injection
 Elargir le menu conditionelement par des events
 Menu->Event->EventListener -> Service->Modification du menu
+
+## knp_menu configuration knp_menu.yaml
+>>>config/packages/knp_menu.yaml
+knp_menu:
+    # use "twig: false" to disable the Twig extension and the TwigRenderer
+    twig:
+        template: KnpMenuBundle::menu.html.twig
+    #  if true, enables the helper for PHP templates
+    templating: false
+    # the renderer to use, list is also available by default
+    default_renderer: twig
 
 ## Route avec controller
 //Ajout de la route du controller comme un item.
@@ -3038,7 +3747,37 @@ class MenuBuilder
     public function createMainMenu(array $options): ItemInterface
     {
         $menu = $this->factory->createItem('root');
+            //ul element
+            ->setChildrenAttribute('class', 'navbar-nav mr-auto');
+            //->setLinkAttribute('class', 'navbar-nav mr-auto');
+            $menu->addChild('Home', ['route' => 'app_client_accueil'])
+                //liste
+                ->setAttribute('class', 'nav-item');
+                //link
+                //->setLinkAttribute('class', 'nav-item');
+                //
 
+            $menu->addChild('Se Conecter', ['route' => 'app_login_client'])
+            ->setAttribute('class', 'nav-item')
+            //icon
+            ->setExtras([
+            'icon' => 'fas fa-bar-chart', // html is also supported
+            ]);
+            
+            $menu->addChild('S inscrire', ['route' => 'app_register_client', 'extras' => array(
+                'icon' => 'icon-user',
+            ),])
+            ->setAttribute('class', 'nav-item')
+            
+            ->setExtra('translation_domain', 'AcmeAdminBundle');
+
+
+            // create a menu item with drop-down
+            $menu->addChild('Administration', ['route' => 'app_admin_register'])
+            ->setAttribute('class', 'nav-item');
+            $menu['Administration']->addChild('S inscrire', array('route' => 'app_admin_register'));
+            $menu['Administration']->addChild('Se Conecter', array('route' => 'app_admin_register'));
+            $menu['Administration']->setChildrenAttribute('class', 'dropdown-menu');
         $menu->addChild('Home', ['route' => 'homepage']);
         // ... add more children
 
@@ -3065,6 +3804,26 @@ class MenuBuilder
 {% set menu = knp_menu_get('sidebar', [], {include_homepage: false}) %}
 //rendre le menu créer ci-dessus
 {{ knp_menu_render(menu) }}
+{{ knp_menu_render('AppBundle:Builder:mainMenu', {'template': 'AppBundle:Menu:knp_menu.html.twig'}) }}
+>>>
+{% extends 'knp_menu.html.twig' %}
+     {% block list %}
+        {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+            {% import _self as knp_menu %}
+            <nav class="navbar navbar-light bg-light  navbar-expand-lg ">
+            <ul{{ knp_menu.attributes(listAttributes) }}>
+                {{ block('children') }}
+            </ul>
+            </nav>
+        {% endif %}
+    {% endblock %}
+
+{% block label %}
+    {% if item.extra('icon') is not null %}
+        <i class="{{ item.extra('icon') }}"></i>
+    {% endif %}
+    {{ parent() }}
+{% endblock %}
 
 ### the best way without implements v2
 //My builder
@@ -3088,7 +3847,29 @@ class MenuBuilder
     public function createMainMenu(RequestStack $requestStack)
     {
         $menu = $this->factory->createItem('root');
+            //ul element
+            ->setChildrenAttribute('class', 'navbar-nav mr-auto');
+            //->setLinkAttribute('class', 'navbar-nav mr-auto');
+            $menu->addChild('Home', ['route' => 'app_client_accueil'])
+                //liste
+                ->setAttribute('class', 'nav-item');
+                //link
+                //->setLinkAttribute('class', 'nav-item');
+                //
 
+            $menu->addChild('Se Conecter', ['route' => 'app_login_client'])
+            ->setAttribute('class', 'nav-item');
+            
+            $menu->addChild('S inscrire', ['route' => 'app_register_client'])
+            ->setAttribute('class', 'nav-item');
+
+
+            // create a menu item with drop-down
+            $menu->addChild('Administration', ['route' => 'app_admin_register'])
+            ->setAttribute('class', 'nav-item');
+            $menu['Administration']->addChild('S inscrire', array('route' => 'app_admin_register'));
+            $menu['Administration']->addChild('Se Conecter', array('route' => 'app_admin_register'));
+            $menu['Administration']->setChildrenAttribute('class', 'dropdown-menu');
         $menu->addChild('Home', ['route' => 'homepage']);
         // ... add more children
 
@@ -3117,6 +3898,7 @@ services:
     //Menu 1: main_menu
     app.main_menu:
         class: Knp\Menu\MenuItem # the service definition requires setting the class
+        //factory: spécifier le builder:@app.menu_builder et la funtion createSidebarMenu
         factory: ["@app.menu_builder", createMainMenu]
         arguments: ["@request_stack"]
         tags:
@@ -3124,6 +3906,7 @@ services:
     //Menu 2: Sidebar
     app.sidebar_menu:
         class: Knp\Menu\MenuItem
+        //factory: spécifier le builder:@app.menu_builder et la funtion createSidebarMenu
         factory: ["@app.menu_builder", createSidebarMenu]
         arguments: ["@request_stack"]
         tags:
@@ -3132,7 +3915,7 @@ services:
 //render a main
 {{ knp_menu_render('sidebar') }}
 
-## 3-Utiliser un évènement sur les menus
+## 3-Utiliser un (ecouteur d'évènement) évènement sur les menus
 //Ajouter un ecouteeur d evenement  en tant que service
 >>>config/services.yaml
 services:
@@ -3213,7 +3996,7 @@ class ConfigureMenuEvent extends Event
     }
 }
 
-## Déclarer un menu en tant que service
+## Déclarer un menu en tant que service******
 //Configuration du service
 >>> config/service.yml
     my_menu_provider:
@@ -3229,6 +4012,20 @@ class ConfigureMenuEvent extends Event
 ## 4-Afficher un menu
 >>>twig
 {{ knp_menu_render('main', {}, 'custom') }}
+//Afficher un menu avec son template
+{{ knp_menu_render('AppBundle:Builder:mainMenu', {'template': 'AppBundle:Menu:knp_menu.html.twig'}) }}
+>>>extends
+{% extends 'knp_menu.html.twig' %}
+     {% block list %}
+        {% if item.hasChildren and options.depth is not same as(0) and item.displayChildren %}
+            {% import _self as knp_menu %}
+            <nav class="navbar navbar-light bg-light  navbar-expand-lg ">
+            <ul{{ knp_menu.attributes(listAttributes) }}>
+                {{ block('children') }}
+            </ul>
+            </nav>
+        {% endif %}
+    {% endblock %}
 
 ## créer et enregistrer son propre un provider ***
 https://symfony.com/bundles/KnpMenuBundle/current/custom_provider.html
@@ -3247,18 +4044,19 @@ https://symfony.com/bundles/KnpMenuBundle/current/custom_renderer.html
 {% set menuItem = knp_menu_get('App:Builder:mainMenu', [], {'some_option': 'my_value'}) %}
 {{ knp_menu_render(menuItem) }}
 
-# Gérer des données
+# Gérer des données CRUD Front-office 
 >>> Controller
    public function show(ManagerRegistry $doctrine, int $id): Response
     {
-        
+        //produit  par categorie 
         $CustomProduct = $doctrine->getRepository(Product::class)->findOneByIdJoinedToCategory($id);
+        //produit par id
         $product = $doctrine->getRepository(Product::class)->find($id);
         // ...
 
+        //category du produit
         $categoryName = $product->getCategory()->getName();
 
-        // ...
     }
 
 
@@ -3350,3 +4148,526 @@ use App\Repository\ProductRepository;
 
     <p>{{ post.excerpt }}</p>
 {% endfor %}
+
+# WorkFlow ******
+//https://symfony.com/doc/current/components/workflow.html
+
+# Questions:
+- Quesqu'un workflow?
+- Quesqu'un Menu provider?
+
+# phpunit*******
+
+## Context
+Each test is a PHP class ending with "Test" (e.g. BlogControllerTest) that lives in the tests/ directory of your application.
+
+PHPUnit is configured by the phpunit.xml.dist file in the root of your application. The default configuration provided by Symfony Flex will be enough in most cases. Read the PHPUnit documentation to discover all possible configuration options (e.g. to enable code coverage or to split your test into multiple "test suites").
+
+Note
+
+Symfony Flex automatically creates phpunit.xml.dist and tests/bootstrap.php. If these files are missing, you can try running the recipe again using composer recipes:install phpunit/phpunit --force -v.
+Les types de test:
+Unit Tests
+These tests ensure that individual units of source code (e.g. a single class) behave as intended.
+Integration Tests
+These tests test a combination of classes and commonly interact with Symfony's service container. These tests do not yet cover the fully working application, those are called Application tests.
+Application Tests
+Application tests test the behavior of a complete application. They make HTTP requests (both real and simulated ones) and test that the response is as expected.
+
+-créer des sous répertoire pour chaque class source et par chaque type de test.;
+
+chaque Test est une classe php finissant par Test définie dans le répertoire tests/ de vos application.
+PHPUnit est configuré par phpunit.xml.dist dans le root de votre application.La configuration par défaut fournit par Symfony Flex sera assez dans le meilleur des cas. 
+Lire la documentation pour obtenir plus d'option.
+https://phpunit.readthedocs.io/en/9.5/configuration.html
+
+Il y a plusieurs types de tests automatique et de definitions precise  differ souventde projet to projet.
+Les types utilisé dans symfony:
+1- Test Unitaire : tester une seul class.
+2- Tests d'intégration: Ces tests testent une combinaison de classe qui interragissent en commun avec le service container.
+
+3- Tests d'application: Les tests d'application testent  the bahavior de l'application de test. Ils sont des requêtes HTTP (a la fois réel et simulé) et test si la réponse est attendu.
+
+By convention, the tests/ directory should replicate the directory of your application for unit tests. So, if you're testing a class in the src/Form/ directory, put the test in the tests/Form/ directory. Autoloading is automatically enabled via the vendor/autoload.php file (as configured by default in the phpunit.xml.dist file).
+
+## Lancement
+//instalation
+composer require --dev symfony/test-pack
+//créer un test
+php bin/console make:test
+//Lancer tout les tests de cette application. 
+php bin/phpunit
+//obtention d'un test Bootstrap dans phpUnit.
+composer recipes:install phpunit/phpunit --force -v
+//run all test in the form directory
+php bin/phpunit tests/Form
+// Run a test of a class
+php bin/phpunit tests/Form/class.php
+
+## Application
+
+#### clear manually le cache
+as it significantly improves test performance. This disables clearing the cache. If your tests don't run in a clean environment each time, you have to manually clear it using for instance this code in
+
+// ensure a fresh cache when debug mode is disabled
+(new \Symfony\Component\Filesystem\Filesystem())->remove(__DIR__.'/../var/cache/test))
+
+
+### Dépendance Mock
+
+>>> tests/KernelTestCase
+use App\Contracts\Repository\NewsRepositoryInterface;
+use App\Service\NewsletterGenerator;
+
+class NewsletterGeneratorTest extends KernelTestCase
+{
+    public function testSomething()
+    {
+        // (1) boot the Symfony kernel
+        //self::bootKernel();
+        self::bootKernel([
+        'environment' => 'my_test_env',
+        'debug'       => false,
+        ]);
+
+        // (2) use static::getContainer() to access the service container
+        $container = static::getContainer();
+
+        // (3) retrieve some NewsletterGenerator service & test the result
+        $newsletterGenerator = $container->get(NewsletterGenerator::class);
+        $newsletter = $newsletterGenerator->generateMonthlyNews(...);
+
+        $this->assertEquals('...', $newsletter->getContent());
+        // ... same bootstrap as the section above
+
+        $newsRepository = $this->createMock(NewsRepositoryInterface::class);
+        $newsRepository->expects(self::once())
+            ->method('findNewsFromLastMonth')
+            ->willReturn([
+                new News('some news'),
+                new News('some other news'),
+            ])
+        ;
+
+        // the following line won't work unless the alias is made public
+        $container->set(NewsRepositoryInterface::class, $newsRepository);
+
+        // will be injected the mocked repository
+        $newsletterGenerator = $container->get(NewsletterGenerator::class);
+
+    }
+}
+
+//Rendre les services public pour etre accessible de puis container->get().
+>>> config/services_test.yaml
+services:
+    # redefine the alias as it should be while making it public
+    App\Contracts\Repository\NewsRepositoryInterface:
+        alias: App\Repository\NewsRepository
+        public: true
+
+
+// Installer et configurer un environnement de test.
+>>> config/packages/test/twig.yaml
+twig:
+    # Attrapper les erreurs avant de mettre le code en production.
+    strict_variables: true
+
+
+//overider les variables d'environnements
+>>>.env.test: 
+overriding/setting specific test values or vars;
+
+
+### Configurer une base de données pour le tests
+//1-Resetting the Database Automatically Before each Test
+composer require --dev dama/doctrine-test-bundle
+//2-create the test database
+php bin/console --env=test doctrine:database:create
+//3-create the table colonne in the database
+php bin/console --env=test doctrine:schema:create
+//Activer l'extension PHPUnit
+>>><!-- phpunit.xml.dist -->
+<phpunit>
+    <!-- ... -->
+
+    <extensions>
+        <extension class="DAMA\DoctrineTestBundle\PHPUnit\PHPUnitExtension"/>
+    </extensions>
+</phpunit>
+
+// Laisser doctrine 
+
+### Test application et controler
+/** Ce sont des class php qui vivent dans le chemin 'tests/Controller/' héritant d'une class  WebTestCase.   */
+
+php bin/console make:test
+Which test type would you like?:
+ > WebTestCase
+
+ The name of the test class (e.g. ControllerNameTest):
+ > Controller\ControllerNameTest
+
+ // tests/Controller/PostControllerTest.php
+namespace App\Tests\Controller;
+
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class PostControllerTest extends WebTestCase
+{
+    public function testSomething(): void
+    {
+        // This calls KernelTestCase::bootKernel(), and creates a
+        // "client" that is acting as the browser
+        $client = static::createClient();
+        /**
+        //custom header http
+        $client = static::createClient([], [
+                'HTTP_HOST'       => 'en.example.com',
+                'HTTP_USER_AGENT' => 'MySuperBrowser/1.0',
+            ]);
+
+         */
+
+        //operation that is supporte in browser
+        $client->back();
+        $client->forward();
+        $client->reload();
+        
+        //redirection
+        $client->followRedirects();
+
+        // clears all cookies and the history
+        $client->restart();
+
+        // Request a specific page
+        /**
+            request(
+                        string $method,
+                        string $uri,
+                        array $parameters = [],
+                        array $files = [],
+                        array $server = [],
+                        string $content = null,
+                        bool $changeHistory = true
+                    ): Crawler
+
+         */
+
+        $crawler = $client->request('GET', '/');
+        /**
+        //overider la requete de http header
+        //https://www.rfc-editor.org/rfc/rfc3875#section-4.1.18
+        $client->request('GET', '/', [], [], [
+            'HTTP_HOST'       => 'en.example.com',
+            'HTTP_USER_AGENT' => 'MySuperBrowser/1.0',
+        ]);
+         */
+
+        //Requêtes Ajax
+        $client->xmlHttpRequest('POST', '/submit', ['name' => 'Fabien']);
+
+        //Désactiver les exceptions dans le profiler
+        $client->catchExceptions(false);
+
+        //5.1 -obtention des données client.
+        $history = $client->getHistory();
+        $cookieJar = $client->getCookieJar();
+
+        //5.2- obtention des données client de la requete
+        //5.2 - the HttpKernel request instance
+        $request = $client->getRequest();
+
+        //5.2- the BrowserKit request instance
+        $request = $client->getInternalRequest();
+
+        //5.2- the HttpKernel response instance
+        $response = $client->getResponse();
+
+        //5.2- the BrowserKit response instance
+        $response = $client->getInternalResponse();
+
+        //5.2- the Crawler instance
+        $crawler = $client->getCrawler();
+
+        //6.0-Acéder au profiler
+        // enables the profiler for the very next request
+        $client->enableProfiler();
+
+        // gets the profile
+        $profile = $client->getProfile();
+
+
+        // Validate a successful response and some content
+        $this->assertResponseIsSuccessful();
+
+        //put some content in the page
+        $this->assertSelectorTextContains('h1', 'Hello World');
+
+        // for instance, count the number of ``.comment`` elements on the page, with the crawler you can manage the dom.
+        $this->assertCount(4, $crawler->filter('.comment'))
+
+
+        }
+}
+
+### Simulate Login
+//une methode loginUser() pour simuler une authentification
+>>> tests/Controller/ProfileControllerTest.php
+namespace App\Tests\Controller;
+
+use App\Repository\UserRepository;
+use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+
+class ProfileControllerTest extends WebTestCase
+{
+
+    public function testVisitingWhileLoggedIn()
+    {
+        $client = static::createClient();
+        $userRepository = static::getContainer()->get(UserRepository::class);
+
+        // retrieve the test user
+        $testUser = $userRepository->findOneByEmail('john.doe@example.com');
+
+        // simulate $testUser qui hérite de userInterface being logged in
+        $client->loginUser($testUser);
+
+        // test e.g. the profile page
+        $client->request('GET', '/profile');
+        $this->assertResponseIsSuccessful();
+        $this->assertSelectorTextContains('h1', 'Hello John!');
+    }
+}
+
+# Manager des media au front-Office
+
+## charger un document*******
+>>>src/Entity/Product.php
+namespace App\Entity;
+use Doctrine\ORM\Mapping as ORM;
+
+class Product
+{
+    /**
+     * @ORM\Column(type="string")
+     */
+    private $brochureFilename;
+
+    public function getBrochureFilename()
+    {
+        return $this->brochureFilename;
+    }
+
+    public function setBrochureFilename($brochureFilename)
+    {
+        $this->brochureFilename = $brochureFilename;
+
+        return $this;
+    }
+}
+//Création du formulaire
+>>>>src/Form/ProductType.php
+use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
+
+class ProductType extends AbstractType
+{
+    public function buildForm(FormBuilderInterface $builder, array $options)
+    {
+        $builder
+            // ...
+            ->add('brochure', FileType::class, [
+                'label' => 'Brochure (PDF file)',
+
+                // unmapped means that this field is not associated to any entity property
+                'mapped' => false,
+
+                // make it optional so you don't have to re-upload the PDF file
+                // every time you edit the Product details
+                'required' => false,
+
+                // unmapped fields can't define their validation using annotations
+                // in the associated entity, so you can use the PHP constraint classes
+                'constraints' => [
+                    new File([
+                        'maxSize' => '1024k',
+                        'mimeTypes' => [
+                            'application/pdf',
+                            'application/x-pdf',
+                            'xml' => ['text/xml', 'application/xml'],
+                            'txt' => 'text/plain',
+                            'jpg',
+                        ],
+                        'mimeTypesMessage' => 'Please upload a valid PDF document',
+                    ])
+                ],
+            ])
+            // ...
+        ;
+    }
+
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults([
+            'data_class' => Product::class,
+        ]);
+    }
+}
+
+//Code du controlleur
+>>>>
+// src/Controller/ProductController.php
+namespace App\Controller;
+
+use App\Entity\Product;
+use App\Form\ProductType;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
+class ProductController extends AbstractController
+{
+    /**
+     * @Route("/product/new", name="app_product_new")
+     */
+    public function new(Request $request, SluggerInterface $slugger)
+    {
+        $product = new Product();
+        $form = $this->createForm(ProductType::class, $product);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            /** @var UploadedFile $brochureFile */
+            $brochureFile = $form->get('brochure')->getData();
+
+            // this condition is needed because the 'brochure' field is not required
+            // so the PDF file must be processed only when a file is uploaded
+            if ($brochureFile) {
+                $originalFilename = pathinfo($brochureFile->getClientOriginalName(), PATHINFO_FILENAME);
+                // this is needed to safely include the file name as part of the URL
+                $safeFilename = $slugger->slug($originalFilename);
+                $newFilename = $safeFilename.'-'.uniqid().'.'.$brochureFile->guessExtension();
+
+                // Move the file to the directory where brochures are stored
+                try {
+                    $brochureFile->move(
+                        $this->getParameter('brochures_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // ... handle exception if something happens during file upload
+                }
+
+                // updates the 'brochureFilename' property to store the PDF file name
+                // instead of its contents
+                $product->setBrochureFilename($newFilename);
+            }
+
+            /**
+            //Mise a jour de l'image sur un formulaire ayant des données déjà persister
+            $product->setBrochureFilename(new File($this->getParameter('brochures_directory').'/'.$product->getBrochureFilename()));
+             */
+
+            // ... persist the $product variable or any other work
+
+            return $this->redirectToRoute('app_product_list');
+        }
+
+        return $this->renderForm('product/new.html.twig', [
+            'form' => $form,
+        ]);
+    }
+}
+
+//brochures_directory parameter that was used in the controller to specify the directory in which the brochures should be stored:
+>>>config/services.yaml
+parameters:
+    brochures_directory: '%kernel.project_dir%/public/uploads/brochures'
+
+>>>twig
+//afficher le formulaire
+
+//lien permettant la fichage du produit
+<a href="{{ asset('uploads/brochures/' ~ product.brochureFilename) }}">View brochure (PDF)</a>
+
+## Créer un service de chargement de document *****
+//Réalisation du service upload
+>>> src/Service/FileUploader.php
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\String\Slugger\SluggerInterface;
+
+class FileUploader
+{
+    private $targetDirectory;
+    private $slugger;
+
+    public function __construct($targetDirectory, SluggerInterface $slugger)
+    {
+        $this->targetDirectory = $targetDirectory;
+        $this->slugger = $slugger;
+    }
+
+    public function upload(UploadedFile $file)
+    {
+        $originalFilename = pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME);
+        $safeFilename = $this->slugger->slug($originalFilename);
+        $fileName = $safeFilename.'-'.uniqid().'.'.$file->guessExtension();
+
+        try {
+            $file->move($this->getTargetDirectory(), $fileName);
+        } catch (FileException $e) {
+            // ... handle exception if something happens during file upload
+        }
+
+        return $fileName;
+    }
+
+    public function getTargetDirectory()
+    {
+        return $this->targetDirectory;
+    }
+}
+
+>>> config/services.yaml
+services:
+    # ...
+
+    App\Service\FileUploader:
+        arguments:
+            $targetDirectory: '%brochures_directory%'
+
+//utilisation du service dans un controlleur
+>>> src/Controller/ProductController.php
+namespace App\Controller;
+
+use App\Service\FileUploader;
+use Symfony\Component\HttpFoundation\Request;
+
+// ...
+public function new(Request $request, FileUploader $fileUploader)
+{
+    // ...
+
+    if ($form->isSubmitted() && $form->isValid()) {
+        /** @var UploadedFile $brochureFile */
+        $brochureFile = $form->get('brochure')->getData();
+        if ($brochureFile) {
+            $brochureFileName = $fileUploader->upload($brochureFile);
+            $product->setBrochureFilename($brochureFileName);
+        }
+
+        // ...
+    }
+
+    // ...
+}
+
+

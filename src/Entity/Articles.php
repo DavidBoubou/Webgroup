@@ -6,28 +6,25 @@ use App\Repository\ArticlesRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
+use Sonata\PageBundle\Entity\BasePage;
+use Sonata\PageBundle\Model\Page;
 use Doctrine\ORM\Mapping as ORM;
-//Created_at 
 
 #[ORM\Entity(repositoryClass: ArticlesRepository::class)]
-class Articles
+class Articles extends BasePage //Page
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type:"integer")]
+    //private ?int $id = null;
+    protected  $id ;
 
-    #[ORM\Column(length: 100)]
-    private ?string $titre = null;
-
+    //My custom field
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $baniere_url = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
-
-    #[ORM\Column(nullable: true)]
-    private ?bool $publie = null;
 
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: Categories::class)]
     private Collection $categorie;
@@ -43,7 +40,7 @@ class Articles
 
     public function __toString():string
     {
-        return $this->titre;;
+        return $this->title;
     }
 
     public function getId(): ?int
@@ -54,17 +51,6 @@ class Articles
     public function setIdOnNull():self
     {
         $this->id = null;
-        return $this;
-    }
-    public function getTitre(): ?string
-    {
-        return $this->titre;
-    }
-
-    public function setTitre(string $titre): self
-    {
-        $this->titre = $titre;
-
         return $this;
     }
 
@@ -104,22 +90,10 @@ class Articles
         return $this;
     }
 
-    public function isPublie(): ?bool
-    {
-        return $this->publie;
-    }
-
-    public function setPublie(?bool $publie): self
-    {
-        $this->publie = $publie;
-
-        return $this;
-    }
-
     /**
      * @return Collection<int, categories>
      */
-    public function getCategorie(): Collection
+   public function getCategorie(): Collection
     {
         return $this->categorie;
     }
@@ -157,5 +131,5 @@ class Articles
 
         return $this;
     }
-
+    
 }

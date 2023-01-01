@@ -34,24 +34,24 @@ use Symfony\Component\Validator\Constraints\Length;
 //routes
 
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
-
+use  Sonata\PageBundle\Admin\PageAdmin;
 /*
 use Symfony\UX\Chartjs\Builder\ChartBuilderInterface;
 use Symfony\UX\Chartjs\Model\Chart;
 */
 
-final class Adminarticles extends AbstractAdmin
+final class Adminarticles extends AbstractAdmin // PageAdmin AbstractAdmin
 {
     //Activation du preview
     public $supportsPreviewMode = true;
 
-    public function toString(object $object): string
+ /*   public function toString(object $object): string
         {
             return $object instanceof MyEntity
                 ? $object->getTitre()
                 : 'Articles'; // shown in the breadcrumb on the create view
         }
-
+*/
 
     protected function configureDashboardActions(array $actions): array
     {
@@ -106,12 +106,12 @@ protected function configureFormFields(FormMapper $form):void
         // This method configures which fields are displayed on the edit and create actions. 
         //The FormMapper behaves similar to the FormBuilder of the Symfony Form component;
         $form ->with('Détails de l\'articles', array('class' => 'col-md-12'))
-        ->add('titre',TextType::class,[
+        ->add('title',TextType::class,[
             'label'=>'Titre de l\'article', 
             'constraints' => [
                 new NotBlank(),
                 new Length(['min' => 3]),]])
-
+        
             //Utiliser dropzone
         ->add('baniere_url',TextType::class,[
             'label'=>'Url de la banniere', 
@@ -126,6 +126,10 @@ protected function configureFormFields(FormMapper $form):void
                 new Length(['min' => 3])
             ]])
             ->end()
+
+
+
+
         ->with('configuration avancée', array('class' => 'col-md-12'))
         //configurer les modelType
         ->add('categorie',ModelAutocompleteType::class, [
@@ -133,12 +137,12 @@ protected function configureFormFields(FormMapper $form):void
             'multiple' =>true,
             'btn_add'=>true,
             //propriété sur les recherche
-            'property' => ['titre'],
+            'property' => ['title'],
             'required' => false])
             
         /*->add('categorie',EntityType::class,[
             'class' => Categories::class,
-            'choice_label' => 'titre'])
+            'choice_label' => 'title'])
             */
        /*->add('autheur',EntityType::class,[
             'class' => User::class,
@@ -155,12 +159,29 @@ protected function configureFormFields(FormMapper $form):void
         ->end()
         ;
 
+        //SEO
+        $form->with('seo', ['class' => 'col-md-6'])->end();
+        if (null === $page || !$page->isHybrid()) {
+            $form
+                ->with('seo')
+                    ->add('slug', TextType::class, ['required' => false])
+                    ->add('customUrl', TextType::class, ['required' => false])
+                ->end();
+        }
+
+        $form
+            ->with('seo', ['collapsed' => true])
+                ->add('title', null, ['required' => false])
+                ->add('metaKeyword', TextareaType::class, ['required' => false])
+                ->add('metaDescription', TextareaType::class, ['required' => false])
+            ->end();
+
     }
 
 protected function configureDatagridFilters(DatagridMapper $datagrid):void
     {
         // This method configures the filters, used to filter and sort the list of models;
-        $datagrid->add('titre',null,[
+        $datagrid->add('title',null,[
             'label'=>'Titre de l\'article', 
             'constraints' => [
                 new NotBlank(),
@@ -180,7 +201,7 @@ protected function configureListFields(ListMapper $list):void
         //(the addIdentifier() method means that this field will link to the show/edit page of this particular
         // model);
         
-        $list->addIdentifier('titre',null, [
+        $list->addIdentifier('title',null, [
             'label'=>'Titre de l\'article', 'editable'=>true]) 
 
             //overider le template de la bannier  
@@ -221,7 +242,7 @@ protected function configureShowFields(ShowMapper $show):void
     {
         
         //This method configures which fields are displayed on the show action.
-        $show->add('titre')   
+        $show->add('title')   
 
         //overider le template de la bannier      
         //->add('baniere_url')
@@ -247,7 +268,7 @@ protected function configureShowFields(ShowMapper $show):void
     //Exporter les champs et les associations.
     protected function configureExportFields(): array
         {
-           return ['titre', 'content', 'autheur'];
+           return ['title', 'content', 'autheur'];
         }
 
     //Format d'exportation

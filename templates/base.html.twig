@@ -1,12 +1,16 @@
 <!-- page basique-->
 
 <!DOCTYPE html>
-<html>
-    <head>
+<html {{ sonata_seo_html_attributes() }}>
+    <head {{ sonata_seo_head_attributes() }}>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width">
-
-        <title> {% block title %}Welcome!{% endblock %}</title>
+       
+        {{ sonata_seo_metadatas() }}
+        {{ sonata_seo_link_canonical() }}
+    {{ sonata_seo_lang_alternates() }}
+    {{ sonata_seo_oembed_links() }}
+        <title> {% block title %} {{ sonata_seo_title_text() }} {% endblock %}</title>
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 128 128%22><text y=%221.2em%22 font-size=%2296%22>⚫️</text></svg>">
 
     </head>
@@ -52,6 +56,8 @@
                 {{ encore_entry_script_tags('app') }}
     
             {% endblock %}
+            
+{{ sonata_seo_breadcrumb() }}
         </footer>
     </body>
 </html>

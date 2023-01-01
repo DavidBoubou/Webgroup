@@ -12,6 +12,8 @@ Gestion des utlisateurs
 Gestion de la SEO
 Gestion du contenu
 
+ressources:
+https://www.partitech.com/blog-technique/symfony/symfony-6-sonata-initialiser-un-projet-symfony-6-sonata-fosuser-media/
  */
 
 # Methode
@@ -239,6 +241,14 @@ MenuFactory -->		            generates the side menu, depending on the current a
 ## Debug
 php bin/console sonata:admin:list
 php bin/console sonata:admin:explain name_route_list
+
+## bundles
+- SonataBlockBundle
+- SonataUserBundle
+- SonataNotificationBundle
+- SonataPageBundle
+- SonataMediaBundle
+
 
 # Installation du bundle Sonata sur Mysql (voir NoSql)
 >>> installation de admin et de la base de donné.
@@ -941,7 +951,7 @@ twig:
         - '@SonataForm/Form/color.html.twig'
 
 
-### 1.2 Créer un childAdmin (relation par url entre une class et une autre class admin)
+### 1.2 Créer un childAdmin (relation par url entre une class et une autre class admin)******
 
 Déclarer une class admin 2 (VideoAdmin) comme enfant d'une class admin 1 (PlaylistAdmin) créera une nouvel route (/playlist/{id}/video/list) ou les video (class 2) seront filtrer automatiquement.
 
@@ -1039,16 +1049,14 @@ sonata_admin:
 
 ## 2- Dashborad Admin Landing page et menu
 
- ### Contex
-//Configurer le contenu et le layout du tableau de bord landing page
-//lien /admin/dashboard
-//sonata.admin.block.admin_list est le service qui list les Model Administrateur au tableau de bord dont le template est
-//@SonataAdmin/Block/block_admin_list.html.twig
-//gestion des droit de visibilité de certain bloc de vue
-//Il y a plusieur type de bloc permettant des type de contenue sur le dashboard
-// Le nom des Menu déroulant est le nom des groupes définie dans service.yaml
+### Contex
+Configurer le contenu et le layout du tableau de bord landing page dont le lien est /admin/dashboard.
+Il y a plusieur type de bloc permettant des type de contenue sur le dashboard
+//sonata.admin.block.admin_list est le service qui list les Model Administrateur au tableau de bord dont le template est @SonataAdmin/Block/block_admin_list.html.twig
+- Gestion des droit de visibilité de certain bloc de vue
+-Gestion du Menu dashboard (parent et enfant) c'est le nom des groupes définie dans service.yaml
 
-#### One side (easiest) definition des groups et traduction
+#### 1-One side (easiest) definition des groups et traduction et du menu dashboard
 //Le 'group' tag est tres important.
 //Cette configuration overide les autres
 >>> config/packages/sonata_admin.yaml
@@ -1056,20 +1064,43 @@ sonata_admin:
     dashboard:
     # Definition d'un ou de plusieurs group
         groups:
+            # Menu parent
             app.admin.group.content:
+                on_top:            true #!valeur unique enleve les treviews
+                keep_open:       true #garder le menu déroulant ouvert
+                icon:            'fas fa-edit' # for icon menu html is also supported
+                show_in_dashboard: true # Montrer ce groud dans le dashboard 
                 label: app.admin.group.content
                 # domaine de traduction
                 translation_domain: App
                 # service(Model) implémenter au tableau de bord (voir services.yml)
                 items:
+                    #Menu enfant
                     - app.admin.post    # Liste le model dont le service est app.admin.post (service.yml)
+                    # lien 2 enfant de label Blog afficher pour les roles
+                    - route:        blog_home #Nom du controleur
+                      route_params: { articleId: 3 } #paramettre de la route.
+                      icon:         'fas fa-edit' # for icon menu html is also supported
+                      label:        Blog
+                      roles:        ['ROLE_FOO', 'ROLE_BAR']
 
             app.admin.group.blog:
                 items:
                     - sonata.admin.page # Liste les model manquants
                 roles: ['ROLE_ONE', 'ROLE_TWO'] # droit du group app.admin.group.blog
+            # Menu KNPMENU et/ou Group pouvant etre dans le dashboard  
+            MyGenerateMenu:
+                provider:        'MyBundle:MyMenuProvider:getMyMenu' # Utlisation d'un builder knpmenu ou d'un provider
+                icon:            'fas fa-edit' # html is also supported
 
             app.admin.group.misc: ~ # group contenu vide de configuration basique (service.yml)
+
+>>> config/service.yml
+sonata_admin.admin.post:
+    class: Sonata\AdminBundle\Admin\PostAdmin
+    tags:
+        - { name: sonata.admin, model_class: Sonata\AdminBundle\Entity\Post, controller: Sonata\AdminBundle\Controller\CRUDController, manager_type: orm, group: admin, label: Post, show_in_dashboard: false, on_top: true /*roles: ['ROLE_ADMIN']*/ }
+
 
 #### otherside (harder) definition des groupes et traductions par défault
 //Declarer l'interface administrateur en donnant un group
@@ -1080,11 +1111,7 @@ services:
         tags:
             - { name: sonata.admin, model_class: App\Entity\Post, manager_type: orm, /** tres important*/group: 'Content', label: 'Post' }
 
->>> config/services.xml
-<service id="app.admin.post" class="App\Admin\PostAdmin">
-      <tag name="sonata.admin" model_class="App\Entity\Post" manager_type="orm" group="Content" label="Post"/>
-  </service>
-
+//ou
 >>>  config/services.yaml <<<
 //autres structure pour multilangue (translattion domaine)
 services:
@@ -1098,20 +1125,8 @@ services:
               translation_domain: 'App'
               label: 'app.admin.model.post'
 
->>> config/services.xml <<<
-//autres structure pour multilangue (translattion domaine)
-<service id="app.admin.post" class="App\Admin\PostAdmin">
-      <tag
-          name="sonata.admin"
-          model_class="App\Entity\Post"
-          manager_type="orm"
-          group="app.admin.group.content"
-          translation_domain="App"
-          label="app.admin.model.post"
-          />
-  </service>
 
- ### Configurer Layout dashboard et bloc personnalisé
+### 2-Configurer Layout dashboard et bloc personnalisé
 >>> config/packages/sonata_admin.yaml
 sonata_admin:
     dashboard:
@@ -1188,7 +1203,7 @@ BOTTOM BOTTOM BOTTOM
 
  */
 
- ### Actions sur le tableau de bord
+### 3-Actions sur le tableau de bord
 
  #### Caché un bouton du dashboard sans le désactivé
  >>> AbstractAdmin.php
@@ -1222,12 +1237,12 @@ BOTTOM BOTTOM BOTTOM
 
 
 
-## 3-Search page
+## 4-Search page
 //Afficher les Model ayant un résultat sinon personnalisé la Query.
 //LIKE %query% OR LIKE %query%
 
 ### template
->>> onfig/packages/sonata_admin.yaml
+>>> config/packages/sonata_admin.yaml
 sonata_admin:
     templates:
         # other configuration options
@@ -1263,10 +1278,10 @@ sonata_block:
       </call>
   </service>
 
-## Export
+## 5-Export
 
 
-## 4- Créer un template d'administration
+## 6- Créer un template d'administration
 
 ### Overider les pages (liste, edit, create, update,delete) et l'administration
 >>> config/packages/sonata_admin.yaml
@@ -1352,12 +1367,13 @@ sonata_doctrine_orm_admin:
                 decimal:    '@SonataAdmin/CRUD/base_show_field.html.twig'
 
 ### Service bloc (contenu admin perosnnalisé)
-
-### Dashboard
-
-### bloc personnalisé
+@see dashboard et sonata.admin.list et blockBundel.
 
 ### template personnalise
+>>>config/sonata_admin:
+template:
+    dashboard : 'mytemplate'
+    edit: 'my template'
 
 ### List bloc personnalisé
 @see  '@SonataAdmin/Block/block_admin_list.html.twig'
@@ -2235,7 +2251,7 @@ sonata_block:
         template: '@SonataBlock/Profiler/block.html.twig'
 
 
-## Block pour Menu (MenuBlockService)
+## Block pour Menu (MenuBlockService)******
 //Set cache_policy to private if this menu is dedicated to be in a user part.
 >>>config/services.yaml
 services:
@@ -2698,7 +2714,7 @@ final class DataSource implements DataSourceInterface
     }
 }
 
-# Saving hooks
+# Saving hooks **********
 
 ## Context
 Evenement s'exécutant durant un processus de Sonata Admin (controlleur)
@@ -2816,6 +2832,7 @@ sonata_admin:
             uses:#Specify one or more traits. If the managed class of an admin uses one of the specified traits the extension will be added to #that admin.
                 - App\Trait\Timestampable
             #priority:1	#Can be a positive or negative integer. The higher the priority, the earlier it was executed.
+
 >>>config/service.yml
     app.articles.extension:
         class: App\Admin\Extension\ArticlesAdminExtension
@@ -2823,6 +2840,42 @@ sonata_admin:
             - { name: sonata.admin.extension,   
                 target: admin.articles 
                  }
+## Attributs de l'extension
+Attributes supported by sonata.admin.extension tag
+Attribute (name)	Type	Description
+target	(string)	Admins service’s name that you want to customize, If you use the global attribute as true, you don’t need to pass it.
+priority (integer)	Can be a positive or negative integer. The higher the priority, the earlier it’s executed.
+global	(boolean)	adds the extension to all admins.
+
+## Configurer une extension dans sonata_admin
+/*
+global	adds the extension to all admins.
+admins	specify one or more admin service ids to which the Extension should be added.
+excludes	specify one or more admin service ids to which the Extension should not be added (this will prevent it matching any of the other settings).
+extends	specify one or more classes. If the managed class of an admin extends one of the specified classes the extension will be added to that admin.
+implements	specify one or more interfaces. If the managed class of an admin implements one of the specified interfaces the extension will be added to that admin.
+instanceof	specify one or more classes. If the managed class of an admin extends one of the specified classes or is an instance of that class the extension will be added to that admin.
+uses	Specify one or more traits. If the managed class of an admin uses one of the specified traits the extension will be added to that admin.
+priority	Can be a positive or negative integer. The higher the priority, the earlier it was executed.
+*/
+>>> config/packages/sonata_admin.yaml
+sonata_admin:
+    extensions:
+        app.publish.extension:
+            global: true
+            admins:
+                - app.admin.article
+            implements:
+                - App\Publish\PublishStatusInterface
+            excludes:
+                - app.admin.blog
+                - app.admin.news
+            extends:
+                - App\Document\Blog
+            instanceof:
+                - App\Document\Page
+            uses:
+                - App\Trait\Timestampable
 
 ## Retirer une extension de l'Admin
 >>> AbstractAdmin
@@ -2885,28 +2938,58 @@ sonata_seo:
 
 
 >>> twig
+//my-attribute="my-value"
 <html {{ sonata_seo_html_attributes() }}>
+//my-attribute="my-value"
 <head {{ sonata_seo_head_attributes() }}>
 
 
-{{ sonata_seo_title() }}
-{{ sonata_seo_title_text() }}
-{{ sonata_seo_metadatas() }}
+{{ sonata_seo_title() }} => <title>My custom title</title>
+{{ sonata_seo_title_text() }} =>My custom title
+{{ sonata_seo_metadatas() }} =><meta name="my-meta-name" content="my-value"/>
 
-
+//<link rel="canonical" href="http://www.example.com/"/>
 {{ sonata_seo_link_canonical() }}
+
+//<link rel="alternate" href="http://www.example.com/en" hreflang="en"/>
 {{ sonata_seo_lang_alternates() }}
+
+//<link rel="alternate" type="application/json+oembed" href="http://flickr.com/services/oembed?url=http%3A%2F%2Fflickr.com%2Fphotos%2Fbees%2F2362225867%2F&format=json" title="Bacon Lollys oEmbed Profile"/>
 {{ sonata_seo_oembed_links() }}
 </head>
 
-{{ sonata_seo_html_attributes() }}
+//BreadCrumb Navigation
+{{ sonata_seo_breadcrumb() }}
 </html>
 
-## Alter SEO information ****
+## Alter SEO information selon une entité ****
 - impossible
+>>>php
+$post = $this->getPostManager()->findOneByPermalink($permalink, $this->container->get('sonata.news.blog'));
+
+$seoPage = $this->container->get('sonata.seo.page');
+
+$seoPage
+    ->setTitle($post->getTitle())
+    //Preênd le titre de la page
+    ->addTitlePrefix($post->getTitle());
+    //Description
+    ->addMeta('name', 'description', $post->getAbstract())
+    //Propriété de la SEO
+    ->addMeta('property', 'og:title', $post->getTitle())
+    ->addMeta('property', 'og:type', 'blog')
+    ->addMeta('property', 'og:url',  $this->generateUrl('sonata_news_view', [
+        'permalink' => $this->getBlog()->getPermalinkGenerator()->generate($post, true)
+    ], true))
+    ->addMeta('property', 'og:description', $post->getAbstract())
+    ->setBreadcrumb('news_post', [
+        'post' => $post,
+    ])
+;
 
 ## 2- Breadcrumb /Navigation ****
-- impossible
+Le breadCrumb functionne avec le bundle KnpMenu.
+
 ### Context
 a secondary navigation aid that helps users easily understand the relation between their location on a page (like a product page) and higher level pages (a category page, for instance).
 
@@ -2915,7 +2998,48 @@ The sonata.admin.breadcrumbs_builder service is used in the layout of every page
 one as text, appearing in the title tag of the document’s head tag;
 the other as html, visible as an horizontal bar at the top of the page.
 
-### Execution
+### Application
+>>> BaseBlockService
+namespace App\Block;
+
+use Knp\Menu\ItemInterface;
+use Sonata\BlockBundle\Block\BlockContextInterface;
+use Sonata\SeoBundle\Block\Breadcrumb\BaseBreadcrumbMenuBlockService;
+
+class MyCustomBreadcrumbBlockService extends BaseBreadcrumbMenuBlockService
+{
+    public function handleContext(string $context): bool
+    {
+        return 'app.block.breadcrumb' === $context;
+    }
+
+    protected function getMenu(BlockContextInterface $blockContext): ItemInterface
+    {
+        $menu = $this->getMenu($blockContext);
+
+        $menu->addChild('my_awesome_action');
+
+        return $menu;
+    }
+}
+
+>>> service.yaml
+<!-- config/services.xml -->
+<!-- priority overide the breadcrumb order-->
+<service id="app.bundle.block.breadcrumb" class="App\Block\MyCustomBreadcrumbBlockService">
+    <argument type="service" id="twig"/>
+    <argument type="service" id="knp_menu.factory"/>
+    <tag name="sonata.block"/>
+    <tag name="sonata.breadcrumb"/>
+</service>
+>>> twig
+{{ sonata_block_render_event('breadcrumb', {
+    'context': 'my_custom_context',
+    'current_uri': app.request.requestUri
+}) }}
+ou {{ sonata_seo_breadcrumb() }}
+
+### autres breadcrump in admin
 >>> config/packages/sonata_admin.yaml
 sonata_admin:
     breadcrumbs:
@@ -2926,11 +3050,959 @@ sonata_admin:
 $this->get('sonata.admin.breadcrumbs_builder')->getBreadcrumbs($admin, $action);
 
 ## 3- SiteMap ****
-- impossible
+- Utiliser l'hébergeur wampserver.
 
+### 1-Definition de la siteMap
+//Class SiteMap
+>>>
+class MyCustomSitemapIterator implements SourceIteratorInterface
+{
+    protected $key;
+
+    protected $stop;
+
+    protected $current;
+
+    public function __construct($stop = 1000)
+    {
+        $this->stop = $stop;
+    }
+
+    public function current()
+    {
+        return $this->current;
+    }
+
+    public function next()
+    {
+        $this->key++;
+        $this->current = [
+            'url'  => '/the/path/to/target',
+            'lastmod'    => '01.01.2020',
+            'changefreq' => 'weekly',
+            'priority'   => 0.5
+        ];
+    }
+
+    public function key()
+    {
+        return $this->key;
+    }
+
+    public function valid()
+    {
+        return $this->key < $this->stop;
+    }
+
+    public function rewind()
+    {
+        $this->key = 0;
+    }
+}
+
+//Definition de la siteMap
+>>> config/service.yaml
+service:
+    app.my_custom_sitemap_service:
+        class: MyCustomSitemapIterator
+
+sonata_seo:
+    # ...
+    sitemap:
+        services:
+            - app.my_custom_sitemap_service
+
+        doctrine_orm:
+            # media
+            - types: [image]
+              connection: doctrine.dbal.default_connection
+              route: sonata_media_view
+              parameters: {id: null}
+              query: |
+                  SELECT
+                    id,
+                    updated_at as lastmod,
+                    'weekly' as changefreq,
+                    '0.5' as priority
+                  FROM media__media
+                  WHERE enabled = true
+            # blog post
+            - group: "news"
+              connection: doctrine.dbal.default_connection
+              route: sonata_news_view
+              parameters: {url: null}
+              query: |
+                  SELECT
+                    CONCAT_WS('/', YEAR(created_at), MONTH(created_at), DAY(created_at), slug) as url ,
+                    updated_at as lastmod,
+                    'weekly' as changefreq,
+                    '0.5' as priority
+                  FROM news__post
+                  WHERE enabled = true
+                    AND (publication_date_start IS NULL OR publication_date_start <= NOW())
+            # page - works only for one site, please adapt the code if required
+            - connection: doctrine.dbal.default_connection
+              route: page_slug
+              parameters: {path: null}
+              query: |
+                  SELECT
+                    url as path,
+                    updated_at as lastmod,
+                    'weekly' as changefreq,
+                    '0.5' as priority
+                  FROM page__snapshot
+                  WHERE route_name = 'page_slug'
+                    AND enabled = true
+                    AND (publication_date_start IS NULL OR publication_date_start <= NOW())
+                    AND (publication_date_end IS NULL OR publication_date_end >= NOW())
+            # product categories
+            - connection: doctrine.dbal.default_connection
+              route: sonata_catalog_category
+              parameters: {category_id: null, category_slug: null}
+              query: |
+                  SELECT
+                    id as category_id,
+                    slug as category_slug,
+                    updated_at as lastmod,
+                    'weekly' as changefreq,
+                    '0.5' as priority
+                  FROM classification__category
+                  WHERE enabled = true
+            # products
+            - connection: doctrine.dbal.default_connection
+              route: sonata_product_view
+              parameters: {productId: null, slug: null}
+              query: |
+                  SELECT
+                    id as productId,
+                    slug,
+                    updated_at as lastmod,
+                    'weekly' as changefreq,
+                    '0.5' as priority
+                  FROM product__product
+                  WHERE enabled = true
+
+### 2-Génerer le SiteMap
+
+### 3-Perfectionner la lign SQL
+/**
+You will need to configure:
+a Doctrine connection
+a route
+default parameters used by the route
+the query which must contains all information required by a sitemap: lastmod, changefreq and priority
+The url is generated by using route and parameters settings.
+
+For performance reasons and memory usage there is no model hydrated while generating the sitemap. So if the sitemap requires specific rules, they must be expressed in the WHERE condition. The query must select fields to be used in the route.
+
+The following code is an extract of the query required to generate a valid sitemap for the SonataNewsBundle
+ */
+SELECT
+    CONCAT_WS('/', YEAR(created_at), MONTH(created_at), DAY(created_at), slug) as url ,
+    DATETIME(updated_at) as lastmod,
+    'weekly' as changefreq,
+    '0.5' as priority
+FROM news__post
+WHERE
+        enabled = 1
+    AND (publication_date_start IS NULL OR publication_date_start <= NOW())
+
+### 4-Géner un site
+php bin/console sonata:seo:sitemap web sonata-project.org
 
 # SonataPageBundle ******
 https://docs.sonata-project.org/projects/SonataPageBundle/en/3.x/reference/installation/
+https://www.partitech.com/blog-technique/symfony/sonata/symfony-4-sonata-installer-le-cms-sontat-page/
+issue:
+Le layout de sonata_admin est une grille de 8 colonne dont le contenu dynamic est générer par des block depuis l'admin tab 'composer' d'une page.
+Tab Block_list est la liste des block plasser sur les zones de la page édifié.
+
+## Context
+Transformel'application symfony e CMS avec une gestion du template du contenu par les utilisateurs authentifié.
+Prerequis
+SonataAdminBundle
+SonataBlockBundle_
+SonataCacheBundle_
+SonataSeoBundle_
+SonataNotificationBundle_
+
+L'ajout des enités se font automatiquement.
+a Page: A page is composed of Blocks and contains information about a page (routing, headers, etc…)
+a Block: A block contains information about an area of a page, a block can have children
+a Snapshot: The final representation of a page, the end user always sees a Snapshot
+
+## Instalation
+
+- Page bundle
+composer require sonata-project/page-bundle
+
+- API REST
+composer require friendsofsymfony/rest-bundle nelmio/api-doc-bundle
+
+## Configuration des bundles
+
+### vider le cache
+>>> config/twig### Ligne de commande
+//Mettre a jour la route pour le gestionnaire de page
+php bin/console sonata:page:update-core-routes
+
+//remove orphan page
+php bin/console sonata:page:update-core-routes --clean
+
+// créer des snapchot depuis les pages
+php bin/console sonata:page:create-snapshots
+
+//Netoyer les snapchot
+php bin/console sonata:page:cleanup-snapshots --keep-snapshots=5
+
+//Créer un block
+php bin/console sonata:page:create-block-container --templateCode=default --blockCode=content_bottom --blockName="Left Content"
+
+
+//cloner le site avec les pages
+php bin/console sonata:page:clone-site --source-id=1 --dest-id=2 --prefix=Foo
+
+#### Mutiwebsite
+php bin/console sonata:page:cleanup-snapshots --keep-snapshots=5
+
+php bin/console sonata:page:update-core-routes --site=1 --site=2 --site=...
+php bin/console sonata:page:create-snapshots --site=1 --site=2 --site=...
+php bin/console sonata:page:cleanup-snapshots --site=1 --site=2 --site=...
+
+
+cache: false
+
+
+### 1 - Configuration de la route CMF pour pageBundle
+>>> config/packages/cmf_routing_bundle.yaml
+cmf_routing:
+    chain:
+        routers_by_id:
+            # enable the DynamicRouter with high priority to allow overwriting configured routes with content
+            #cmf_routing.dynamic_router: 200
+            # enable the symfony default router with a lower priority
+            sonata.page.router: 150
+            router.default: 100
+
+### 2 - Configuration de sonataPageBundle
+//Configurer le fichier sonata_page.yaml avec les instructions ci-dessous.
+>>> config/packages/sonata_page.yaml
+sonata_page:
+    # Faire un multisite 
+    multisite: host #
+    # host	you can configure a site per host. This strategy works out of the box with no changes.
+    # host_by_locale	same than host, but try to retrieve the site by the Accept-Language header of the HTTP request.
+    # host_with_path	you can configure site per host and per path. This strategy requires some changes.
+    # host_with_path_by_locale	same than host with path, but try to retrieve the site by the Accept-Language header of the HTTP request.
+
+    router_auto_register:
+        enabled: true
+        priority: 150
+
+    slugify_service: sonata.page.slugify.cocur # old BC value is sonata.core.slugify.native
+
+    multisite: host
+    #host	you can configure a site per host. This strategy works out of the box with no changes.
+    #host_by_locale	same than host, but try to retrieve the site by the Accept-Language header of the HTTP request.
+    #host_with_path	you can configure site per host and per path. This strategy requires some changes.
+    #host_with_path_by_locale	same than host with path, but try to retrieve the site by the Accept-Language header of the HTTP request.
+
+    use_streamed_response: true # set the value to false in debug mode or if the reverse proxy does not handle streamed response
+    ignore_route_patterns:
+        - ^(.*)admin(.*)   # ignore admin route, ie route containing 'admin'
+        - ^_(.*)          # ignore symfony routes
+
+    # mes service  page bundles
+    class:
+        page: App\Entity\SonataPagePage
+        snapshot: App\Entity\SonataPageSnapshot
+        block: App\Entity\SonataPageBlock
+        site: App\Entity\SonataPageSite
+
+    ignore_routes:
+        - sonata_page_cache_esi
+        - sonata_page_cache_ssi
+        - sonata_page_js_sync_cache
+        - sonata_page_js_async_cache
+        - sonata_cache_esi
+        - sonata_cache_ssi
+        - sonata_cache_js_async
+        - sonata_cache_js_sync
+        - sonata_cache_apc
+
+    ignore_uri_patterns:
+        - ^/admin\/   # ignore admin route, ie route containing 'admin'
+
+    page_defaults:
+        homepage: {decorate: false} # disable decoration for homepage, key - is a page route
+
+    default_template: default # template key from templates section, used as default for pages
+    templates:
+    default:
+        path: '@ApplicationSonataPage/demo_layout.html.twig'
+        name: 'default'
+        # containers créer pour structurer le contenu dans les layout
+        # Editable dans la table Page-Composer de l'administration
+        # template selectionner dans la tab 'Général'
+        containers:
+            header:
+                name: Header
+            content_top:
+                name: Top content
+            content:
+                name: Main content
+            content_bottom:
+                name: Bottom content
+            footer:
+                name: Footer
+        # Matrix layout du template définie 8 colomnne
+        matrix:
+            layout: |
+
+                HHHHHHHH
+                TTTTTTTT
+                TTTTTTTT
+                CCCCCCCC
+                CCCCCCCC
+                BBBBBBBB
+                BBBBBBBB
+                FFFFFFFF
+
+            mapping:
+              H: header
+              T: content_top
+              C: content
+              B: content_bottom
+              F: footer
+
+    2columns:
+        path: '@ApplicationSonataPage/demo_2columns_layout.html.twig'
+        name: '2 columns layout'
+        # Hérite de du template 'defaukt'
+        inherits_containers: default
+        containers:
+            left_col:
+                name: Left column
+                blocks:
+                    - sonata.media.block.media
+                    - sonata.media.block.gallery
+                    - sonata.media.block.feature_media
+            content:
+                name: Main content
+                blocks:
+                    - sonata.media.block.media
+            right_col:
+                name: Right column
+                blocks:
+                    - sonata.news.block.recent_posts
+                    - sonata.order.block.recent_orders
+                    - sonata.product.block.recent_products
+        matrix:
+            layout: |
+
+                HHHHHHHHHH
+                TTTTTTTTTT
+                TTTTTTTTTT
+                LLLCCCCRRR
+                LLLCCCCRRR
+                BBBBBBBBBB
+                BBBBBBBBBB
+                FFFFFFFFFF
+
+            mapping:
+               H: header
+               T: content_top
+               L: left_col
+               R: right_col
+               C: content
+               B: content_bottom
+               F: footer
+
+    3columns:
+        path: '@ApplicationSonataPage/demo_3columns_layout.html.twig'
+        name: '3 columns layout'
+        containers:
+            left_col:
+                name: Left column
+                # injection de services dans le container
+                blocks:
+                    - sonata.media.block.media
+                    - sonata.media.block.gallery
+                    - sonata.media.block.feature_media
+            mid_col:
+                name: Left column
+                blocks:
+                    - sonata.media.block.media
+                    - sonata.media.block.gallery
+                    - sonata.media.block.feature_media
+            right_col:
+                name: Right column
+                blocks:
+                    - sonata.news.block.recent_posts
+                    - sonata.order.block.recent_orders
+                    - sonata.product.block.recent_products
+        matrix:
+            layout: |
+                LLLMMMMRRR
+                LLLMMMMRRR
+                LLLMMMMRRR
+                LLLMMMMRRR
+                LLLMMMMRRR
+
+            mapping:
+               L: left_col
+               R: right_col
+               M: mid_col
+    #    default:  { path: '@SonataPage/layout.html.twig',          name: 'default' }
+    #    2columns: { path: '@SonataPage/2columns_layout.html.twig', name: '2 columns layout' }
+
+    direct_publication: false # or %kernel.debug% if you want to publish in dev mode (but not in prod)
+
+    # manage the http errors
+    # Nos exception de page d erreurs
+    catch_exceptions:
+        not_found: [404]    # cette page peut être overider_page_internal_error_not_found-render 404 page with "not_found" key (name generated: _page_internal_error_{key})
+        fatal:     [500]    # so you can use the same page for different http errors or specify specific page for each error
+
+//Obtention de choix de template pour un block acme.demo.block.demo en Admin.
+>>>config/package/sonata_block
+sonata_block:
+       acme.demo.block.demo:
+           templates:
+              - { name: 'Simple', template: '@AcmeDemo/Block/demo_simple.html.twig' }
+              - { name: 'Big',    template: '@AcmeDemo/Block/demo_big.html.twig' }
+
+// Compléter un multisite
+>>>public/index.php
+
+use App\Kernel;
+use Symfony\Component\ErrorHandler\Debug;
+use Sonata\PageBundle\Request\RequestFactory; # before: use Symfony\Component\HttpFoundation\Request;
+
+require dirname(__DIR__).'/config/bootstrap.php';
+
+if ($_SERVER['APP_DEBUG']) {
+    umask(0000);
+
+    Debug::enable();
+}
+
+if ($trustedProxies = $_SERVER['TRUSTED_PROXIES'] ?? $_ENV['TRUSTED_PROXIES'] ?? false) {
+    Request::setTrustedProxies(explode(',', $trustedProxies), Request::HEADER_X_FORWARDED_ALL ^ Request::HEADER_X_FORWARDED_HOST);
+}
+
+if ($trustedHosts = $_SERVER['TRUSTED_HOSTS'] ?? $_ENV['TRUSTED_HOSTS'] ?? false) {
+    Request::setTrustedHosts([$trustedHosts]);
+}
+
+$kernel = new Kernel($_SERVER['APP_ENV'], (bool) $_SERVER['APP_DEBUG']);
+
+// Multisite appelé host_with_path
+$request = RequestFactory::createFromGlobals('host_with_path'); // before: $request = Request::createFromGlobals();
+$response = $kernel->handle($request);
+$response->send();
+$kernel->terminate($request, $response);
+
+
+//Configuration de la route
+>>> config/routes.yaml
+sonata_page_exceptions:
+    resource: '@SonataPageBundle/Resources/config/routing/exceptions.xml'
+    prefix: /
+
+sonata_page_cache:
+    resource: '@SonataPageBundle/Resources/config/routing/cache.xml'
+    prefix: /
+
+//configurer l'orm
+>>> config/packages/doctrine.yaml
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    SonataPageBundle: ~
+
+### 3 - Configuration SonataAdminBundle  pour pageBundle
+>>> config/packages/sonata_admin.yaml
+sonata_admin:
+    assets:
+        extra_javascripts:
+            - bundles/sonatapage/sonata-page.back.min.js
+        extra_stylesheets:
+            - bundles/sonatapage/sonata-page.back.min.css
+
+### 4 - Configuration SonataBlockBundle  pour pageBundle
+>>> config/packages/sonata_block.yaml
+sonata_block:
+    context_manager: sonata.page.block.context_manager
+
+### 5 - Configuration Security pour pageBundle 
+>>> config/packages/security.yaml
+security:
+    role_hierarchy:
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: [ROLE_USER, ROLE_SONATA_ADMIN, ROLE_ADMIN, ROLE_ALLOWED_TO_SWITCH, SONATA]
+        # Role de gestion du CMS Symfony
+        SONATA:
+            - ROLE_SONATA_PAGE_ADMIN_PAGE_EDIT # if you are not using acl then this line must be uncommented
+            - ROLE_SONATA_PAGE_ADMIN_BLOCK_EDIT
+    firewalls:
+        main: # replace with your firewall name
+            logout:
+                handlers: ['sonata.page.cms_manager_selector']
+
+
+### 6 - Les entités des pagebundle
+>>> src/Entity/SonataPageBlock.php
+use Doctrine\ORM\Mapping as ORM;
+use Sonata\PageBundle\Entity\BaseBlock;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="page__block")
+ */
+class SonataPageBlock extends BaseBlock
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+}
+
+>>> src/Entity/SonataPagePage.php
+use Doctrine\ORM\Mapping as ORM;
+use Sonata\PageBundle\Entity\BasePage;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="page__page")
+ */
+class SonataPagePage extends BasePage
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+}
+
+>>> src/Entity/SonataPageSite.php
+use Doctrine\ORM\Mapping as ORM;
+use Sonata\PageBundle\Entity\BaseSite;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="page__site")
+ */
+class SonataPageSite extends BaseSite
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+}
+
+>>> src/Entity/SonataPageSnapshot.php
+
+use Doctrine\ORM\Mapping as ORM;
+use Sonata\PageBundle\Entity\BaseSnapshot;
+
+/**
+ * @ORM\Entity
+ * @ORM\Table(name="page__snapshot")
+ */
+class SonataPageSnapshot extends BaseSnapshot
+{
+    /**
+     * @ORM\Id
+     * @ORM\GeneratedValue
+     * @ORM\Column(type="integer")
+     */
+    protected $id;
+}
+
+>>> console 
+//Mettre a jour le schema de la base de données
+php bin/console doctrine:schema:update --force
+
+
+
+## Application
+ Chaque sortie des scripts droit avoir une valeur significatif sur la ligne de commande.
+
+### 1- creer un site
+// Créer un site sur un serveur tel que wampserveur
+php bin/console sonata:page:create-site
+or
+php bin/console  sonata:page:create-site --enabled=true --name=localhost --locale=- --host=localhost --relativePath=/ --enabledFrom=now --enabledTo="+10 years" --default=true
+
+Aide:
+------
+name - Friendly name for the site.
+host - Hostname used to reach the site.
+relativePath - The relative path for the site (only used by the HostPathSiteSelector otherwise, just use ‘-‘).
+enabled - If the site is enabled or not (e.g: --enabled).
+enabledFrom - The DateTime the site is enabled from (if site is always enabled and has no start DateTime, use ‘-‘ as the value).
+enabledTo - The DateTime the site is enabled to (if site is always enabled and has no end DateTime, use ‘-‘ as the value).
+default - Only used by the HostPathSiteSelector as the default site if it is unable to match any other site (e.g: --default).
+locale - The default locale for the site (use ‘-‘ as the value if specifying the locale is not needed).
+
+### 2-default page
+php bin/console sonata:page:update-core-routes --site=all
+
+### 3-creating snapchot
+php bin/console sonata:page:create-snapshots --site=all
+
+### 4- Configurer le layout d'une page
+default_template: default
+templates:
+    default:
+        path: '@ApplicationSonataPage/demo_layout.html.twig'
+        name: 'default'
+        containers:
+            header:
+                name: Header
+            content_top:
+                name: Top content
+            content:
+                name: Main content
+            content_bottom:
+                name: Bottom content
+            footer:
+                name: Footer
+                blocks:
+                    - sonata.media.block.media
+                    - sonata.media.block.gallery
+                    - sonata.media.block.feature_media
+        matrix:
+            layout: |
+
+                HHHHHHHH
+                TTTTTTTT
+                TTTTTTTT
+                CCCCCCCC
+                CCCCCCCC
+                BBBBBBBB
+                BBBBBBBB
+                FFFFFFFF
+
+            mapping:
+              H: header
+              T: content_top
+              C: content
+              B: content_bottom
+              F: footer
+
+    2columns:
+        path: '@ApplicationSonataPage/demo_2columns_layout.html.twig'
+        name: '2 columns layout'
+        # héritage du template default
+        inherits_containers: default
+        containers:
+            left_col:
+                name: Left column
+                blocks:
+                    - sonata.media.block.media
+                    - sonata.media.block.gallery
+                    - sonata.media.block.feature_media
+            content:
+                name: Main content
+                blocks:
+                    - sonata.media.block.media
+            right_col:
+                name: Right column
+                blocks:
+                    - sonata.news.block.recent_posts
+                    - sonata.order.block.recent_orders
+                    - sonata.product.block.recent_products
+        matrix:
+            layout: |
+
+                HHHHHHHHHH
+                TTTTTTTTTT
+                TTTTTTTTTT
+                LLLCCCCRRR
+                LLLCCCCRRR
+                BBBBBBBBBB
+                BBBBBBBBBB
+                FFFFFFFFFF
+
+            mapping:
+               H: header
+               T: content_top
+               L: left_col
+               R: right_col
+               C: content
+               B: content_bottom
+               F: footer
+
+    3columns:
+        path: '@ApplicationSonataPage/demo_3columns_layout.html.twig'
+        name: '3 columns layout'
+        containers:
+            left_col:
+                name: Left column
+                blocks:
+                    - sonata.media.block.media
+                    - sonata.media.block.gallery
+                    - sonata.media.block.feature_media
+            mid_col:
+                name: Left column
+                blocks:
+                    - sonata.media.block.media
+                    - sonata.media.block.gallery
+                    - sonata.media.block.feature_media
+            right_col:
+                name: Right column
+                blocks:
+                    - sonata.news.block.recent_posts
+                    - sonata.order.block.recent_orders
+                    - sonata.product.block.recent_products
+        matrix:
+            layout: |
+                LLLMMMMRRR
+                LLLMMMMRRR
+                LLLMMMMRRR
+                LLLMMMMRRR
+                LLLMMMMRRR
+
+            mapping:
+               L: left_col
+               R: right_col
+               M: mid_col
+templates:
+    2columns:
+        # Héritage du template
+        inherits_containers: default
+        containers:
+            content:
+                name: Main content
+                blocks:
+                    - sonata.media.block.media
+
+### Twig
+// render the container content of the current page
+{{sonata_page_render_container('content', page)  }}
+//overide the content with key
+{{ sonata_page_render_container('name', page, {key: value}) }}
+// render the container content_bottom of the global page.
+{{sonata_page_render_container('content_bottom', 'global') }}
+//insert the stylesheets and javascripts used on the page by the related blocks.
+{{page_include_stylesheets}} 
+{{page_include_javascripts }} 
+
+{{ path(page) }} => /absolute/path/to/url
+{{ path(page, {}, true) }} => ../relative/path/to/url
+{{ url(page) }} => https://sonata-project.org/absolute/url/to/url
+{{ url(page, {}, true) }} => //sonata-project.org/network/path/to/url
+{{ path('_page_alias_your_page') }} +>utilisation d un page router
+
+//rendre des blocks en AJAX
+//exemple with a block id = 1 et une page = 2
+{{ sonata_page_ajax_url(block) }} => /index.php/_page/block/2/1
+{{ sonata_page_ajax_url(block, {'parameter': 'value'}) }} => /index.php/_page/block/2/1?parameter=value
+{{ sonata_page_ajax_url(block, {'parameter': 'value'}, true) }} => https://sonata-project.org/index.php/_page/block/2/1?parameter=value
+
+//Breadcrumbs
+{{ sonata_page_breadcrumb(page, {key: value}) }}
+// avec key => {'separator' => ... ,current_class => ...,last_separator => ...,force_view_home_page => ... ,container_attr => ... ,
+elements_attr => ... , 
+template => ... }
+
+//Accéder au css et js du config/sonatapage
+{% for js in sonata_page.assets.javascripts %}
+    {# ... #}
+{% endfor %}
+
+### Block de partage*****
+//block reutilisable
+Page services provide a way to implement specific processing for certain pages. By specifying a page’s type, you may associate a page with a service that will full-fill various needs for such type of pages. One of the most basic needs is to render the page’s template, set SEO data and possibly update http headers. This is the default behavior for a page service, but you can easily extend those needs to include data loading, security checks, breadcrumb management, and url generation.
+After creating a shared block, you can reference it in your pages by adding a “Shared Block” block. When configuring this block, you will be asked to select a shared block to use.
+
+
+>>>Admin/ extends SharedBlockAdmin
+
+### Page services ******
+Page services provide a way to implement specific processing for certain pages. By specifying a page’s type, you may associate a page with a service that will full-fill various needs for such type of pages. One of the most basic needs is to render the page’s template, set SEO data and possibly update http headers. This is the default behavior for a page service, but you can easily extend those needs to include data loading, security checks, breadcrumb management, and url generation.
+
+//Personnalisé la configuration du contenu d'une page (seo, breadcrump,template)
+//créer un nouvelle type de page
+>>>src/App/Service/CustomPageService.php
+
+namespace App\Service;
+
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
+use Sonata\PageBundle\Model\PageInterface;
+use Sonata\PageBundle\Page\TemplateManager;
+
+class CustomPageService implements PageServiceInterface
+{
+    private TemplateManager $templateManager;
+
+    public function __construct(string $name, TemplateManager $templateManager)
+    {
+        // ...
+
+        $this->templateManager = $templateManager;
+    }
+
+    public function execute(PageInterface $page, Request $request, array $parameters = [], Response $response = null): Response
+    {
+        // add custom processing (load data, update SEO values, update http headers, perform security checks, ...)
+
+        return $this->templateManager->renderResponse($page->getTemplateCode(), $parameters, $response);
+    }
+}
+
+>>>services.yaml
+//Déclaration de la page services dans le ervices
+<service id="app.custom_page_service" class="App\Service\CustomPageService">
+    <argument>Custom page service</argument>
+    <argument type="service" id="sonata.page.template_manager"/>
+    <tag name="sonata.page"/>
+</service>
+
+### Liste des Tags deas admins
+//Tags a ajouter dans les servies.
+sonata.page.admin.page :: Page Admin:: This admin is used to manage pages.
+Block Admin	sonata.page.admin.block	This admin is used to handle Block into your page.
+Shared block Admin	sonata.page.admin.shared_block	You can manager blocks to share between your pages.
+Snapshot Admin	sonata.page.admin.snapshot	This admin is used to create and visualize snapshot from your pages.
+Site Admin	sonata.page.admin.site	This admin is used to manager sites.
+
+ou 
+//item ajouter sur sonataadmin
+- sonata.page.admin.shared_block
+- sonata.page.admin.site
+- sonata.page.admin.snapshot
+
+### Configuration avancé
+>>> config/packages/sonata_page.yaml
+    # Default configuration for extension with alias: "sonata_page"
+sonata_page:
+    skip_redirection: false # Skip asking Editor to redirect
+    use_streamed_response: false
+    multisite: ~ # Required
+    ignore_route_patterns:
+        # Defaults:
+        - /(.*)admin(.*)/
+        - /^_(.*)/
+    ignore_uri_patterns:
+        # Default:
+        - /admin(.*)/
+    default_page_service: sonata.page.service.default
+    default_template: ~ # Required
+    templates: # Required
+        # Prototype
+        id:
+            name: ~
+            path: ~
+            inherits_containers: ~
+            containers:
+                # Prototype
+                id:
+                    name: ~
+                    shared: false
+                    type: 1
+                    blocks: []
+            matrix:
+                layout: ~ # Required
+                mapping: [] # Required
+    templates_admin:
+        list: "@SonataPage/PageAdmin/list.html.twig"
+        tree: "@SonataPage/PageAdmin/tree.html.twig"
+        compose: "@SonataPage/PageAdmin/compose.html.twig"
+        compose_container_show: "@SonataPage/PageAdmin/compose_container_show.html.twig"
+        select_site: "@SonataPage/PageAdmin/select_site.html.twig"
+    page_defaults:
+        # Prototype
+        id:
+            decorate: true
+            enabled: true
+    catch_exceptions:
+        # Prototype
+        id: ~
+    class:
+        page: App\Entity\SonataPagePage
+        snapshot: App\Entity\SonataPageSnapshot
+        block: App\Entity\SonataPageBlock
+        site: App\Entity\SonataPageSite
+    direct_publication: false
+
+    # config/packages/doctrine.yaml
+
+>>> Enable Doctrine to map the provided entities
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    SonataPageBundle: ~
+
+### Performance 
+//Faire des requetes rapide
+ALTER TABLE `page__snapshot` ADD INDEX `idx_snapshot_route_name` (`route_name` (32), `site_id`);
+ALTER TABLE `page__snapshot` ADD INDEX `idx_snapshot_page_alias` (`page_alias` (32), `site_id`);
+ALTER TABLE `page__snapshot` ADD INDEX `idx_snapshot_url` (`url` (32), `site_id`);
+ALTER TABLE `page__page` ADD INDEX `idx_page_route_name` (`route_name` (32), `site_id`);
+ALTER TABLE `page__page` ADD INDEX `idx_page_page_alias` (`page_alias` (32), `site_id`);
+ALTER TABLE `page__page` ADD INDEX `idx_page_url` (`url` (32), `site_id`);
+
+
+
+### templates
+Les templates se définie au niveau de la configuration de sonata_admin avec la tab 'page composer' du menu sonatapage de l'adminstration.
+Sinon par les définition d'un templatete faissant appelle a des containers.
+>>>twig
+//render the container content of the current page
+{{sonata_page_render_container('content', page)}} 
+//render the container content_bottom of the global page.
+{{sonata_page_render_container('content_bottom', 'global')}}  
+
+//Assets defined in sonata_page.yaml
+{{sonata_page_include_stylesheets}}  
+{{sonata_page_include_javascripts}}  
+
+### Production
+npx encore production
+
+## Javascript (Page customer)
+event.containerId // loaded container id
+
+//hook création de block
+event.$childBlock // created block jQuery element
+event.parentId    // created block parent id
+event.blockId     // created block id
+event.blockName   // created block name
+event.blockType   // created block type
+
+// hook de retrait de block
+event.parentId // removed block parent id
+
+// Hooks block formulaire de chargement
+event.response    // the raw html response (form)
+event.containerId // current container id
+event.blockType   // selected block type
+
+//block position update
+event.disposition // a javascript object containing all child blocks position/ids…
+
+//block edit form chargement
+event.$block // the block jQuery element
+
+//blockparentswitched
+event.previousParentId // previous parent block id
+event.newParentId      // new parent block id
+event.blockId          // child block id
+
+# SonataNotificationBundle/ Gestion des notification (incomplet) *********
 
 # SonatUserBundle/ USER (user-bundle) ***
  - impossible -
@@ -3246,7 +4318,7 @@ $proxyQuery->setMaxResults(10);
 //Executer la query
 $results = $proxyQuery->execute();
 
-# SonataIntlBundle / traitement de type de texte
+# SonataIntlBundle / traitement de type de texte******
 composer require sonata-project/intl-bundle
 
 ## Context
@@ -3712,6 +4784,7 @@ fos_ck_editor:
 >>>AbstractAdmin
 use Sonata\FormatterBundle\Form\Type\SimpleFormatterType;
 $form
+//voir la configuration de SonataFormatter avant l'utilisation de ckeditor
     ->add('details', SimpleFormatterType::class, [
         'format' => 'richhtml',
         'ckeditor_context' => 'default',
@@ -3727,7 +4800,6 @@ $form
 ----- Sonata end ------
 
 # issue:
-- can't use chart with blockbundle, we can't try ADMINCRUDCONTROLLER or chart.js without symfony UX, ou dans un evenement de block
 - Use Sonata Bundle to manage my user.
 - Use the SEO
 - 
@@ -3775,3 +4847,7 @@ formulaire et tableau
         'Yes' => true,
         'No' => false,
     ],
+
+# best pratics
+- composer update
+- php bin/console doctrine:schema:update --force

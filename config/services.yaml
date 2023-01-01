@@ -22,6 +22,10 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    #Service SEO
+#    app.my_custom_sitemap_service:
+#        class: ~ #App\Seo\SiteMape
     
     #Route d'administration gestion des articles
     admin.articles:
@@ -29,7 +33,7 @@ services:
         calls:
             - [setTemplate, ['edit', 'CRUD/edit.html.twig']]
         tags:
-            - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Admin\Action\ArticleAdminController, manager_type: orm, label: Articles, show_in_roles_matrix: true }
+            - { name: sonata.page.admin.page, model_class: App\Entity\Articles, controller: App\Admin\Action\ArticleAdminController, manager_type: orm, label: Articles, show_in_roles_matrix: true }
 
     admin.categories:
         class: App\Admin\CategoriesAdmin
@@ -126,3 +130,79 @@ services:
         class: App\Admin\ArticlesCustomAdmin
         tags:
             - { name: sonata.admin, model_class: App\Entity\Articles, controller: App\Controller\ArticlesCustomAdminController, manager_type: orm, group: admin, label: Articles, show_in_roles_matrix: true}
+
+# configuration de la SEO
+# sonata_seo:
+#    sitemap:
+#        services:
+#            - app.my_custom_sitemap_service
+
+#        doctrine_orm:
+            # media
+#            - types: [image]
+#              connection: doctrine.dbal.default_connection
+#              route: sonata_media_view
+#              parameters: {id: null}
+#              query: |
+#                  SELECT
+#                    id,
+#                    updated_at as lastmod,
+#                    'weekly' as changefreq,
+#                    '0.5' as priority
+#                  FROM media__media
+ #                 WHERE enabled = true
+            # blog post
+#            - group: "news"
+#              connection: doctrine.dbal.default_connection
+#              route: sonata_news_view
+#              parameters: {url: null}
+#              query: |
+#                  SELECT
+#                    CONCAT_WS('/', YEAR(created_at), MONTH(created_at), DAY(created_at), slug) as url ,
+#                    updated_at as lastmod,
+#                    'weekly' as changefreq,
+#                    '0.5' as priority
+#                  FROM news__post
+#                  WHERE enabled = true
+#                    AND (publication_date_start IS NULL OR publication_date_start <= NOW())
+            # page - works only for one site, please adapt the code if required
+#            - connection: doctrine.dbal.default_connection
+#              route: page_slug
+#              parameters: {path: null}
+#              query: |
+#                  SELECT
+#                    url as path,
+#                    updated_at as lastmod,
+#                    'weekly' as changefreq,
+#                    '0.5' as priority
+#                  FROM page__snapshot
+#                  WHERE route_name = 'page_slug'
+#                    AND enabled = true
+#                    AND (publication_date_start IS NULL OR publication_date_start <= NOW())
+#                    AND (publication_date_end IS NULL OR publication_date_end >= NOW())
+            # product categories
+#            - connection: doctrine.dbal.default_connection
+#              route: sonata_catalog_category
+#              parameters: {category_id: null, category_slug: null}
+#              query: |
+#                  SELECT
+#                    id as category_id,
+#                    slug as category_slug,
+#                    updated_at as lastmod,
+#                    'weekly' as changefreq,
+#                    '0.5' as priority
+#                  FROM classification__category
+#                  WHERE enabled = true
+            # products
+#            - connection: doctrine.dbal.default_connection
+#              route: sonata_product_view
+#              parameters: {productId: null, slug: null}
+#              query: |
+#                  SELECT
+#                    id as productId,
+#                    slug,
+#                    updated_at as lastmod,
+#                    'weekly' as changefreq,
+#                    '0.5' as priority
+#                  FROM product__product
+#                  WHERE enabled = true

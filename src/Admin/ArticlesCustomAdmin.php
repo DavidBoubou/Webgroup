@@ -17,10 +17,10 @@ final class ArticlesCustomAdmin extends AbstractAdmin
     {
         $filter
             ->add('id')
-            ->add('titre')
+            ->add('title')
             ->add('baniere_url')
             ->add('content')
-            ->add('publie')
+            ->add('enabled')
             ;
     }
 
@@ -28,10 +28,10 @@ final class ArticlesCustomAdmin extends AbstractAdmin
     {
         $list
             ->add('id')
-            ->add('titre')
+            ->add('title')
             ->add('baniere_url')
             ->add('content')
-            ->add('publie')
+            ->add('enabled')
             ->add(ListMapper::NAME_ACTIONS, null, [
                 'actions' => [
                     'show' => [],
@@ -45,10 +45,10 @@ final class ArticlesCustomAdmin extends AbstractAdmin
     {
         $form
             ->add('id')
-            ->add('titre')
+            ->add('title')
             ->add('baniere_url')
             ->add('content')
-            ->add('publie')
+            ->add('enabled')
             ;
     }
 
@@ -56,10 +56,10 @@ final class ArticlesCustomAdmin extends AbstractAdmin
     {
         $show
             ->add('id')
-            ->add('titre')
+            ->add('title')
             ->add('baniere_url')
             ->add('content')
-            ->add('publie')
+            ->add('enabled')
             ;
     }
 }
