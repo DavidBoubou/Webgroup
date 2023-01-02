@@ -139,6 +139,8 @@ protected function configureFormFields(FormMapper $form):void
             //propriété sur les recherche
             'property' => ['title'],
             'required' => false])
+
+
             
         /*->add('categorie',EntityType::class,[
             'class' => Categories::class,

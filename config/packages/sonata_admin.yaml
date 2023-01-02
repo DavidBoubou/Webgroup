@@ -16,6 +16,7 @@ sonata_admin:
         extra_javascripts:
             - bundles/sonatapage/sonata-page.back.min.js
             - bundles/sonatapage/app.js
+            - bundles/fosckeditor/ckeditor.js
         extra_stylesheets:
             - bundles/sonatapage/sonata-page.back.min.css
             - bundles/sonatapage/app.css

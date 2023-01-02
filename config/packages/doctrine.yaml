@@ -17,7 +17,8 @@ doctrine:
                 alias: App
 
             SonataPageBundle: ~
-            SonataUserBundle: ~      
+            SonataUserBundle: ~  
+            SonataMediaBundle: ~    
 
             #SonataUserBundle:
             #    connection: default

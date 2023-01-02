@@ -2,9 +2,11 @@ twig:
     default_path: '%kernel.project_dir%/templates'
     form_themes:
         - '@SonataForm/Form/datepicker.html.twig'
+        - '@SonataFormatter/Form/formatter.html.twig'
         #- '@SonataForm/Form/color.html.twig'
     cache: false
-
+    debug:            '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
 when@test:
     twig:
         strict_variables: true

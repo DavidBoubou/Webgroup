@@ -3,7 +3,6 @@
 declare(strict_types=1);
 
 namespace App\Entity;
-//namespace Sonata\PageBundle\App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Sonata\PageBundle\Entity\BaseSite;

@@ -1,13 +1,34 @@
 # Read the documentation: https://symfony.com/doc/current/bundles/FOSCKEditorBundle/index.html
-#fos_ck_editor:
-#    configs:
-#        default:
-#            filebrowserImageUploadRoute: admin_sonata_media_media_upload
-#            filebrowserImageUploadRouteParameters:
-#                provider: sonata.media.provider.image
-#                context: default
-#                format: big
-#
 twig:
     form_themes:
         - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
+
+fos_ck_editor:
+    default_config: default
+    configs:
+        default:
+            # default toolbar plus Format button
+            toolbar:
+            - [Bold, Italic, Underline, -, Cut, Copy, Paste,
+              PasteText, PasteFromWord, -, Undo, Redo, -,
+              NumberedList, BulletedList, -, Outdent, Indent, -,
+              Blockquote, -, Image, Link, Unlink, Table]
+            - [Format, Maximize, Source]
+
+            #filebrowserBrowseRoute: admin_app_sonata_media_media_browser
+            #filebrowserImageBrowseRoute: admin_app_sonata_media_media_browser
+            # Display images by default when clicking the image dialog browse button
+            filebrowserImageBrowseRouteParameters:
+                provider: sonata.media.provider.image
+                context: default
+                format: big
+            filebrowserUploadMethod: form
+            #filebrowserUploadRoute: admin_app_sonata_media_media_upload
+            filebrowserUploadRouteParameters:
+                provider: sonata.media.provider.file
+            # Upload file as image when sending a file from the image dialog
+            #filebrowserImageUploadRoute: admin_app_sonata_media_media_upload
+            filebrowserImageUploadRouteParameters:
+                provider: sonata.media.provider.image
+                context: my-context # Optional, to upload in a custom context
+                format: my-big # Optional, media format or original size returned to editor
