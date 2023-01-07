@@ -29,8 +29,11 @@ class Articles extends BasePage //Page
     #[ORM\OneToMany(mappedBy: 'articles', targetEntity: Categories::class)]
     private Collection $categorie;
 
+ //   #[ORM\ManyToOne(inversedBy: 'articles')]
+ //   private ?User $autheur = null;
+
     #[ORM\ManyToOne(inversedBy: 'articles')]
-    private ?User $autheur = null;
+    private ?UserSonata $autheur = null;
 
 
     public function __construct()
@@ -120,12 +123,12 @@ class Articles extends BasePage //Page
         return $this;
     }
 
-    public function getAutheur(): ?User
+    public function getAutheur(): ?UserSonata //User
     {
         return $this->autheur;
     }
 
-    public function setAutheur(?User $autheur): self
+    public function setAutheur(/*?User*/?UserSonata $autheur): self
     {
         $this->autheur = $autheur;
 

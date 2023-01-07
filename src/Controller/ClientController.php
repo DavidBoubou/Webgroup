@@ -59,5 +59,11 @@ class ClientController extends AbstractController
     }
 
 
+    //route 
+    #[Route('/media', name: 'app_client_articles')]
+    public function media(): Response
+    {
+
+    }
 
 }

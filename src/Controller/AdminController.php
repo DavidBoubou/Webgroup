@@ -36,6 +36,7 @@ class AdminController extends AbstractController
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
          if ($this->getUser()) {
+             die("getUser".$this->getUser());
              return $this->redirectToRoute('sonata_admin_dashboard');
          }
         // dd( $authenticationUtils);
@@ -75,11 +76,11 @@ class AdminController extends AbstractController
             //$user->prePersist();
             //$user->preUpdate();
 
-            //$entityManager->persist($user);
-            //$entityManager->flush();
+            $entityManager->persist($user);
+            $entityManager->flush();
 
-            $customerEntityManager->persist($user);
-            $customerEntityManager->flush();
+            //$customerEntityManager->persist($user);
+            //$customerEntityManager->flush();
 
 
             // generate a signed url and email it to the user
@@ -103,8 +104,9 @@ class AdminController extends AbstractController
 
 
     #[Route(path: '/admin/logout', name: 'app_admin_logout')]
-    public function logout(): void
+    public function logout(): Response
     {
-        throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
+        return $this->redirectToRoute('app_client_accueil');
+        //throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 }

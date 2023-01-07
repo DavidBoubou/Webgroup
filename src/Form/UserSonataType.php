@@ -19,6 +19,7 @@ class UserSonataType extends AbstractType
     {
         $builder
             ->add('email')
+            ->add('username')
 
             //Ajouter une sécurité sur les liste de role sélectionner
             ->add('roles', ChoiceType::class, [      

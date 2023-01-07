@@ -8,57 +8,29 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Sonata\UserBundle\Document\BaseUser;
+use Sonata\UserBundle\Entity\BaseUser;
 
 #[ORM\Entity(repositoryClass: UserSonataRepository::class)]
 #[ORM\Table(name: 'sonata_user__user')]
 #[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
-class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenticatedUserInterface
+class UserSonata  extends BaseUser 
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: Types::INTEGER)]
-    //private ?int $id = null;
-    protected  $id;
-
-    #[ORM\Column(length: 180, unique: true)]
-    protected ?string $email = null;
-
-    #[ORM\Column]
-    protected array $roles = [];
-
-    /**
-     * @var string The hashed password
-     */
-    #[ORM\Column]
-    protected ?string $password = null;
+    protected  $id = null;
 
     #[ORM\Column(type: Types::ARRAY, nullable: true)]
     protected array $adresse = [];
 
-    #[ORM\OneToOne(mappedBy: 'autheur', cascade: ['persist', 'remove'])]
-    protected ?Articles $articles = null;
+  // #[ORM\OneToOne(mappedBy: 'autheur', cascade: ['persist', 'remove'])]
+  //  protected ?Articles $articles = null;
 
     #[ORM\Column(type: 'boolean')]
     protected $isVerified = false;
-/*
-    #[ORM\Column]
-    protected ?\DateTimeInterface $createdAt = null;
 
-    #[ORM\Column]
-    protected ?\DateTimeInterface $updatedAt = null;
-
-    #[ORM\Column]
-    protected ?\DateTimeInterface $lastLogin = null;
-
-    #[ORM\Column]
-    protected ?\DateTimeInterface $passwordRequestedAt = null;
-*/
-    #[ORM\Column]
-    protected ?string $username = null;
-
-    #[ORM\Column(type: 'boolean')]
-    protected bool $enabled = false;
+    #[ORM\OneToMany(mappedBy: 'autheur', targetEntity: Articles::class)]
+    private Collection $articles;
 
     //protected ?string $plainPassword = null;
     
@@ -72,17 +44,6 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         return $this->username;
     }
 
-    public function getEmail(): ?string
-    {
-        return $this->email;
-    }
-
-    public function setEmail(?string $email): void
-    {
-        $this->email = $email;
-
-    }
-
     /**
      * A visual identifier that represents this user.
      *
@@ -93,61 +54,6 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function getRoles(): array
-    {
-        $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
-        $roles[] = 'ROLE_USER';
-
-        return array_unique($roles);
-    }
-
-    public function setRoles(?array $roles): void
-    {
-        $this->roles = $roles;
-
-    }
-
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
-    {
-        return $this->password;
-    }
-
-    public function setPassword(?string $password): void
-    {
-        $this->password = $password;
-
-    }
-
-    /**
-     * @see UserInterface
-     *//*
-    public function eraseCredentials():void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-         $this->plainPassword = null;
-    }
-    */
-
-    /**
-     * @return mixed
-     *//*
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(?string $password): void
-    {
-        $this->plainPassword = $password;
-    }
-    */
     public function getAdresse(): array
     {
         return $this->adresse;
@@ -159,7 +65,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
 
         return $this;
     }
-
+/*
     public function getArticles(): ?Articles
     {
         return $this->articles;
@@ -176,6 +82,7 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
 
         return $this;
     }
+*/
 
     public function isVerified(): bool
     {
@@ -221,16 +128,22 @@ class UserSonata  extends BaseUser // implements UserInterface, PasswordAuthenti
         return $this->updatedAt;
     }
 
-    public function getUsername(): ?string
+    /**
+     * @return Collection<int, Articles>
+     */
+    public function getArticles(): Collection
     {
-        return $this->username;
+        return $this->articles;
     }
 
-
-
-    public function setUsername(?string $username): void
+    public function addArticle(Articles $article): self
     {
-        $this->username = $username;
+        if (!$this->articles->contains($article)) {
+            $this->articles->add($article);
+            $article->setAutheur($this);
+        }
+
+        return $this;
     }
 /*
     public function prePersist(): void

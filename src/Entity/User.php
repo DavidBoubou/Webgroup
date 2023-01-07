@@ -37,10 +37,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: 'boolean')]
     private $isVerified = false;
-
+/*
     #[ORM\OneToMany(mappedBy: 'autheur', targetEntity: Articles::class)]
     private Collection $articles;
-
+*/
     private $plainPassword;
     
 
@@ -152,10 +152,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-
+/*
     /**
      * @return Collection<int, Articles>
      */
+    /*
     public function getArticles(): Collection
     {
         return $this->articles;
@@ -182,4 +183,5 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+    */
 }

@@ -10,6 +10,7 @@ use Sonata\AdminBundle\Datagrid\ListMapper;
 use Sonata\AdminBundle\Form\FormMapper;
 use Sonata\AdminBundle\Show\ShowMapper;
 
+use Sonata\UserBundle\Form\Type\RolesMatrixType;
 use Sonata\AdminBundle\Route\RouteCollectionInterface;
 use Symfony\Component\Validator\Constraints\NotBlank;
 
@@ -52,10 +53,17 @@ final class UserAdmin extends AbstractAdmin
     protected function configureFormFields(FormMapper $form): void
     {
         $form
-            ->add('email')
-           // ->add('roles')
+            ->add('email')           
             ->add('password')
             ->add('adresse')
+           /* ->with('roles', ['class' => 'col-md-8'])
+            ->add('realRoles', RolesMatrixType::class, [
+                'label' => false,
+                'multiple' => true,
+                'required' => false,
+            ])
+            ->end();
+            */
             ;
     }
 
